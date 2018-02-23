@@ -1,0 +1,52 @@
+apply plugin: 'com.android.library'
+
+def config = rootProject.ext.ver
+def library = rootProject.ext.library
+
+android {
+    compileSdkVersion config.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    publishNonDefault true //默认不为发布版本
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    compile library.supportV4
+    compile library.supportV7
+    compile library.design
+    compile library.cardview
+    compile library.recyclerview
+    compile library.constraint
+    compile library.rxjava2
+    compile library.rxlifecycle2
+    compile library.rxlifecycle2_android
+    compile library.rxlifecycle2_components
+    compile library.BaseRecyclerViewAdapterHelper
+    compile library.SmartRefreshLayout
+    compile library.rxpermissions2
+    compile library.logger
+    //可选
+    compile library.butterknife
+    //annotationProcessor library.butterknife_compiler
+}

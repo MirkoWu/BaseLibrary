@@ -1,0 +1,7 @@
+<resources>
+    <string name="prompt_message">提示信息</string>
+    <string name="permission_lack">当前应用缺少必要权限，该功能暂时无法使用。如若需要，请点击【确定】按钮前往设置中心进行权限授权。</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="dialog_loading">加载中...</string>
+</resources>

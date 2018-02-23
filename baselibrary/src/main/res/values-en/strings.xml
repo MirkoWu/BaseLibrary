@@ -1,0 +1,8 @@
+<resources>
+    <string name="prompt_message">Prompt Message</string>
+    <string name="permission_lack">The current application lacks the necessary permissions, which is temporarily unavailable.
+        If you need it, please click the confirm button to go to the setting Center for permission authorization. </string>
+    <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="dialog_loading">Loading...</string>
+</resources>
