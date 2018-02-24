@@ -25,10 +25,10 @@
         <!-- Glide配置文件 -->
         <!-- Glide配置文件 -->
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.MainActivity">
 
         </activity>
-        <activity android:name=".TestToolbarActivity">
+        <activity android:name=".ui.TestToolbarActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

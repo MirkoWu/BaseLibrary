@@ -11,7 +11,20 @@ import retrofit2.http.POST;
 
 public interface LoginService {
 
-
+    /**
+     * 登录
+     *
+     * @param loginType （必须）登录类型，1：QQ, 2: 微信, 3：微博, 4：手机号
+     * @param phone     （非第三方登录）手机号
+     * @param password  （非第三方登录）密码
+     * @return
+     */
+    @FormUrlEncoded
+    @POST(HostUrl.LOGIN_APP_LOGIN)
+    Observable<BaseBean<String>> loginPhone(@Field("loginType") int loginType,
+                                              @Field("phone") String phone,
+                                              @Field("password") String password
+    );
     /**
      * 登录
      *

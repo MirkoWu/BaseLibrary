@@ -1,8 +1,9 @@
-package com.mirkowu.baselibrary;
+package com.mirkowu.baselibrary.ui;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.base.ToolbarActivity;
 import com.softgarden.baselibrary.widget.BaseToolbar;
 
