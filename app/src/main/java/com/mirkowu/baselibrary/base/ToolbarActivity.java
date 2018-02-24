@@ -22,7 +22,7 @@ public abstract class ToolbarActivity extends BaseActivity {
     protected void initContentView() {
         /*** 这里可以对Toolbar进行统一的预设置 */
         BaseToolbar.Builder builder
-                = new BaseToolbar.Builder(this)
+                = new BaseToolbar.Builder(getContext())
                 .setStatusBarColor(Color.TRANSPARENT)//统一设置为透明
                 .setBackButton(R.mipmap.back)//统一设置返回键
                 //  .setBackgroundColor(ContextUtil.getColor(R.color.pink))

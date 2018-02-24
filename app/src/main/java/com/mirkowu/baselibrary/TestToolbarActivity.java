@@ -9,17 +9,15 @@ import com.mirkowu.baselibrary.network.BaseBean;
 import com.mirkowu.baselibrary.network.NetworkTransformer;
 import com.mirkowu.baselibrary.network.RetrofitManager;
 import com.mirkowu.baselibrary.network.RxCallback;
-import com.softgarden.baselibrary.utils.L;
 import com.softgarden.baselibrary.utils.ToastUtil;
 import com.softgarden.baselibrary.widget.BaseToolbar;
-
-import io.reactivex.functions.Consumer;
 
 public class TestToolbarActivity extends ToolbarActivity {
     @Nullable
     @Override
     protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
         return builder
+                .setStatusBarColor(Color.GRAY)
                 .addLeftText("左菜单", v -> ToastUtil.s("左菜单"))
                 .addRightText("右菜单", v -> ToastUtil.s("右菜单"))
                 .addRightImage(R.mipmap.share, v -> startActivity(MainActivity.class))
@@ -36,6 +34,12 @@ public class TestToolbarActivity extends ToolbarActivity {
     protected void initialize() {
         getToolbar().getRightView(0).setBackgroundColor(Color.GRAY);
 
+        loadData();
+
+
+    }
+
+    private void loadData() {
         RetrofitManager.getLoginService()
                 .loginThridParty(1, "", "", "")
                 .compose(new NetworkTransformer(this))
@@ -44,14 +48,7 @@ public class TestToolbarActivity extends ToolbarActivity {
                     public void onSuccess(@Nullable BaseBean<String> data) {
 
                     }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        L.d("onFinish");
-                    }
                 });
-
     }
 
 
