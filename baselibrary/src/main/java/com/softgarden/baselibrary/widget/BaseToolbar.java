@@ -13,13 +13,13 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.utils.DisplayUtil;
+import com.softgarden.baselibrary.utils.StatusBarUtil;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -107,7 +107,8 @@ public class BaseToolbar extends Toolbar {
     public void setStatusBarColor(@ColorInt int colorId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//android 19 4.4 以上才支持沉浸式
             if (getContext() instanceof Activity) {//设置 沉浸式 flag
-                ((Activity) getContext()).getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                // ((Activity) getContext()).getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                StatusBarUtil.transparencyBar((Activity) getContext());//去除部分机型的阴影效果
             }
             mStatusBar.setVisibility(VISIBLE);
             mStatusBar.setBackgroundColor(colorId);
@@ -124,12 +125,12 @@ public class BaseToolbar extends Toolbar {
     }
 
     /**
-     * toolbar 和布局的分割线
+     * toolbar 和布局的分割线 (默认不显示)
      *
      * @param colorId
      * @param height
      */
-    public void showSplitLine(@ColorInt int colorId, int height) {
+    public void setSplitLine(@ColorInt int colorId, int height) {
         mSplitLine.setVisibility(VISIBLE);
         mSplitLine.setBackgroundColor(colorId);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mSplitLine.getLayoutParams();
@@ -352,8 +353,10 @@ public class BaseToolbar extends Toolbar {
         private int titleTextResId;
         private int backResId;
         private int statusBarColorId = Color.TRANSPARENT,
+                splitLineColorId = Color.BLACK,
                 backgroundColorId = Color.BLUE,
                 titleColorId = Color.BLACK;//均设置默认值
+        private int splitLineHeight = 0;
         private ArrayList<View> leftViewList, rightViewList;
 
         public Builder(Context context) {
@@ -362,6 +365,12 @@ public class BaseToolbar extends Toolbar {
 
         public Builder setBackButton(@DrawableRes int backResId) {
             this.backResId = backResId;
+            return this;
+        }
+
+        public Builder setSplitLine(@ColorInt int splitLineColorId, int splitLineHeight) {
+            this.splitLineColorId = splitLineColorId;
+            this.splitLineHeight = splitLineHeight;
             return this;
         }
 
@@ -467,6 +476,8 @@ public class BaseToolbar extends Toolbar {
                     toolbar.addRightView(view);
                 }
             }
+
+            if (splitLineHeight > 0) toolbar.setSplitLine(splitLineColorId, splitLineHeight);
 
             toolbar.setStatusBarColor(statusBarColorId);
 

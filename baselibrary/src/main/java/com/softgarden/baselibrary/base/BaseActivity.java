@@ -62,7 +62,6 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseD
     protected void onResume() {
         checkScreenOrientation();
         super.onResume();
-
     }
 
     /**
@@ -76,6 +75,24 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseD
     }
 
 
+    public BaseActivity getActivity() {
+        return this;
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    public void startActivity(Class<? extends Activity> cls) {
+        this.startActivity(new Intent(this, cls));
+    }
+
+    public void startActivityFinishSelf(Class<? extends Activity> cls) {
+        this.startActivity(new Intent(this, cls));
+        finish();
+    }
+
     /**
      * 此方法会比 recreate() 效果更好
      */
@@ -88,42 +105,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseD
         startActivity(intent);
     }
 
-
-    public void startActivity(Class<? extends Activity> cls) {
-        this.startActivity(new Intent(this, cls));
-    }
-
-    public void startActivityFinishSelf(Class<? extends Activity> cls) {
-        this.startActivity(new Intent(this, cls));
-        finish();
-    }
-
-    public BaseActivity getActivity() {
-        return this;
-    }
-
-    @Override
-    public synchronized void showProgressDialog() {
-        LoadingDialogManager.showLoading(getActivity());
-    }
-
-    @Override
-    public synchronized void hideProgressDialog() {
-        LoadingDialogManager.dismissLoading();
-    }
-
-
-    @Override
-    public void showError(Throwable throwable) {
-        ToastUtil.s(throwable.getMessage());
-        if (BuildConfig.DEBUG) throwable.printStackTrace();
-    }
-
     /**
      * 权限提示对话框
      */
-
-
     public void showPermissionDialog() {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.prompt_message)
@@ -152,14 +136,33 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseD
     }
 
 
+    /**
+     * 设置横屏竖屏
+     *
+     * @param mOrientationPortrait true 竖屏 false 横屏
+     */
+    public void setOrientationPortrait(boolean mOrientationPortrait) {
+        this.mOrientationPortrait = mOrientationPortrait;
+    }
+
+    public boolean isOrientationPortrait() {
+        return mOrientationPortrait;
+    }
+
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == REQUEST_LOGIN) {
-            int eventId = 0;
-            if (data != null) eventId = data.getIntExtra("eventId", 0);
-            backFromLogin(eventId);//从登陆界面返回  登录成功
-        }
+    public synchronized void showProgressDialog() {
+        LoadingDialogManager.showLoading(getActivity());
+    }
+
+    @Override
+    public synchronized void hideProgressDialog() {
+        LoadingDialogManager.dismissLoading();
+    }
+
+    @Override
+    public void showError(Throwable throwable) {
+        ToastUtil.s(throwable.getMessage());
+        if (BuildConfig.DEBUG) throwable.printStackTrace();
     }
 
     /**
@@ -177,22 +180,19 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseD
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_LOGIN) {
+            int eventId = 0;
+            if (data != null) eventId = data.getIntExtra("eventId", 0);
+            backFromLogin(eventId);//从登陆界面返回  登录成功
+        }
     }
 
     @Override
-    public Context getContext() {
-        return this;
-    }
-
-    public boolean isOrientationPortrait() {
-        return mOrientationPortrait;
-    }
-
-    public void setOrientationPortrait(boolean mOrientationPortrait) {
-        this.mOrientationPortrait = mOrientationPortrait;
+    protected void onDestroy() {
+        super.onDestroy();
+        unbinder.unbind();
     }
 
     @LayoutRes

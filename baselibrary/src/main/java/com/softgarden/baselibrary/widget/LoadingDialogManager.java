@@ -28,6 +28,7 @@ public class LoadingDialogManager {
             mLoadingDialog.show();
         }
         mCount++;
+       // L.d("loadingCount++ =" + mCount);
     }
 
     public static void dismissLoading() {
@@ -36,6 +37,7 @@ public class LoadingDialogManager {
         }
 
         mCount--;
+       // L.d("loadingCount-- =" + mCount);
         if (mCount == 0) {
             mLoadingDialog.dismiss();
             mLoadingDialog = null;
