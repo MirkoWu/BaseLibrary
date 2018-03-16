@@ -46,7 +46,7 @@ dependencies {
     compile library.SmartRefreshLayout
     compile library.rxpermissions2
     compile library.logger
-    //可选
+
     compile library.butterknife
     //annotationProcessor library.butterknife_compiler
 }

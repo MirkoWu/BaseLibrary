@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.network.BaseBean;
 import com.mirkowu.baselibrary.network.NetworkTransformer;
-import com.mirkowu.baselibrary.network.RetrofitManager;
+import com.mirkowu.baselibrary.network.RetrofitClient;
 import com.mirkowu.baselibrary.network.RxCallback;
 import com.softgarden.baselibrary.base.BaseLazyFragment;
 
@@ -39,7 +39,7 @@ public class TestFragment extends BaseLazyFragment{
     }
 
     private void loadData() {
-        RetrofitManager.getLoginService()
+        RetrofitClient.getLoginService()
                 .loginThridParty(1, "", "", "")
                 .compose(new NetworkTransformer(getActivity()))
                 .subscribe(new RxCallback<BaseBean<String>>() {
@@ -51,7 +51,7 @@ public class TestFragment extends BaseLazyFragment{
     }
 
     private void loadData2() {
-        RetrofitManager.getLoginService()
+        RetrofitClient.getLoginService()
                 .loginPhone(1, "", "")
                 .compose(new NetworkTransformer(getActivity()))
                 .subscribe(new RxCallback<BaseBean<String>>() {

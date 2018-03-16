@@ -1,8 +1,6 @@
 package com.mirkowu.baselibrary.network;
 
 
-import com.mirkowu.baselibrary.network.api.HostUrl;
-import com.mirkowu.baselibrary.network.api.LoginService;
 import com.softgarden.baselibrary.utils.L;
 
 import java.util.concurrent.TimeUnit;
@@ -17,12 +15,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Administrator on 2016/11/12 0012.
  */
 
-public class RetrofitManager {
+public class RetrofitClient {
+    public static final String HOST_URL = "";
+
     public volatile static Retrofit retrofit = null;
 
     public static Retrofit getInstance() {
         if (retrofit == null)
-            synchronized (RetrofitManager.class) {
+            synchronized (RetrofitClient.class) {
                 if (retrofit == null) {
                     retrofit = getRetrofit();
                 }
@@ -44,14 +44,18 @@ public class RetrofitManager {
         return builder.build();
     }
 
-    public static HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(message -> {
-        //打印retrofit日志
-        L.w("RetrofitLog", message + "");
-    }).setLevel(HttpLoggingInterceptor.Level.BODY);
+    public static HttpLoggingInterceptor loggingInterceptor =
+            new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                @Override
+                public void log(String message) {
+                    //打印retrofit日志
+                    L.w("RetrofitLog", message + "");
+                }
+            }).setLevel(HttpLoggingInterceptor.Level.BODY);
 
 
     public static Retrofit getRetrofit() {
-        return new Retrofit.Builder().baseUrl(HostUrl.HOST_URL)
+        return new Retrofit.Builder().baseUrl(HOST_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(getOkHttpClient())
@@ -62,11 +66,6 @@ public class RetrofitManager {
     public static <T> T getAPIService(Class<T> service) {
         return getInstance().create(service);
     }
-
-    public static LoginService getLoginService() {
-        return getInstance().create(LoginService.class);
-    }
-
 
 
 }

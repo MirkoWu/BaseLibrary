@@ -11,7 +11,7 @@ import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.base.ToolbarActivity;
 import com.mirkowu.baselibrary.network.BaseBean;
 import com.mirkowu.baselibrary.network.NetworkTransformer;
-import com.mirkowu.baselibrary.network.RetrofitManager;
+import com.mirkowu.baselibrary.network.RetrofitClient;
 import com.mirkowu.baselibrary.network.RxCallback;
 import com.softgarden.baselibrary.base.FragmentBasePagerAdapter;
 import com.softgarden.baselibrary.utils.DisplayUtil;
@@ -74,7 +74,7 @@ public class TestToolbarActivity extends ToolbarActivity {
     }
 
     private void loadData() {
-        RetrofitManager.getLoginService()
+        RetrofitClient.getLoginService()
                 .loginThridParty(1, "", "", "")
                 .compose(new NetworkTransformer(this))
                 .subscribe(new RxCallback<BaseBean<String>>() {
@@ -86,7 +86,7 @@ public class TestToolbarActivity extends ToolbarActivity {
     }
 
     private void loadData2() {
-        RetrofitManager.getLoginService()
+        RetrofitClient.getLoginService()
                 .loginPhone(1, "", "")
                 .compose(new NetworkTransformer(this))
                 .subscribe(new RxCallback<BaseBean<String>>() {

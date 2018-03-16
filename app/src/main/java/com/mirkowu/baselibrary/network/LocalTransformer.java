@@ -9,7 +9,10 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.exceptions.Exceptions;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -32,10 +35,25 @@ public class LocalTransformer<T> implements ObservableTransformer<T, T> {
         return upstream
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> activity.showProgressDialog())
-                .doOnTerminate(() -> activity.hideProgressDialog())
-                .doFinally(() -> activity.hideProgressDialog())
-                .compose(activity.bindToLifecycle());
+                .doOnSubscribe(new Consumer<Disposable>() {
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
+                        activity.showProgressDialog();
+                    }
+                })
+                .doOnTerminate(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        activity.hideProgressDialog();
+                    }
+                })
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        activity.hideProgressDialog();
+                    }
+                })
+                .compose(activity.<T>bindToLifecycle());
 
     }
 
