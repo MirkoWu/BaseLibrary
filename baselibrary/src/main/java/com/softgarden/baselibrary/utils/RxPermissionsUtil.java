@@ -19,5 +19,8 @@ public class RxPermissionsUtil {
     public static Observable<Boolean> requestStorage(Activity activity) {
         return new RxPermissions(activity).request(Manifest.permission.WRITE_EXTERNAL_STORAGE);
     }
+ public static Observable<Boolean> requestCallPhone(Activity activity) {
+        return new RxPermissions(activity).request(Manifest.permission.CALL_PHONE);
+    }
 
 }

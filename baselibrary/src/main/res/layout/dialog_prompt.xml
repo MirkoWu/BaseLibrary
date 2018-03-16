@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline1"
@@ -22,7 +22,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@drawable/shape_radius_white_5dp"
-        android:divider="@drawable/shape_line_ver"
+        android:divider="@drawable/shape_line_hor"
         android:orientation="vertical"
         android:showDividers="middle"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,16 +33,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingTop="10dp"
             android:orientation="vertical"
             android:paddingBottom="10dp">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/ivIcon"
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="7dp"
                 android:gravity="center"
-                android:padding="10dp"
+                android:padding="7dp"
                 android:textColor="#333333"
                 android:textSize="16sp" />
 
@@ -51,8 +59,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="10dp"
-                android:textColor="#333333"
+                android:padding="7dp"
+                android:textColor="#666666"
                 android:textSize="14sp"
                 android:visibility="gone" />
         </LinearLayout>
@@ -60,7 +68,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@drawable/shape_line_hor"
+            android:divider="@drawable/shape_line_ver"
             android:showDividers="middle">
 
             <android.support.v7.widget.AppCompatTextView
@@ -72,7 +80,7 @@
                 android:padding="10dp"
                 android:text="@string/cancel"
                 android:textColor="#333333"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/tvPositive"
@@ -83,7 +91,7 @@
                 android:padding="10dp"
                 android:text="@string/ok"
                 android:textColor="#333333"
-                android:textSize="15sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>

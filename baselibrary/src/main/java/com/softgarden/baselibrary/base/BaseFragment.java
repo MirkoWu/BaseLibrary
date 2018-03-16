@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,7 @@ public abstract class BaseFragment extends RxFragment implements IBaseDisplay {
 
     protected Unbinder unbinder;
 
-    protected Activity mActivity;
+    protected AppCompatActivity mActivity;
     protected Context mContext;
 
     private int position;
@@ -50,7 +51,7 @@ public abstract class BaseFragment extends RxFragment implements IBaseDisplay {
 
     @Override
     public void onAttach(Context context) {
-        mActivity = (Activity) context;
+        mActivity = (AppCompatActivity) context;
         mContext = context;
         super.onAttach(context);
     }
@@ -70,6 +71,11 @@ public abstract class BaseFragment extends RxFragment implements IBaseDisplay {
         initialize();
     }
 
+    @Override
+    public void changeDayNightMode(boolean isNightMode) {
+        if (getActivity() instanceof BaseActivity)
+            ((BaseActivity) getActivity()).changeDayNightMode(isNightMode);
+    }
 
 
     public void startActivity(Class<? extends Activity> cls) {

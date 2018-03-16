@@ -36,6 +36,7 @@ public class BaseToolbar extends Toolbar {
     private TextView mTitleTextView;//标题
     private LinearLayout mLayoutLeft, mLayoutRight;//
 
+
     public BaseToolbar(Context context) {
         this(context, null);
     }
@@ -46,6 +47,7 @@ public class BaseToolbar extends Toolbar {
 
     public BaseToolbar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
         initView(context);
     }
 

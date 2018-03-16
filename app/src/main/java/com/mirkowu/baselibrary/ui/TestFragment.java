@@ -29,13 +29,13 @@ public class TestFragment extends BaseLazyFragment{
 
     @Override
     protected void lazyLoad() {
-        loadData();
-        loadData2();
-        loadData();
-        loadData2();
-        loadData();
-        loadData2();
-        loadData();
+//        loadData();
+//        loadData2();
+//        loadData();
+//        loadData2();
+//        loadData();
+//        loadData2();
+//        loadData();
     }
 
     private void loadData() {

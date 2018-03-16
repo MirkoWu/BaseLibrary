@@ -50,7 +50,7 @@ public class ColorDividerDecoration extends RecyclerView.ItemDecoration {
 
 
     public ColorDividerDecoration(Context mContext) {
-        this(mContext, VERTICAL, Color.parseColor("#CCC"), 1, BEGINNING_MIDDLE);
+        this(mContext, VERTICAL, Color.parseColor("#CCCCCC"), 1, BEGINNING_MIDDLE);
     }
     public ColorDividerDecoration(Context mContext, @ColorInt int mDividerColor) {
         this(mContext, VERTICAL, mDividerColor, 1, BEGINNING_MIDDLE);

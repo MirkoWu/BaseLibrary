@@ -18,5 +18,7 @@ public interface IBaseDisplay {
 
     void showError(Throwable t);
 
+    void changeDayNightMode(boolean isNightMode);
+
     <T> LifecycleTransformer<T> bindToLifecycle();
 }

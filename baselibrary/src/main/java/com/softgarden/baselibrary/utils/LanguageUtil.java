@@ -19,7 +19,6 @@ public class LanguageUtil {
 
 
     public static void switchLanguage(Locale locale) {
-        DBUtil.setEnglish(locale == Locale.ENGLISH);
         //应用内配置语言
         Resources resources = BaseApplication.getInstance().getResources();//获得res资源对象
         Configuration config = resources.getConfiguration();//获得设置对象

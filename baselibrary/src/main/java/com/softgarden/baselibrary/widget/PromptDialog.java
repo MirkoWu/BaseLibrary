@@ -2,6 +2,7 @@ package com.softgarden.baselibrary.widget;
 
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
@@ -11,11 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.base.BaseDialogFragment;
 import com.softgarden.baselibrary.utils.ContextUtil;
+import com.softgarden.baselibrary.utils.L;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -29,11 +32,13 @@ import static android.view.View.VISIBLE;
 
 public class PromptDialog extends BaseDialogFragment implements View.OnClickListener {
 
+    ImageView ivIcon;
     TextView tvTitle;
     TextView tvContent;
     TextView tvPositive;
     TextView tvNegative;
 
+    private int icon;
     private String title;
     private String content;
     private String positiveLabel;
@@ -67,15 +72,19 @@ public class PromptDialog extends BaseDialogFragment implements View.OnClickList
 
     @Override
     public void initialize() {
+        ivIcon = $(R.id.ivIcon);
         tvTitle = $(R.id.tvTitle);
-        tvContent = $(R.id.tvTitle);
-        tvPositive = $(R.id.tvTitle);
-        tvNegative = $(R.id.tvTitle);
+        tvContent = $(R.id.tvContent);
+        tvPositive = $(R.id.tvPositive);
+        tvNegative = $(R.id.tvNegative);
         tvPositive.setOnClickListener(this);
         tvNegative.setOnClickListener(this);
 
+        ivIcon.setImageResource(icon);
         tvTitle.setText(title);
         tvContent.setText(content);
+        L.d("title=="+title);
+        ivIcon.setVisibility(icon > 0 ? VISIBLE : GONE);
         tvTitle.setVisibility(TextUtils.isEmpty(title) ? GONE : VISIBLE);
         tvContent.setVisibility(TextUtils.isEmpty(content) ? GONE : VISIBLE);
 
@@ -103,14 +112,17 @@ public class PromptDialog extends BaseDialogFragment implements View.OnClickList
         dismiss();
     }
 
+    public PromptDialog setIcon(@DrawableRes int icon) {
+        this.icon = icon;
+        return this;
+    }
+
     public PromptDialog setTitle(String title) {
         this.title = title;
         return this;
     }
 
-    public PromptDialog setTitle(@StringRes int id)
-
-    {
+    public PromptDialog setTitle(@StringRes int id) {
         return setTitle(ContextUtil.getString(id));
     }
 

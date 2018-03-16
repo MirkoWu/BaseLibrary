@@ -4,7 +4,7 @@
     android:id="@+id/tvContent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/select_item_press"
+    android:background="@drawable/selector_item_press"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="10dp"

@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -53,6 +54,24 @@ public class ScreenUtil {
         DisplayMetrics outMetrics = new DisplayMetrics();// 创建了一张白纸
         windowManager.getDefaultDisplay().getMetrics(outMetrics);// 给白纸设置宽高
         return outMetrics.heightPixels;
+    }
+
+    /**
+     * 获取屏幕的真实高低 即包含底部虚拟导航栏
+     * @param context
+     * @return
+     */
+    public static int getScreenRealHeight(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            display.getRealMetrics(dm);
+        } else {
+            display.getMetrics(dm);
+        }
+        int realHeight = dm.heightPixels;
+        return realHeight;
     }
 
     /**

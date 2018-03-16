@@ -1,5 +1,6 @@
 package com.mirkowu.baselibrary.ui;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +15,8 @@ import com.mirkowu.baselibrary.network.RetrofitManager;
 import com.mirkowu.baselibrary.network.RxCallback;
 import com.softgarden.baselibrary.base.FragmentBasePagerAdapter;
 import com.softgarden.baselibrary.utils.DisplayUtil;
-import com.softgarden.baselibrary.utils.ToastUtil;
+import com.softgarden.baselibrary.utils.L;
+import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.widget.BaseToolbar;
 
 import butterknife.BindView;
@@ -31,12 +33,13 @@ public class TestToolbarActivity extends ToolbarActivity {
     protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
         return builder
                 // .setStatusBarColor(Color.GRAY)
-                .addLeftText("左菜单", v -> ToastUtil.s("左菜单"))
-                .addRightText("右菜单", v -> ToastUtil.s("右菜单"))
+                .addLeftText("语言切换", v ->changeLanguage(!BaseSPManager.isEnglish()))
+                .addRightText("日夜切换", v -> changeDayNightMode(!BaseSPManager.isNightMode()))
                 .addRightImage(R.mipmap.share, v -> startActivity(MainActivity.class))
-                .setSplitLine(Color.parseColor("#E4DFE1"), DisplayUtil.dip2px(this,3))
+                .setSplitLine(Color.parseColor("#E4DFE1"), DisplayUtil.dip2px(this, 3))
                 .setTitleTextColor(Color.BLACK)
-                .setTitle("标题标题");
+                .setTitle(R.string.app_name);
+
     }
 
     @Override
@@ -46,8 +49,14 @@ public class TestToolbarActivity extends ToolbarActivity {
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        L.d("onConfigurationChanged");
+    }
+
+    @Override
     protected void initialize() {
-       // getToolbar().getRightView(0).setBackgroundColor(Color.GRAY);
+        // getToolbar().getRightView(0).setBackgroundColor(Color.GRAY);
 
 
         String[] title = new String[]{"标题1", "标题2", "标题3", "标题4"};
@@ -55,13 +64,13 @@ public class TestToolbarActivity extends ToolbarActivity {
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(adapter.getCount());
         mTabLayout.setupWithViewPager(mViewPager);
-        loadData();
-        loadData2();
-        loadData();
-        loadData2();
-        loadData();
-        loadData2();
-        loadData();
+//        loadData();
+//        loadData2();
+//        loadData();
+//        loadData2();
+//        loadData();
+//        loadData2();
+//        loadData();
     }
 
     private void loadData() {
