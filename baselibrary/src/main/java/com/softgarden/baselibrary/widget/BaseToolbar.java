@@ -19,9 +19,7 @@ import android.widget.TextView;
 
 import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.utils.DisplayUtil;
-import com.softgarden.baselibrary.utils.StatusBarUtil;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 /**
@@ -80,15 +78,12 @@ public class BaseToolbar extends Toolbar {
      * @return 状态栏高度
      */
     public int getStatusBarHeight() {
-        try {
-            Class c = Class.forName("com.android.internal.R$dimen");
-            Object obj = c.newInstance();
-            Field field = c.getField("status_bar_height");
-            int x = Integer.parseInt(field.get(obj).toString());
-            return getResources().getDimensionPixelSize(x);
-        } catch (Exception e) {
-            return 0;
+        int result = 0; //获取状态栏高度的资源id
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
         }
+        return result;
     }
 
 
@@ -102,16 +97,12 @@ public class BaseToolbar extends Toolbar {
 
 
     /**
-     * 显示状态栏 (此功能需配合沉浸式API>=19才会生效)
+     * 显示状态栏颜色 (此功能需配合沉浸式API>=19才会生效)
      *
-     * @param colorId
+     * @param colorId 状态栏颜色
      */
     public void setStatusBarColor(@ColorInt int colorId) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {//android 19 4.4 以上才支持沉浸式
-            if (getContext() instanceof Activity) {//设置 沉浸式 flag
-                // ((Activity) getContext()).getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-                StatusBarUtil.transparencyBar((Activity) getContext());//去除部分机型的阴影效果
-            }
             mStatusBar.setVisibility(VISIBLE);
             mStatusBar.setBackgroundColor(colorId);
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mStatusBar.getLayoutParams();
