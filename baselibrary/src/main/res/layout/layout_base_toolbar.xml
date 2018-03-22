@@ -17,26 +17,40 @@
         android:layout_height="50dp"
         android:minHeight="?actionBarSize">
 
+        <FrameLayout
+            android:id="@+id/mLayoutCenter"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
         <LinearLayout
             android:id="@+id/mLayoutLeft"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_toLeftOf="@+id/mTitleTextView"
             android:gravity="left"
             android:orientation="horizontal"
             android:paddingLeft="10dp">
 
         </LinearLayout>
 
-        <!--   android:layout_toLeftOf="@id/mLayoutRight"
-           android:layout_toRightOf="@+id/mLayoutLeft"-->
+        <LinearLayout
+            android:id="@+id/mLayoutRight"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:paddingRight="10dp">
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/mTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-
             android:ellipsize="end"
             android:gravity="center"
             android:minWidth="50dp"
@@ -44,22 +58,10 @@
             android:textColor="#212121"
             android:textSize="18sp"
             android:textStyle="bold" />
-
-        <LinearLayout
-            android:id="@+id/mLayoutRight"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_toLeftOf="@+id/mTitleTextView"
-            android:gravity="right"
-            android:orientation="horizontal"
-            android:paddingRight="10dp">
-
-        </LinearLayout>
     </RelativeLayout>
 
     <View
-        android:id="@+id/mSplitLine"
+        android:id="@+id/mBottomDivider"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="#BBB"
