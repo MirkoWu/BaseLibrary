@@ -1,18 +1,23 @@
 package com.mirkowu.baselibrary.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.TextView;
 
 import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.base.ToolbarActivity;
-import com.mirkowu.baselibrary.utils.KeyBoardUtil;
-import com.softgarden.baselibrary.utils.DisplayUtil;
+import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.utils.BaseSPManager;
-import com.softgarden.baselibrary.widget.BaseToolbar;
+import com.softgarden.baselibrary.utils.DisplayUtil;
 
 public class MainActivity extends ToolbarActivity {
+    public static void start(Context context) {
+        Intent starter = new Intent(context, MainActivity.class);
+//        starter.putExtra();
+        context.startActivity(starter);
+    }
 
 
     @Override
@@ -34,18 +39,15 @@ public class MainActivity extends ToolbarActivity {
                     BaseSPManager.setNightMode(!BaseSPManager.isNightMode());
                     reload();
                 })
-                .addRightImage(R.mipmap.share, v -> startActivity(MainActivity.class))
-                .setSplitLine(Color.parseColor("#E4DFE1"), DisplayUtil.dip2px(this, 5))
+                .addRightImage(R.mipmap.share, v -> startActivity(TestToolbarActivity.class))
+                .setBottomDivider(Color.parseColor("#E4DFE1"), DisplayUtil.dip2px(this, 5))
                 .setTitleTextColor(Color.BLACK)
                 .setTitle(R.string.app_name);
     }
 
     @Override
     protected void initialize() {
-        TextView tv = findViewById(R.id.tvText);
-        tv.setText("+" + Math.random() * 10);
-        KeyBoardUtil keyboardPatch = new KeyBoardUtil(this, findViewById(R.id.edt));
-        keyboardPatch.register();
+
     }
 
 }

@@ -34,16 +34,15 @@ public class ParameterInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request oldRequest = chain.request();
         RequestBody requestBody = makeRequestBody(oldRequest);
-        HttpUrl httpUrl = oldRequest.url().newBuilder()
-            //    .addQueryParameter("uid", UserBean.getUser().uid)//添加uid
-            //    .addQueryParameter("token", UserBean.getUser().token)//添加token
-                .build();
+        HttpUrl httpUrl = oldRequest.url().newBuilder().build();
+
         Request newRequest = oldRequest.newBuilder()
                 .url(httpUrl)
-                .addHeader("Content-Type", "application/json")
-                .addHeader("Accept", " application/json")//添加header
+//                .addHeader("Content-Type", "application/json")
+//                .addHeader("Accept", " application/json")//添加header
                 .post(requestBody)
                 .build();
+
 
         Response response = chain.proceed(newRequest);
         //打印返回数据
@@ -67,6 +66,7 @@ public class ParameterInterceptor implements Interceptor {
     @NonNull
     private RequestBody makeRequestBody(Request oldRequest) {
         HttpUrl oldUrl = oldRequest.url();
+
         JSONObject data = new JSONObject();
         try {
             if (oldRequest.body() instanceof FormBody) {
@@ -98,14 +98,16 @@ public class ParameterInterceptor implements Interceptor {
 //                String value = oldUrl.queryParameterValue(i);
 //                data.put(name, value);
 //            }
+//            data.put("orgin", "0");
 
             /**
              * 统一加入参数
              */
-//            String userID = SP.getUserID();
-//            if (!TextUtils.isEmpty(userID)) {
-//                data.put("token", SP.getToken());
-//                data.put("user_id", userID);
+//            String userId = SPManager.getUserId();
+//            if (!TextUtils.isEmpty(userId)) {
+//                data.put("user_id", userId);
+//                data.put("token", SPManager.getToken());
+//
 //            }
 
         } catch (JSONException e) {
@@ -115,16 +117,20 @@ public class ParameterInterceptor implements Interceptor {
 
         /** * 添加Sign参数 */
         JSONObject postJson = new JSONObject();
-        try {
-            postJson.put("data", data);
-          //  postJson.put("apisign", MD5Util.ToMD5(Constants.MD5_KEY, data.toString()));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        FormBody.Builder newBodyBuilder = new FormBody.Builder();
+//        try {
+//            newBodyBuilder.add("data", data);
+//            newBodyBuilder.add("apisign", MD5Util.ToMD5(Constants.MD5_KEY, data.toString()));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+
         L.d("请求地址RequestUrl=====", oldUrl.url().toString());
         L.d("请求参数Params=========", data.toString());//打印请求log
         L.json(data.toString());
-        return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), postJson.toString());
+        //  L.d("请求地址RequestUrl=====", newBodyBuilder.build().toString());
+
+        return newBodyBuilder.build();
     }
 
     /**

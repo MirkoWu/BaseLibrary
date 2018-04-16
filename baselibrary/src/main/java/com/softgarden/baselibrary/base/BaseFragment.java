@@ -22,8 +22,15 @@ import static android.app.Activity.RESULT_OK;
 import static com.softgarden.baselibrary.base.BaseActivity.REQUEST_LOGIN;
 
 /**
+ * Fragment 基类  已实现以下功能
+ * <p>
+ * 1.显示/隐藏Loading弹框
+ * 2.ButterKnife 绑定数据
+ * 3.控制RxJava生命周期，防止内存泄漏
+ * 4.MVP模式
+ * 需要时 可重写createPresenter() {@link BaseActivity#createPresenter()}  并且使用泛型 <P extends BasePresenter> 为当前Presenter
  */
-public abstract class BaseFragment extends RxFragment implements IBaseDisplay {
+public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment implements IBaseDisplay {
 
     protected Unbinder unbinder;
 
@@ -56,6 +63,7 @@ public abstract class BaseFragment extends RxFragment implements IBaseDisplay {
         super.onAttach(context);
     }
 
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -68,22 +76,15 @@ public abstract class BaseFragment extends RxFragment implements IBaseDisplay {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initPresenter();
         initialize();
     }
+
 
     @Override
     public void changeDayNightMode(boolean isNightMode) {
         if (getActivity() instanceof BaseActivity)
             ((BaseActivity) getActivity()).changeDayNightMode(isNightMode);
-    }
-
-
-    public void startActivity(Class<? extends Activity> cls) {
-        this.startActivity(new Intent(getActivity(), cls));
-    }
-
-    public void startActivityForResult(Class<? extends Activity> cls, int request) {
-        this.startActivityForResult(new Intent(getActivity(), cls), request);
     }
 
     @Override
@@ -105,6 +106,12 @@ public abstract class BaseFragment extends RxFragment implements IBaseDisplay {
     }
 
     @Override
+    public void showReLoginDialog() {
+        if (getActivity() instanceof BaseActivity)
+            ((BaseActivity) getActivity()).showReLoginDialog();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_LOGIN) {
@@ -119,17 +126,51 @@ public abstract class BaseFragment extends RxFragment implements IBaseDisplay {
     }
 
 
+    public void startActivity(Class<? extends Activity> cls) {
+        this.startActivity(new Intent(getActivity(), cls));
+    }
+
+    public void startActivityForResult(Class<? extends Activity> cls, int request) {
+        this.startActivityForResult(new Intent(getActivity(), cls), request);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
     }
 
-    @Override
-    public void showReLoginDialog() {
-        if (getActivity() instanceof BaseActivity)
-            ((BaseActivity) getActivity()).showReLoginDialog();
+
+    /******************************************* MVP **********************************************/
+    private P mPresenter;
+
+
+    protected void initPresenter() {
+        mPresenter = createPresenter();
+        if (mPresenter != null) mPresenter.attachView(this);
     }
+
+    public P getPresenter() {
+        return mPresenter;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mPresenter != null) mPresenter.detachView();
+    }
+
+    /**
+     * 创建Presenter 此处已重写 需要时重写即可
+     *
+     * @return
+     */
+    public P createPresenter() {
+        return null;
+    }
+
+    /******************************************* MVP **********************************************/
+
 
     @LayoutRes
     protected abstract int getLayoutId();

@@ -1,33 +1,39 @@
 package com.mirkowu.baselibrary.base;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.mirkowu.baselibrary.R;
+import com.mirkowu.basetoolbar.BaseToolbar;
+import com.mirkowu.statusbarutil.StatusBarUtil;
 import com.softgarden.baselibrary.base.BaseActivity;
+import com.softgarden.baselibrary.base.IBasePresenter;
+import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.ContextUtil;
-import com.softgarden.baselibrary.widget.BaseToolbar;
 
 import butterknife.ButterKnife;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-public abstract class ToolbarActivity extends BaseActivity {
+
+public abstract class ToolbarActivity<T extends IBasePresenter> extends BaseActivity<T> {
     private BaseToolbar mBaseToolbar;
 
 
     @Override
     protected void initContentView() {
+
         /*** 这里可以对Toolbar进行统一的预设置 */
         BaseToolbar.Builder builder
                 = new BaseToolbar.Builder(getContext())
-                // .setStatusBarColor(Color.TRANSPARENT)//统一设置颜色
                 .setBackButton(R.mipmap.back)//统一设置返回键
+            //    .setStatusBarColor(ContextUtil.getColor(R.color.colorPrimary))//统一设置颜色
                 .setBackgroundColor(ContextUtil.getColor(R.color.colorPrimary))
-                //  .setTitleTextColor(ContextCompat.getColor(this, R.color.white))
-                ;
+                .setSubTextColor(Color.WHITE)
+                .setTitleTextColor(Color.WHITE);
 
         builder = setToolbar(builder);
         if (builder != null) {
@@ -48,10 +54,26 @@ public abstract class ToolbarActivity extends BaseActivity {
         } else {
             setContentView(getLayoutId());
         }
+
+        //设置沉浸式透明状态栏
+        //StatusBarUtil.setTransparent(this);
+        StatusBarUtil.setStatusBarColor(this, ContextUtil.getColor(R.color.colorPrimary));
+
         //ButterKnife
         unbinder = ButterKnife.bind(this);
+
+        //非夜间模式 要开启亮色模式
+        // setStatusBarLightMode();
     }
 
+    @Override
+    public void setStatusBarLightMode() {
+        if (!BaseSPManager.isNightMode()) {
+            if (StatusBarUtil.setStatusBarLightModeWithNoSupport(this, true)) {
+                getToolbar().hideStatusBar();
+            }
+        }
+    }
 
     public BaseToolbar getToolbar() {
         return mBaseToolbar;

@@ -6,9 +6,7 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseViewHolder;
 
 /**
- * @author by DELL
- * @date on 2017/11/30
- * @describe
+ * ViewHolder基类 封装
  */
 
 public class BaseRVHolder extends BaseViewHolder {
@@ -20,10 +18,19 @@ public class BaseRVHolder extends BaseViewHolder {
         return getView(id);
     }
 
+
+
     @Override
-    public BaseViewHolder setVisible(@IdRes int viewId, boolean visible) {
+    public BaseRVHolder setVisible(@IdRes int viewId, boolean visible) {
         View view = getView(viewId);
         view.setVisibility(visible ? View.VISIBLE : View.GONE);
         return this;
     }
+
+    public BaseRVHolder setSelected(@IdRes int viewId, boolean selected) {
+        View view = getView(viewId);
+        view.setSelected(selected);
+        return this;
+    }
+
 }

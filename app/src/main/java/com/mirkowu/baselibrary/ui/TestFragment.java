@@ -15,7 +15,7 @@ import com.softgarden.baselibrary.base.BaseLazyFragment;
  * @describe
  */
 
-public class TestFragment extends BaseLazyFragment{
+public class TestFragment extends BaseLazyFragment {
     @Override
     protected int getLayoutId() {
         return R.layout.activity_test_toolbar;
@@ -41,7 +41,7 @@ public class TestFragment extends BaseLazyFragment{
     private void loadData() {
         RetrofitClient.getLoginService()
                 .loginThridParty(1, "", "", "")
-                .compose(new NetworkTransformer(getActivity()))
+                .compose(new NetworkTransformer(this))
                 .subscribe(new RxCallback<BaseBean<String>>() {
                     @Override
                     public void onSuccess(@Nullable BaseBean<String> data) {
@@ -53,7 +53,7 @@ public class TestFragment extends BaseLazyFragment{
     private void loadData2() {
         RetrofitClient.getLoginService()
                 .loginPhone(1, "", "")
-                .compose(new NetworkTransformer(getActivity()))
+                .compose(new NetworkTransformer(this))
                 .subscribe(new RxCallback<BaseBean<String>>() {
                     @Override
                     public void onSuccess(@Nullable BaseBean<String> data) {

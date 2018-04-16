@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by MirkoWu on 2017/3/30 0030.
+ * 支持 单选 多选功能的Adapter
  */
 
 public abstract class SelectedAdapter<T> extends BaseRVAdapter<T> {

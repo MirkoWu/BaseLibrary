@@ -14,20 +14,20 @@ ext {
             compileSdkVersion            : 26,
 
             //Dependencies
-            supportLibraryVersion        : '26.1.0',
+            supportLibraryVersion        : '27.0.2',
             multidex                     : '1.0.2',
 
             //libraryVersion
             log                          : '1.15',
-            rxjava2                      : '2.0.7',
-            rxandroid                    : '2.0.1',
-            rxlifecycle2                 : '2.0.1',
-            SmartRefreshLayout           : '1.0.3',
+            rxjava2                      : '2.1.12',
+            rxandroid                    : '2.0.2',
+            rxlifecycle2                 : '2.2.1',
+            SmartRefreshLayout           : '1.0.5.1',
             BaseRecyclerViewAdapterHelper: '2.9.34',
             butterknife                  : '8.8.1',
-            retrofit2                    : '2.3.0',
-            okio                         : '1.13.0',
-            okhttp                       : '3.9.1',
+            retrofit2                    : '2.4.0',
+            okio                         : '1.14.0',
+            okhttp                       : '3.10.0',
             gson                         : '2.8.2',
             glide                        : '3.7.0',
 
@@ -75,11 +75,17 @@ ext {
             amap                         : 'com.amap.api:location:latest.integration',
             ShortcutBadger               : 'me.leolin:ShortcutBadger:1.1.19@aar',
             PickerView                   : 'com.contrarywind:Android-PickerView:3.2.5',
+            BaseToolbar                  : 'com.mirkowu:BaseToolbar:0.0.5',
+            StatusBarUtil                : 'com.mirkowu:StatusBarUtil:0.0.2',
     ]
 
     //keystore
     keystorePath = rootDir.toString() + '\\keystore.jks'
-    keystorePassword = properties.getProperty("keystorePassword")
-    alias = properties.getProperty("alias")
-    aliasPassword = properties.getProperty("aliasPassword")
+//    keystorePassword = properties.getProperty("keystorePassword")
+//    alias = properties.getProperty("alias")
+//    aliasPassword = properties.getProperty("aliasPassword")
+
+    keystorePassword = '123456'
+    alias = 'mirkowu'
+    aliasPassword = '123456'
 }

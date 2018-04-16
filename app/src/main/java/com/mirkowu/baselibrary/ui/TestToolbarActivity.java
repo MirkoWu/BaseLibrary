@@ -13,11 +13,12 @@ import com.mirkowu.baselibrary.network.BaseBean;
 import com.mirkowu.baselibrary.network.NetworkTransformer;
 import com.mirkowu.baselibrary.network.RetrofitClient;
 import com.mirkowu.baselibrary.network.RxCallback;
+import com.mirkowu.baselibrary.ui.testMvp.TestMvpActivity;
+import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.base.FragmentBasePagerAdapter;
+import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.DisplayUtil;
 import com.softgarden.baselibrary.utils.L;
-import com.softgarden.baselibrary.utils.BaseSPManager;
-import com.softgarden.baselibrary.widget.BaseToolbar;
 
 import butterknife.BindView;
 
@@ -33,11 +34,17 @@ public class TestToolbarActivity extends ToolbarActivity {
     protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
         return builder
                 // .setStatusBarColor(Color.GRAY)
-                .addLeftText("语言切换", v ->changeLanguage(!BaseSPManager.isEnglish()))
-                .addRightText("日夜切换", v -> changeDayNightMode(!BaseSPManager.isNightMode()))
-                .addRightImage(R.mipmap.share, v -> startActivity(MainActivity.class))
-                .setSplitLine(Color.parseColor("#E4DFE1"), DisplayUtil.dip2px(this, 3))
-                .setTitleTextColor(Color.BLACK)
+                .addLeftText("语言切换", v ->{
+                    changeLanguage(!BaseSPManager.isEnglish());
+                    reload();
+                })
+                .addRightText("日夜切换", v -> {
+                    changeDayNightMode(!BaseSPManager.isNightMode());
+                    reload();
+                })
+                .addRightImage(R.mipmap.share, v -> startActivity(TestMvpActivity.class))
+                .setBottomDivider(Color.parseColor("#E4DFE1"), DisplayUtil.dip2px(this, 3))
+                .setTitleTextColor(Color.WHITE)
                 .setTitle(R.string.app_name);
 
     }
@@ -65,12 +72,7 @@ public class TestToolbarActivity extends ToolbarActivity {
         mViewPager.setOffscreenPageLimit(adapter.getCount());
         mTabLayout.setupWithViewPager(mViewPager);
 //        loadData();
-//        loadData2();
-//        loadData();
-//        loadData2();
-//        loadData();
-//        loadData2();
-//        loadData();
+
     }
 
     private void loadData() {

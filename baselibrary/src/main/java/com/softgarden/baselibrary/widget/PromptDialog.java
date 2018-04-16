@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.base.BaseDialogFragment;
+import com.softgarden.baselibrary.base.IBasePresenter;
 import com.softgarden.baselibrary.utils.ContextUtil;
 import com.softgarden.baselibrary.utils.L;
 
@@ -30,7 +31,7 @@ import static android.view.View.VISIBLE;
  * @describe
  */
 
-public class PromptDialog extends BaseDialogFragment implements View.OnClickListener {
+public class PromptDialog extends BaseDialogFragment<IBasePresenter> implements View.OnClickListener {
 
     ImageView ivIcon;
     TextView tvTitle;

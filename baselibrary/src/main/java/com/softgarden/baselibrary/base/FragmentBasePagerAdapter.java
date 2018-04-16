@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by Administrator on 2015/12/5.
+ * FragmentStatePagerAdapter 基类 配合ViewPager使用 简单快捷
  */
 public class FragmentBasePagerAdapter extends FragmentStatePagerAdapter {
     private BaseFragment[] fragments;

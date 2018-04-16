@@ -46,6 +46,8 @@ dependencies {
     compile library.SmartRefreshLayout
     compile library.rxpermissions2
     compile library.logger
+    compile library.BaseToolbar
+    compile library.StatusBarUtil
 
     compile library.butterknife
     //annotationProcessor library.butterknife_compiler

@@ -19,6 +19,7 @@ import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.base.BaseDialogFragment;
 import com.softgarden.baselibrary.base.BaseRVAdapter;
 import com.softgarden.baselibrary.base.BaseRVHolder;
+import com.softgarden.baselibrary.base.IBasePresenter;
 import com.softgarden.baselibrary.utils.ContextUtil;
 
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  * Created by MirkoWu on 2017/3/29 0029.
  */
 
-public class BottomListDialog extends BaseDialogFragment {
+public class BottomListDialog extends BaseDialogFragment<IBasePresenter> {
 
     BaseRVAdapter<String> bottomListAdapter;
     boolean hideCancelBtn = false;//默认不显示

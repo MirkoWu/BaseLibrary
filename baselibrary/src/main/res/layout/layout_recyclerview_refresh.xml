@@ -4,7 +4,7 @@
     android:id="@+id/mRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:srlEnableLoadmore="false"
+    app:srlEnableLoadMore="false"
     app:srlEnableRefresh="false">
 
     <android.support.v7.widget.RecyclerView

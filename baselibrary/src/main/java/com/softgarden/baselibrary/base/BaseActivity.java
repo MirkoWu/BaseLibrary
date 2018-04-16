@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
 
+import com.mirkowu.statusbarutil.StatusBarUtil;
 import com.softgarden.baselibrary.BuildConfig;
 import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.utils.BaseSPManager;
@@ -29,12 +30,19 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 /**
- * @author by DELL
- * @date on 2017/12/2
- * @describe
+ * Activity 基类  已实现以下功能
+ * <p>
+ * 1.切换语言
+ * 2.切换日夜模式
+ * 3.检测横竖屏
+ * 4.显示/隐藏Loading弹框
+ * 5.ButterKnife 绑定数据
+ * 6.控制RxJava生命周期，防止内存泄漏
+ * 7.MVP模式
+ * 需要时 可重写createPresenter() {@link BaseActivity#createPresenter()}  并且使用泛型 <P extends BasePresenter> 为当前Presenter
  */
 
-public abstract class BaseActivity extends RxAppCompatActivity implements IBaseDisplay {
+public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompatActivity implements IBaseDisplay {
     public final String TAG = getClass().getSimpleName();
 
     /*** 通用的 用于传递数据的Key  */
@@ -55,7 +63,6 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseD
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        L.d("onCreate  Activity");
         //语言切换 要在setContentView()前
         isEnglish = BaseSPManager.isEnglish();
         changeLanguage(isEnglish);
@@ -64,6 +71,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseD
         changeDayNightMode(isNightMode);
 
         initContentView();
+        initPresenter();
         initialize();
 
         //显示当前的Activity路径
@@ -74,6 +82,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseD
         setContentView(getLayoutId());
         unbinder = ButterKnife.bind(this);//ButterKnife
     }
+
 
     @Override
     protected void onResume() {
@@ -141,6 +150,7 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseD
         //这是第二种方式
 //        UiModeManager uiModeManager= (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
 //        uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
+
     }
 
     /**
@@ -212,6 +222,26 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseD
         return mOrientationPortrait;
     }
 
+    /**
+     * 设置为亮色模式 状态栏 颜色变黑
+     */
+    public void setStatusBarLightMode() {
+        if (!BaseSPManager.isNightMode()) {
+            StatusBarUtil.setStatusBarLightModeWithNoSupport(this, true);
+        }
+    }
+
+    /**
+     * 回复状态栏颜色状态
+     */
+    public void setStatusBarDarkMode() {
+        if (!BaseSPManager.isNightMode()) {
+            if (StatusBarUtil.setStatusBarDarkMode(this) == 0) {//不支持 亮色 模式
+//                //恢复过来时的 处理
+//                StatusBarUtil.setTransparent(this);
+            }
+        }
+    }
 
     public BaseActivity getActivity() {
         return this;
@@ -276,7 +306,35 @@ public abstract class BaseActivity extends RxAppCompatActivity implements IBaseD
     protected void onDestroy() {
         super.onDestroy();
         unbinder.unbind();
+        if (mPresenter != null) mPresenter.detachView();
+
     }
+
+
+    /******************************************* MVP **********************************************/
+    private P mPresenter;
+
+
+    protected void initPresenter() {
+        mPresenter = createPresenter();
+        if (mPresenter != null) mPresenter.attachView(this);
+    }
+
+    public P getPresenter() {
+        return mPresenter;
+    }
+
+
+    /**
+     * 创建Presenter 此处已重写 需要时重写即可
+     *
+     * @return
+     */
+    public P createPresenter() {
+        return null;
+    }
+
+    /******************************************* MVP **********************************************/
 
     @LayoutRes
     protected abstract int getLayoutId();

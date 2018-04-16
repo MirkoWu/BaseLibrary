@@ -1,35 +1,29 @@
 package com.mirkowu.baselibrary.network;
 
 
-import android.app.Activity;
-
-import com.softgarden.baselibrary.base.BaseActivity;
 import com.mirkowu.baselibrary.utils.NetworkUtil;
+import com.softgarden.baselibrary.base.IBaseDisplay;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.exceptions.Exceptions;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
 /**
- * Created by Lightwave on 2016/6/28.
+ * RxJava2 转换器 用于网络加载数据 已实现功能有：
+ * <p>
+ * 1.检测有无网络
+ * 2.加载网络时显示加载框 结束是隐藏
+ * 3.控制RxJava生命周期，防止内存泄漏
  */
 public class NetworkTransformer<T> implements ObservableTransformer<BaseBean<T>, T> {
-    private BaseActivity activity;
+    private IBaseDisplay mView;
 
-    public NetworkTransformer(Activity activity) {
-        if (activity instanceof BaseActivity)
-            this.activity = (BaseActivity) activity;
-        else {
-            throw Exceptions.propagate(new RuntimeException("activity is not instanceof BaseActivity"));
-        }
+    public NetworkTransformer(IBaseDisplay mView) {
+        if (mView == null) throw new RuntimeException("IBaseDisplay is not NULL");
+        this.mView = mView;
     }
 
     @Override
@@ -37,43 +31,31 @@ public class NetworkTransformer<T> implements ObservableTransformer<BaseBean<T>,
         return upstream
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        if (!NetworkUtil.isConnected(activity)) {
-                            disposable.dispose();
-                            NetworkUtil.showNoNetWorkDialog(activity);
-                        } else {
-                            activity.showProgressDialog();
-                        }
+                .doOnSubscribe(disposable -> {
+                    if (!NetworkUtil.isConnected(mView.getContext())) {
+                        disposable.dispose();
+                        NetworkUtil.showNoNetWorkDialog(mView.getContext());
+                    } else {
+                        mView.showProgressDialog();
                     }
                 })
-                .doFinally(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        activity.hideProgressDialog();
+                .doFinally(() -> mView.hideProgressDialog())
+                .map(baseBean -> {
+                    if (baseBean.code == 1) {
+                        return baseBean;
+                    } else {
+//                        if (baseBean.code == -1) {
+//                            mView.showReLoginDialog();
+//                        }
+                        throw new ApiException(baseBean.code, baseBean.msg);
                     }
                 })
-                .map(new Function<BaseBean<T>, BaseBean<T>>() {
-                    @Override
-                    public BaseBean<T> apply(BaseBean<T> baseBean) throws Exception {
-                        if (baseBean.status == 1) {
-                            return baseBean;
-                        } else {
-                            if (baseBean.status == -1) {
-                                activity.showReLoginDialog();
-                            }
-                            throw Exceptions.propagate(new ApiException(baseBean.status, baseBean.info));
-                        }
-                    }
+                .map(tBaseBean -> {
+                    if (tBaseBean.data != null) return tBaseBean.data;
+                    //返回空数据时 抛出一个异常让CallBack处理
+                    throw new RxJava2NullException();
                 })
-                .map(new Function<BaseBean<T>, T>() {
-                    @Override
-                    public T apply(BaseBean<T> baseBean) throws Exception {
-                        return baseBean.data;
-                    }
-                })
-                .compose(activity.<T>bindToLifecycle());
+                .compose(mView.bindToLifecycle());
 
     }
 

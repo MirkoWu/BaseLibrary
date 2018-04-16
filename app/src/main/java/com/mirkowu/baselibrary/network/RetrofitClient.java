@@ -1,6 +1,8 @@
 package com.mirkowu.baselibrary.network;
 
 
+import com.mirkowu.baselibrary.network.api.HostUrl;
+import com.mirkowu.baselibrary.network.api.LoginService;
 import com.softgarden.baselibrary.utils.L;
 
 import java.util.concurrent.TimeUnit;
@@ -12,11 +14,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by Administrator on 2016/11/12 0012.
+ * Retrofit 获取单列
  */
 
 public class RetrofitClient {
-    public static final String HOST_URL = "";
 
     public volatile static Retrofit retrofit = null;
 
@@ -55,7 +56,7 @@ public class RetrofitClient {
 
 
     public static Retrofit getRetrofit() {
-        return new Retrofit.Builder().baseUrl(HOST_URL)
+        return new Retrofit.Builder().baseUrl(HostUrl.HOST_URL)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(getOkHttpClient())
@@ -65,6 +66,10 @@ public class RetrofitClient {
 
     public static <T> T getAPIService(Class<T> service) {
         return getInstance().create(service);
+    }
+
+    public static LoginService getLoginService() {
+        return getAPIService(LoginService.class);
     }
 
 

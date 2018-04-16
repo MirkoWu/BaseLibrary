@@ -64,4 +64,5 @@ dependencies {
     compile library.retrofit2_adapter
     implementation library.glide
     implementation library.glide_okhttp3
+
 }

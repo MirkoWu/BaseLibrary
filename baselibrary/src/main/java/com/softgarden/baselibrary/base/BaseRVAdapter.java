@@ -5,9 +5,7 @@ import android.widget.CompoundButton;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 
 /**
- * @author by DELL
- * @date on 2017/11/30
- * @describe
+ * RecyclerView Adapter的基类
  */
 
 public abstract class BaseRVAdapter<T> extends BaseQuickAdapter<T, BaseRVHolder> {
@@ -23,7 +21,7 @@ public abstract class BaseRVAdapter<T> extends BaseQuickAdapter<T, BaseRVHolder>
 
     @Override
     protected void convert(BaseRVHolder helper, T item) {
-        onBindVH(helper, item, helper.getLayoutPosition()- getHeaderLayoutCount());
+        onBindVH(helper, item, helper.getLayoutPosition() - getHeaderLayoutCount());
     }
 
     public abstract void onBindVH(final BaseRVHolder holder, T data, int position);
