@@ -10,59 +10,62 @@ import com.orhanobut.logger.Logger;
 
 public class L {
 
+    public static boolean isDebug = true;//是否Debug 控制打印
+
     /**
      * Logger 工具打印
      */
     public static void d(String msg) {
-        Logger.d(msg);
+        if (isDebug) Logger.d(msg);
     }
 
     public static void i(String msg) {
-        Logger.i(msg);
+        if (isDebug) Logger.i(msg);
     }
 
     public static void v(String msg) {
-        Logger.v(msg);
+        if (isDebug) Logger.v(msg);
     }
 
     public static void w(String msg) {
-        Logger.w(msg);
+        if (isDebug) Logger.w(msg);
     }
 
     public static void e(String msg) {
-        Logger.e(msg);
+        if (isDebug) Logger.e(msg);
     }
 
     public static void json(String json) {
-        Logger.json(json);
+        if (isDebug) Logger.json(json);
     }
 
     public static void xml(String xml) {
-        Logger.xml(xml);
+        if (isDebug) Logger.xml(xml);
     }
+
 
     /**
      * 以下是系统自带的
      * 打印简单的log
      */
     public static void e(String tag, String msg) {
-        Log.e(tag, msg);
+        if (isDebug) Log.e(tag, msg);
     }
 
     public static void w(String tag, String msg) {
-        Log.w(tag, msg);
+        if (isDebug) Log.w(tag, msg);
     }
 
     public static void d(String tag, String msg) {
-        Log.d(tag, msg);
+        if (isDebug) Log.d(tag, msg);
     }
 
     public static void i(String tag, String msg) {
-        Log.i(tag, msg);
+        if (isDebug) Log.i(tag, msg);
     }
 
     public static void v(String tag, String msg) {
-        Log.v(tag, msg);
+        if (isDebug) Log.v(tag, msg);
     }
 
 

@@ -2,9 +2,17 @@ package com.softgarden.baselibrary.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
+import android.util.Base64;
 
 import com.softgarden.baselibrary.BaseApplication;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Map;
 
 /**
@@ -30,6 +38,62 @@ public class SPUtil {
 
     }
 
+
+    /**
+     * 保存序列化对象到本地
+     *
+     * @param key
+     * @param object
+     */
+    public static void putSerializableObject(String key, Object object) {
+        if (!(object instanceof Serializable)) {
+            throw new RuntimeException("SharedPreferences save bean need implements Serializable");
+        }
+        try {
+            //先将序列化结果写到byte缓存中，其实就分配一个内存空间
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream os = new ObjectOutputStream(bos);
+            os.writeObject(object);//将对象序列化写入byte缓存
+            //将序列化的数据转为16进制保存
+            String base64Str = Base64.encodeToString(bos.toByteArray(), Base64.NO_PADDING);
+            //保存该16进制数组
+            put(key, base64Str);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 从本地反序列化获取对象
+     *
+     * @param key
+     * @return
+     */
+    public static <T extends Serializable> T getSerializableObject(String key) {
+        if (getSP().contains(key)) {
+            String string = (String) get(key, "");
+
+            if (TextUtils.isEmpty(string)) {
+                return null;
+            } else {
+                try {
+                    //将16进制的数据转为数组，准备反序列化
+                    byte[] stringToBytes = Base64.decode(string, Base64.NO_PADDING);
+                    ByteArrayInputStream bis = new ByteArrayInputStream(stringToBytes);
+                    ObjectInputStream is = new ObjectInputStream(bis);
+                    //返回反序列化得到的对象
+                    Object readObject = is.readObject();
+                    return (T) readObject;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * 保存数据的方法，我们需要拿到保存数据的具体类型，然后根据类型调用不同的保存方法
      *
@@ -37,10 +101,11 @@ public class SPUtil {
      * @param object
      */
     public static void put(String key, Object object) {
-        SharedPreferences sp = getSP();
-        SharedPreferences.Editor editor = sp.edit();
+        SharedPreferences.Editor editor = getSP().edit();
 
-        if (object instanceof String) {
+        if (object == null) {
+            editor.putString(key, null);
+        } else if (object instanceof String) {
             editor.putString(key, (String) object);
         } else if (object instanceof Integer) {
             editor.putInt(key, (Integer) object);
