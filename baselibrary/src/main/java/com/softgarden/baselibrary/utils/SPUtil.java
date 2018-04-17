@@ -46,6 +46,10 @@ public class SPUtil {
      * @param object
      */
     public static void putSerializableObject(String key, Object object) {
+        if (object == null) {
+            put(key, null);
+            return;
+        }
         if (!(object instanceof Serializable)) {
             throw new RuntimeException("SharedPreferences save bean need implements Serializable");
         }
