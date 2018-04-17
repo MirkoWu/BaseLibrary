@@ -8,19 +8,12 @@ package com.mirkowu.baselibrary.network.api;
 
 public interface HostUrl {
     /**
-     * app接口调试
-     * http://47.52.5.170:9002/zhuawawaApp/
-     * 文件上传地址
-     * http://47.52.5.170:9002/zhuawawaFile/
-     * 后台管理地址
-     * http://47.52.5.170:9002/zhuawawa/
-     * 文件访问地址
-     * http://47.52.5.170:9001/zhuawawaMedia/
+     * app接口Host
      */
-    String HOST_URL = "http://47.52.5.170:9002/zhuawawaApp/";
+    String HOST_URL = "http://guocaitest.test2.ruanjiekeji.com/";
 
     /*** 登录模块 */
-    String LOGIN_APP_LOGIN = "login/appLogin";//登录接口
+    String LOGIN_APP_LOGIN = "App/Main/index";//登录接口
 
 
 }

@@ -2,7 +2,7 @@ package com.mirkowu.baselibrary.network;
 
 
 import com.mirkowu.baselibrary.network.api.HostUrl;
-import com.mirkowu.baselibrary.network.api.LoginService;
+import com.mirkowu.baselibrary.network.api.TestService;
 import com.softgarden.baselibrary.utils.L;
 
 import java.util.concurrent.TimeUnit;
@@ -68,8 +68,8 @@ public class RetrofitClient {
         return getInstance().create(service);
     }
 
-    public static LoginService getLoginService() {
-        return getAPIService(LoginService.class);
+    public static TestService getTestService() {
+        return getAPIService(TestService.class);
     }
 
 

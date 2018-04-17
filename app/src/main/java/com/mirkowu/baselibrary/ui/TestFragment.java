@@ -3,7 +3,7 @@ package com.mirkowu.baselibrary.ui;
 import android.support.annotation.Nullable;
 
 import com.mirkowu.baselibrary.R;
-import com.mirkowu.baselibrary.network.BaseBean;
+import com.mirkowu.baselibrary.bean.TestBean;
 import com.mirkowu.baselibrary.network.NetworkTransformer;
 import com.mirkowu.baselibrary.network.RetrofitClient;
 import com.mirkowu.baselibrary.network.RxCallback;
@@ -39,27 +39,16 @@ public class TestFragment extends BaseLazyFragment {
     }
 
     private void loadData() {
-        RetrofitClient.getLoginService()
-                .loginThridParty(1, "", "", "")
-                .compose(new NetworkTransformer(this))
-                .subscribe(new RxCallback<BaseBean<String>>() {
+        RetrofitClient.getTestService()
+                .getData(1)
+                .compose(new NetworkTransformer<>(this))
+                .subscribe(new RxCallback<TestBean>() {
                     @Override
-                    public void onSuccess(@Nullable BaseBean<String> data) {
+                    public void onSuccess(@Nullable TestBean data) {
 
                     }
                 });
     }
 
-    private void loadData2() {
-        RetrofitClient.getLoginService()
-                .loginPhone(1, "", "")
-                .compose(new NetworkTransformer(this))
-                .subscribe(new RxCallback<BaseBean<String>>() {
-                    @Override
-                    public void onSuccess(@Nullable BaseBean<String> data) {
-
-                    }
-                });
-    }
 
 }

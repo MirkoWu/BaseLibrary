@@ -9,7 +9,8 @@ import android.support.v4.view.ViewPager;
 
 import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.base.ToolbarActivity;
-import com.mirkowu.baselibrary.network.BaseBean;
+import com.mirkowu.baselibrary.bean.TestBean;
+import com.mirkowu.baselibrary.bean.UserBean;
 import com.mirkowu.baselibrary.network.NetworkTransformer;
 import com.mirkowu.baselibrary.network.RetrofitClient;
 import com.mirkowu.baselibrary.network.RxCallback;
@@ -19,6 +20,7 @@ import com.softgarden.baselibrary.base.FragmentBasePagerAdapter;
 import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.DisplayUtil;
 import com.softgarden.baselibrary.utils.L;
+import com.softgarden.baselibrary.utils.SPUtil;
 
 import butterknife.BindView;
 
@@ -34,7 +36,7 @@ public class TestToolbarActivity extends ToolbarActivity {
     protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
         return builder
                 // .setStatusBarColor(Color.GRAY)
-                .addLeftText("语言切换", v ->{
+                .addLeftText("语言切换", v -> {
                     changeLanguage(!BaseSPManager.isEnglish());
                     reload();
                 })
@@ -71,29 +73,27 @@ public class TestToolbarActivity extends ToolbarActivity {
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(adapter.getCount());
         mTabLayout.setupWithViewPager(mViewPager);
-//        loadData();
+        loadData();
+
+
+        UserBean userBean = new UserBean("1", "testName", 18, true);
+        String key = "UseBean";
+        SPUtil.putSerializableObject(key, userBean);
+        UserBean userBean1 = SPUtil.getSerializableObject(key);
+        L.d(userBean1.getName());
+        L.d(userBean1.isCheck() + "");
+        L.d(userBean1.toString());
+
 
     }
 
     private void loadData() {
-        RetrofitClient.getLoginService()
-                .loginThridParty(1, "", "", "")
-                .compose(new NetworkTransformer(this))
-                .subscribe(new RxCallback<BaseBean<String>>() {
+        RetrofitClient.getTestService()
+                .getData(1)
+                .compose(new NetworkTransformer<>(this))
+                .subscribe(new RxCallback<TestBean>() {
                     @Override
-                    public void onSuccess(@Nullable BaseBean<String> data) {
-
-                    }
-                });
-    }
-
-    private void loadData2() {
-        RetrofitClient.getLoginService()
-                .loginPhone(1, "", "")
-                .compose(new NetworkTransformer(this))
-                .subscribe(new RxCallback<BaseBean<String>>() {
-                    @Override
-                    public void onSuccess(@Nullable BaseBean<String> data) {
+                    public void onSuccess(@Nullable TestBean data) {
 
                     }
                 });

@@ -3,8 +3,10 @@ package com.mirkowu.baselibrary.network;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.mirkowu.baselibrary.app.Constants;
 import com.softgarden.baselibrary.BuildConfig;
 import com.softgarden.baselibrary.utils.L;
+import com.softgarden.baselibrary.utils.MD5Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,8 +40,8 @@ public class ParameterInterceptor implements Interceptor {
 
         Request newRequest = oldRequest.newBuilder()
                 .url(httpUrl)
-//                .addHeader("Content-Type", "application/json")
-//                .addHeader("Accept", " application/json")//添加header
+//              .addHeader("Content-Type", "application/json")
+//              .addHeader("Accept", " application/json")//添加header
                 .post(requestBody)
                 .build();
 
@@ -115,21 +117,14 @@ public class ParameterInterceptor implements Interceptor {
         }
 
 
-        /** * 添加Sign参数 */
-        JSONObject postJson = new JSONObject();
-        FormBody.Builder newBodyBuilder = new FormBody.Builder();
-//        try {
-//            newBodyBuilder.add("data", data);
-//            newBodyBuilder.add("apisign", MD5Util.ToMD5(Constants.MD5_KEY, data.toString()));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
 
+        /** * 添加Sign参数 */
+        FormBody.Builder newBodyBuilder = new FormBody.Builder();
+        newBodyBuilder.add("data", data.toString());
+        newBodyBuilder.add("apisign", MD5Util.ToMD5(Constants.MD5_KEY, data.toString()));
         L.d("请求地址RequestUrl=====", oldUrl.url().toString());
         L.d("请求参数Params=========", data.toString());//打印请求log
         L.json(data.toString());
-        //  L.d("请求地址RequestUrl=====", newBodyBuilder.build().toString());
-
         return newBodyBuilder.build();
     }
 
