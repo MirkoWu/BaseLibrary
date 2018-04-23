@@ -1,6 +1,7 @@
 package com.mirkowu.baselibrary.network;
 
 import com.google.gson.JsonParseException;
+import com.softgarden.baselibrary.base.IBaseDisplay;
 import com.softgarden.baselibrary.utils.ToastUtil;
 
 import java.net.ConnectException;
@@ -17,10 +18,15 @@ import io.reactivex.disposables.Disposable;
  */
 
 public abstract class RxCallback<T> implements Callback<T> {
+    private IBaseDisplay mView;
 
-//    public RxCallback() {
-//
-//    }
+    public RxCallback() {
+
+    }
+
+    public RxCallback(IBaseDisplay mView) {
+
+    }
 
 
     @Override
@@ -37,21 +43,26 @@ public abstract class RxCallback<T> implements Callback<T> {
     @Override
     public void onError(Throwable e) {
         if (e instanceof ConnectException) {
-           // ToastUtil.s(R.string.network_connection_failed);
+            // ToastUtil.s(R.string.network_connection_failed);
         } else if (e instanceof UnknownHostException) {
-           // ToastUtil.s(R.string.network_request_failed);
+            // ToastUtil.s(R.string.network_request_failed);
         } else if (e instanceof SocketTimeoutException) {
             //ToastUtil.s(R.string.network_connection_timeout);
         } else if (e instanceof JsonParseException) {
             //ToastUtil.s(R.string.json_failed);
-           // e.printStackTrace();
+            // e.printStackTrace();
         } else if (e instanceof RxJava2NullException) {//RxJava2不能发送null
             onSuccess(null);
         } else if (e instanceof ApiException) {
+           // mView.showError(e);//有需要的话可以 发送给View层处理异常
+
+            //通用的Api异常处理
             ApiException apiException = (ApiException) e;
             if (apiException.getStatus() == -1) {//token过期 这里不用管前面已处理
 
             } else {
+                // mView.showError(e);//有需要的话可以 发送给View层处理异常
+
                 ToastUtil.s(e.getMessage());
                 e.printStackTrace();
             }
