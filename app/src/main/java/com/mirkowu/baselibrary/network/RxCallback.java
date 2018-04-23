@@ -53,6 +53,7 @@ public abstract class RxCallback<T> implements Callback<T> {
 
             } else {
                 ToastUtil.s(e.getMessage());
+                e.printStackTrace();
             }
         } else {
             ToastUtil.s(e.getMessage());

@@ -10,12 +10,12 @@ public class BaseBean<T> {
      * 0  获取失败
      * 1  获取成功
      */
-    public int code;
+    public int status;
 
     /**
      * 错误信息 ,成功则返回空
      */
-    public String msg;
+    public String info;
     /**
      * 时间
      */
@@ -30,8 +30,8 @@ public class BaseBean<T> {
     @Override
     public String toString() {
         return "BaseBean{" +
-                "code=" + code +
-                ", msg='" + msg + '\'' +
+                "code=" + status +
+                ", msg='" + info + '\'' +
                 ", time=" + time +
                 ", data=" + data +
                 '}';

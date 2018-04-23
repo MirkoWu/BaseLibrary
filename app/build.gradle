@@ -55,13 +55,13 @@ dependencies {
     debugImplementation project(':baselibrary')
 
     annotationProcessor library.butterknife_compiler
-    compile library.okio
-    compile library.okhttp
-    compile library.okhttp_logging
-    compile library.gson
-    compile library.retrofit2
-    compile library.retrofit2_gson
-    compile library.retrofit2_adapter
+    implementation library.okio
+    implementation library.okhttp
+    implementation library.okhttp_logging
+    implementation library.gson
+    implementation library.retrofit2
+    implementation library.retrofit2_gson
+    implementation library.retrofit2_adapter
     implementation library.glide
     implementation library.glide_okhttp3
 

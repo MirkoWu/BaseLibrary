@@ -41,13 +41,13 @@ public class NetworkTransformer<T> implements ObservableTransformer<BaseBean<T>,
                 })
                 .doFinally(() -> mView.hideProgressDialog())
                 .map(baseBean -> {
-                    if (baseBean.code == 1) {
+                    if (baseBean.status == 1) {
                         return baseBean;
                     } else {
 //                        if (baseBean.code == -1) {
 //                            mView.showReLoginDialog();
 //                        }
-                        throw new ApiException(baseBean.code, baseBean.msg);
+                        throw new ApiException(baseBean.status, baseBean.info);
                     }
                 })
                 .map(tBaseBean -> {

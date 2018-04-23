@@ -32,23 +32,21 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
-    compile library.supportV4
-    compile library.supportV7
-    compile library.design
-    compile library.cardview
-    compile library.recyclerview
-    compile library.constraint
-    compile library.rxjava2
-    compile library.rxlifecycle2
-    compile library.rxlifecycle2_android
-    compile library.rxlifecycle2_components
-    compile library.BaseRecyclerViewAdapterHelper
-    compile library.SmartRefreshLayout
-    compile library.rxpermissions2
-    compile library.logger
-    compile library.BaseToolbar
-    compile library.StatusBarUtil
+    api library.supportV4
+    api library.supportV7
+    api library.design
+    api library.cardview
+    api library.recyclerview
+    api library.constraint
+    api library.rxjava2
+    api library.rxlifecycle2_components
+    api library.BaseRecyclerViewAdapterHelper
+    api library.SmartRefreshLayout
+    api library.rxpermissions2
+    api library.logger
+    api library.BaseToolbar
+    api library.StatusBarUtil
 
-    compile library.butterknife
+    api library.butterknife
     //annotationProcessor library.butterknife_compiler
 }

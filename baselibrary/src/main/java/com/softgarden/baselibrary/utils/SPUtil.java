@@ -58,7 +58,7 @@ public class SPUtil {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream os = new ObjectOutputStream(bos);
             os.writeObject(object);//将对象序列化写入byte缓存
-            //将序列化的数据转为16进制保存
+            //将序列化的数据用Base64加密
             String base64Str = Base64.encodeToString(bos.toByteArray(), Base64.NO_PADDING);
             //保存该16进制数组
             put(key, base64Str);
@@ -81,7 +81,7 @@ public class SPUtil {
                 return null;
             } else {
                 try {
-                    //将16进制的数据转为数组，准备反序列化
+                    //Base64解密转为数组，准备反序列化
                     byte[] stringToBytes = Base64.decode(string, Base64.NO_PADDING);
                     ByteArrayInputStream bis = new ByteArrayInputStream(stringToBytes);
                     ObjectInputStream is = new ObjectInputStream(bis);
