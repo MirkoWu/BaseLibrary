@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.base.ToolbarActivity;
 import com.mirkowu.basetoolbar.BaseToolbar;
+import com.softgarden.baselibrary.utils.ActivityManager;
 import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.DisplayUtil;
 
@@ -31,9 +32,10 @@ public class MainActivity extends ToolbarActivity {
     protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
         return builder
                 // .setStatusBarColor(Color.GRAY)
-                .addLeftText("语言切换", v -> {
-                    BaseSPManager.setEnglish(!BaseSPManager.isEnglish());
-                    reload();
+                .addLeftText("结束", v -> {
+                    ActivityManager.getInstance().finish(TestToolbarActivity.class);
+//                    BaseSPManager.setEnglish(!BaseSPManager.isEnglish());
+//                    reload();
                 })
                 .addRightText("日夜切换", v -> {
                     BaseSPManager.setNightMode(!BaseSPManager.isNightMode());
