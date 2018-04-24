@@ -5,21 +5,22 @@
     android:background="@drawable/shape_loading_bg"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="15dp">
+    android:padding="12dp">
 
     <ProgressBar
         android:id="@+id/mProgressBar"
         style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:indeterminateDrawable="@drawable/shape_progressbar" />
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/mLoadingTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="6dp"
         android:text="@string/dialog_loading"
         android:textColor="#FFFFFF"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:visibility="gone" />
 </LinearLayout>
