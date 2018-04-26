@@ -2,9 +2,7 @@ package com.softgarden.baselibrary;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.ComponentCallbacks;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;

@@ -41,6 +41,7 @@ public abstract class RefreshActivity extends ToolbarActivity implements BaseQui
         if (mRefreshLayout != null) {
             mRefreshLayout.setEnableRefresh(true);
             mRefreshLayout.setEnableLoadMore(false);
+            mRefreshLayout.setEnableLoadMore(false);
             mRefreshLayout.setEnableAutoLoadMore(false);
             mRefreshLayout.setDisableContentWhenLoading(true);
             mRefreshLayout.setDisableContentWhenRefresh(true);
@@ -97,10 +98,10 @@ public abstract class RefreshActivity extends ToolbarActivity implements BaseQui
             mRefreshLayout.setEnableRefresh(enableRefresh);
     }
 
-    public void setEnableLoadMore(boolean enableLoadmore) {
-        if (mRefreshLayout != null)
-            mRefreshLayout.setEnableLoadMore(enableLoadmore);
-    }
+//    public void setEnableLoadMore(boolean enableLoadmore) {
+//        if (mRefreshLayout != null)
+//            mRefreshLayout.setEnableLoadMore(enableLoadmore);
+//    }
 
     /**
      * 结束刷新
@@ -120,7 +121,7 @@ public abstract class RefreshActivity extends ToolbarActivity implements BaseQui
         if (list == null || list.size() < PAGE_COUNT) {
             adapter.loadMoreEnd();
         } else {
-            setEnableLoadMore(true);
+            adapter.setEnableLoadMore(true);
             adapter.setOnLoadMoreListener(this, recyclerView);
             adapter.loadMoreComplete();
         }
