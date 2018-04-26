@@ -20,8 +20,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@android:drawable/toast_frame"
-    android:orientation="vertical">
+    android:background="@drawable/shape_toast_bg"
+    android:orientation="vertical"
+    android:paddingBottom="6dp"
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:paddingTop="6dp">
 
     <TextView
         android:id="@+id/message"
