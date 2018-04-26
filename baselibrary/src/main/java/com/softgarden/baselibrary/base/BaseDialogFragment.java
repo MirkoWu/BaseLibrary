@@ -78,6 +78,13 @@ public abstract class BaseDialogFragment<P extends IBasePresenter> extends RxApp
     }
 
     @Override
+    public synchronized void showProgressDialog(CharSequence message) {
+        if (getActivity() instanceof BaseActivity)
+            ((BaseActivity) getActivity()).showProgressDialog(message);
+    }
+
+
+    @Override
     public synchronized void hideProgressDialog() {
         if (getActivity() instanceof BaseActivity)
             ((BaseActivity) getActivity()).hideProgressDialog();

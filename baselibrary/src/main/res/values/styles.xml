@@ -4,6 +4,24 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
+    <style name="CustomDialog"  parent="android:Theme.Dialog">
+        <!-- 背景颜色及透明程度 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 是否半透明 -->
+        <item name="android:windowIsTranslucent">false</item>
+        <!-- 是否没有标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否背景模糊 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 设置背景模糊的透明度-->
+        <item name="android:backgroundDimAmount">0.2</item>
+        <!--<item name="windowFullscreen">true</item>-->
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
     <!--diaog底部弹出 退出-->
     <style name="dialogAnim" mce_bogus="1" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/dialog_push_in</item>

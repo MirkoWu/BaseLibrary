@@ -33,8 +33,8 @@ public class NetworkTransformer<T> implements ObservableTransformer<BaseBean<T>,
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(disposable -> {
                     if (!NetworkUtil.isConnected(mView.getContext())) {
-                        disposable.dispose();
                         NetworkUtil.showNoNetWorkDialog(mView.getContext());
+                        disposable.dispose();
                     } else {
                         mView.showProgressDialog();
                     }

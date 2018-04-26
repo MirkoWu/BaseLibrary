@@ -17,10 +17,12 @@ import com.mirkowu.baselibrary.network.RxCallback;
 import com.mirkowu.baselibrary.ui.testMvp.TestMvpActivity;
 import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.base.FragmentBasePagerAdapter;
+import com.softgarden.baselibrary.dialog.PromptDialog;
 import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.DisplayUtil;
 import com.softgarden.baselibrary.utils.L;
 import com.softgarden.baselibrary.utils.SPUtil;
+import com.softgarden.baselibrary.utils.ToastUtil;
 
 import butterknife.BindView;
 
@@ -85,6 +87,22 @@ public class TestToolbarActivity extends ToolbarActivity {
         L.d(userBean1.toString());
 
 
+    //    showPromptDialog();
+
+    }
+
+    private void showPromptDialog() {
+        new PromptDialog(this)
+                .setTitle("标题")
+                .setContent("内容")
+                .setPositiveButton("确定")
+                .setNegativeButton("取消")
+                .setOnButtonClickListener(new PromptDialog.OnButtonClickListener() {
+                    @Override
+                    public void onButtonClick(PromptDialog dialog, boolean isPositiveClick) {
+                        ToastUtil.s("dianji");
+                    }
+                }).show();
     }
 
     private void loadData() {

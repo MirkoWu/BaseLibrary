@@ -21,7 +21,7 @@ import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.L;
 import com.softgarden.baselibrary.utils.LanguageUtil;
 import com.softgarden.baselibrary.utils.ToastUtil;
-import com.softgarden.baselibrary.widget.LoadingDialogManager;
+import com.softgarden.baselibrary.dialog.LoadingDialogManager;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.Locale;
@@ -39,7 +39,7 @@ import butterknife.Unbinder;
  * 5.ButterKnife 绑定数据
  * 6.控制RxJava生命周期，防止内存泄漏
  * 7.MVP模式
- * 需要时 可重写createPresenter() {@link BaseActivity#createPresenter()}  并且使用泛型 <P extends BasePresenter> 为当前Presenter
+ * 需要时 可重写createPresenter() {@link BaseActivity#createPresenter()}  并且使用泛型 <P extends BasePresenter> 为当前Presenter实例
  */
 
 public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompatActivity implements IBaseDisplay {
@@ -264,6 +264,11 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     @Override
     public synchronized void showProgressDialog() {
         LoadingDialogManager.showLoading(getActivity());
+    }
+
+    @Override
+    public synchronized void showProgressDialog(CharSequence message) {
+        LoadingDialogManager.showLoading(getActivity(), message);
     }
 
     @Override

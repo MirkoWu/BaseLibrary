@@ -2,8 +2,12 @@ package com.mirkowu.baselibrary.utils;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import com.softgarden.baselibrary.dialog.PromptDialog;
+import com.softgarden.baselibrary.utils.AppUtil;
 
 /**
  * 类描述：判断网络是否可以连接工具类
@@ -26,6 +30,7 @@ public class NetworkUtil {
         }
         return isConnected;
     }
+
     /**
      * 判断是否是WIFI连接
      *
@@ -33,12 +38,14 @@ public class NetworkUtil {
      * @return
      */
     public static boolean isWIFI(Context context) {
-
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager == null)
             return false;
         return connectivityManager.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
     }
+
+
+    private static PromptDialog promptDialog;
 
     /**
      * 当判断当前手机没有网络时选择是否打开网络设置
@@ -46,25 +53,37 @@ public class NetworkUtil {
      * @param context
      */
     public static void showNoNetWorkDialog(final Context context) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-//        builder.setIcon(R.mipmap.ic_launcher)         //
-//                .setTitle(R.string.app_name)            //
-//                .setMessage(R.string.network_not_open_check).setPositiveButton(R.string.go_setting, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                // 跳转到系统的网络设置界面
-//                Intent intent = null;
-//                // 先判断当前系统版本
-//                if (Build.VERSION.SDK_INT > 10) {  // 3.0以上
-//                    intent = new Intent(ACTION_WIRELESS_SETTINGS);
-//                } else {
-//                    intent = new Intent();
-//                    intent.setClassName("com.android.settings", "com.android.settings.WirelessSettings");
-//                }
-//                context.startActivity(intent);
-//            }
-//        }).setNegativeButton(R.string.i_know, null).show();
-    }
+        if (promptDialog != null && promptDialog.isShowing()) {
+            promptDialog.dismiss();
+            promptDialog = null;
+        }
+        if (promptDialog == null) {
+            promptDialog = new PromptDialog(context)
+                    .setTitle("温馨提示")
+                    .setContent("检测到当前手机未连接网络，\n是否前往设置网络？")
+                    .setPositiveButton("前往")
+                    .setNegativeButton("取消")
+                    .setOnButtonClickListener(new PromptDialog.OnButtonClickListener() {
+                        @Override
+                        public void onButtonClick(PromptDialog dialog, boolean isPositiveClick) {
+                            if (isPositiveClick) AppUtil.openNetworkSetting(context);//前往设置界面
+                        }
+                    });
+            promptDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    promptDialog = null;
+                }
+            });
+            promptDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    promptDialog = null;
+                }
+            });
 
+            promptDialog.show();
+        }
+    }
 
 }

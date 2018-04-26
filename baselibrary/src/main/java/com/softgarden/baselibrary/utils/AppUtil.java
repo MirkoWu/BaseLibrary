@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -95,6 +96,23 @@ public class AppUtil {
     public static void openAppSetting(Context context, String packageName) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.setData(Uri.parse("package:" + packageName));
+        context.startActivity(intent);
+    }
+
+    /**
+     * 前往网络设置界面
+     * @param context
+     */
+    public static void openNetworkSetting(Context context) {
+        // 跳转到系统的网络设置界面
+        Intent intent = null;
+        // 先判断当前系统版本
+        if (Build.VERSION.SDK_INT > 10) {  // 3.0以上
+            intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+        } else {
+            intent = new Intent();
+            intent.setClassName("com.android.settings", "com.android.settings.WirelessSettings");
+        }
         context.startActivity(intent);
     }
 

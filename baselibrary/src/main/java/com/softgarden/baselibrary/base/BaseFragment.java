@@ -28,7 +28,7 @@ import static com.softgarden.baselibrary.base.BaseActivity.REQUEST_LOGIN;
  * 2.ButterKnife 绑定数据
  * 3.控制RxJava生命周期，防止内存泄漏
  * 4.MVP模式
- * 需要时 可重写createPresenter() {@link BaseActivity#createPresenter()}  并且使用泛型 <P extends BasePresenter> 为当前Presenter
+ * 需要时 可重写createPresenter() {@link BaseActivity#createPresenter()}  并且使用泛型 <P extends BasePresenter> 为当前Presenter实例
  */
 public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment implements IBaseDisplay {
 
@@ -91,6 +91,12 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
     public synchronized void showProgressDialog() {
         if (getActivity() instanceof BaseActivity)
             ((BaseActivity) getActivity()).showProgressDialog();
+    }
+
+    @Override
+    public synchronized void showProgressDialog(CharSequence message) {
+        if (getActivity() instanceof BaseActivity)
+            ((BaseActivity) getActivity()).showProgressDialog(message);
     }
 
     @Override
