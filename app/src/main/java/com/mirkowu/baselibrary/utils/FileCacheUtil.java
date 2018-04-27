@@ -5,9 +5,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 
 import com.bumptech.glide.Glide;
-import com.mirkowu.baselibrary.R;
 import com.softgarden.baselibrary.BaseApplication;
-import com.softgarden.baselibrary.utils.ContextUtil;
 import com.softgarden.baselibrary.utils.ToastUtil;
 
 import java.io.File;
@@ -19,7 +17,7 @@ import java.math.BigDecimal;
  */
 public class FileCacheUtil {
 
-    public static final String APP_PATH = ContextUtil.getString(R.string.app_name);
+    public static final String APP_PATH = "BaseLibrary";
     public static final String IMAGE_PATH = "imageCache";
     private final String IMAGE_EXTERNAL_CATCH_DIR = BaseApplication.getInstance().getExternalCacheDir() + "/" + IMAGE_PATH;
 

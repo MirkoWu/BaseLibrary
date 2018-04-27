@@ -28,7 +28,7 @@ import java.util.List;
  * RecyclerView id必须为：mRecyclerView
  * 当然也可以自己调整
  */
-public abstract class RefreshActivity<T extends IBasePresenter> extends ToolbarActivity<T> implements
+public abstract class RefreshActivity<P extends IBasePresenter> extends ToolbarActivity<P> implements
         IBaseRefreshDisplay, BaseQuickAdapter.RequestLoadMoreListener {
     /*** 每页请求数量 */
     public static int PAGE_COUNT = 10;
