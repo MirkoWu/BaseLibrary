@@ -131,6 +131,12 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
 
     }
 
+    public BaseActivity getBaseActivity() {
+        if (getActivity() instanceof BaseActivity) {
+            return (BaseActivity) getActivity();
+        }
+        throw new RuntimeException("getActivity is not instanceof BaseActivity");
+    }
 
     public void startActivity(Class<? extends Activity> cls) {
         this.startActivity(new Intent(getActivity(), cls));

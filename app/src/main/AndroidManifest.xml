@@ -17,36 +17,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- Glide配置文件 -->
-        <!-- Glide配置文件 -->
-        <!-- Glide配置文件 -->
-        <meta-data
-            android:name="com.mirkowu.baselibrary.utils.MyGlideModule"
-            android:value="GlideModule" />
-        <!-- Glide配置文件 -->
-        <!-- Glide配置文件 -->
-        <!-- Glide配置文件 -->
+
         <!-- android:windowSoftInputMode="adjustPan|stateHidden" -->
         <activity
-            android:name=".ui.MainActivity"
-            android:configChanges="locale|layoutDirection|keyboard"></activity>
+            android:name=".ui.main.MainActivity"
+            android:configChanges="locale|layoutDirection|keyboard">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.TestToolbarActivity"
-            android:configChanges="locale|layoutDirection">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:configChanges="locale|layoutDirection" />
         <activity android:name=".ui.testMvp.TestMvpActivity" />
-        <activity android:name=".ui.testRefresh.TestRefreshActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".ui.testRefresh.TestRefreshActivity" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>

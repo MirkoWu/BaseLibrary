@@ -3,7 +3,7 @@ package com.softgarden.baselibrary.base;
 /**
  * Fragment基类 支持 预加载
  */
-public abstract class BaseLazyFragment extends BaseFragment {
+public abstract class BaseLazyFragment<P extends IBasePresenter> extends BaseFragment<P> {
     private static final String TAG = BaseLazyFragment.class.getSimpleName();
     /**
      * 是否能预加载

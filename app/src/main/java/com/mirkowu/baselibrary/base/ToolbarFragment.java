@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.mirkowu.baselibrary.R;
 import com.mirkowu.basetoolbar.BaseToolbar;
+import com.softgarden.baselibrary.base.IBasePresenter;
 import com.softgarden.baselibrary.utils.ContextUtil;
 
 import butterknife.ButterKnife;
@@ -21,7 +22,7 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 /**
  */
 
-public abstract class ToolbarFragment extends RefreshFragment {
+public abstract class ToolbarFragment<P extends IBasePresenter> extends RefreshFragment<P> {
     private BaseToolbar mBaseToolbar;
 
 
@@ -38,7 +39,7 @@ public abstract class ToolbarFragment extends RefreshFragment {
         /*** 这里可以对Toolbar进行统一的预设置 */
         BaseToolbar.Builder builder = new BaseToolbar.Builder(getContext())
                 //  .setBackButton(R.mipmap.back)//统一设置返回键
-               // .setStatusBarColor(Color.TRANSPARENT)//统一设置颜色
+                .setStatusBarColor(Color.TRANSPARENT)//统一设置颜色
                 .setBackgroundColor(ContextUtil.getColor(R.color.colorPrimary))
                 .setSubTextColor(Color.WHITE)
                 .setTitleTextColor(Color.WHITE);

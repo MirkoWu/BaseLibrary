@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 
-public abstract class ToolbarActivity<T extends IBasePresenter> extends BaseActivity<T> {
+public abstract class ToolbarActivity<P extends IBasePresenter> extends BaseActivity<P> {
     private BaseToolbar mBaseToolbar;
 
 

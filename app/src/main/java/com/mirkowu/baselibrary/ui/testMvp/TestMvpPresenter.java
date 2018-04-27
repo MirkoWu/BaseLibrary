@@ -11,14 +11,15 @@ public class TestMvpPresenter extends BasePresenter<TestMvpContract.Display> imp
 
     @Override
     public void getIndexData() {
-//        RetrofitClient.getHomeService()
-//                .getIndexData()
+//        RetrofitClient.getTestService()
+//                .getData()
 //                .compose(new NetworkTransformer<>(mView))
-//                .subscribe(new RxCallback<IndexBean>() {
+//                .subscribe(new RxCallback<List<GoodsBean>>() {
 //                    @Override
-//                    public void onSuccess(@Nullable IndexBean data) {
+//                    public void onSuccess(@Nullable List<GoodsBean> data) {
 //                        mView.getIndexData(data);
 //                    }
+//
 //                });
     }
 

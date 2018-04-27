@@ -8,10 +8,12 @@ import android.view.View;
 
 import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.base.ToolbarActivity;
-import com.mirkowu.baselibrary.ui.MainActivity;
 import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.utils.ToastUtil;
 
+/**
+ * 1.这里要泛型 要记得写上当前Presenter  要继承view的接口Contract.Display
+ */
 public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> implements TestMvpContract.Display {
 
     public static void start(Context context) {
@@ -29,9 +31,14 @@ public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> implement
     @Nullable
     @Override
     protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
-        return builder.setTitle("MVP模板").addRightText("普通的Activity",v -> MainActivity.start(this));
+        return builder.setTitle("MVP模板");
     }
 
+
+    /**
+     * 2.要重写该方法 传入当前的Presenter
+     * @return
+     */
     @Override
     public TestMvpPresenter createPresenter() {
         return new TestMvpPresenter();
@@ -39,7 +46,9 @@ public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> implement
 
     @Override
     protected void initialize() {
-
+        /**
+         * 3.调用
+         */
         getPresenter().getIndexData();
         getPresenter().switchBluetooth();
         getPresenter().switchOnOff();

@@ -9,7 +9,8 @@ import com.softgarden.baselibrary.base.IBasePresenter;
  * @describe
  */
 public class TestMvpContract {
-    interface Display extends IBaseDisplay {
+    //这里可以继承IBaseRefreshDispaly
+    interface Display extends IBaseDisplay{
         void getIndexData(String bean);
 
         void switchOnOff(String bean);

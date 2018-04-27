@@ -25,7 +25,7 @@ public abstract class RxCallback<T> implements Callback<T> {
     }
 
     public RxCallback(IBaseDisplay mView) {
-
+        this.mView = mView;
     }
 
 
@@ -54,7 +54,7 @@ public abstract class RxCallback<T> implements Callback<T> {
         } else if (e instanceof RxJava2NullException) {//RxJava2不能发送null
             onSuccess(null);
         } else if (e instanceof ApiException) {
-           // mView.showError(e);//有需要的话可以 发送给View层处理异常
+            // mView.showError(e);//有需要的话可以 发送给View层处理异常
 
             //通用的Api异常处理
             ApiException apiException = (ApiException) e;

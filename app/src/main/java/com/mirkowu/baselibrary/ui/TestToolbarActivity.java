@@ -1,5 +1,7 @@
 package com.mirkowu.baselibrary.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -9,7 +11,7 @@ import android.support.v4.view.ViewPager;
 
 import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.base.ToolbarActivity;
-import com.mirkowu.baselibrary.bean.TestBean;
+import com.mirkowu.baselibrary.bean.GoodsBean;
 import com.mirkowu.baselibrary.bean.UserBean;
 import com.mirkowu.baselibrary.network.NetworkTransformer;
 import com.mirkowu.baselibrary.network.RetrofitClient;
@@ -24,9 +26,17 @@ import com.softgarden.baselibrary.utils.L;
 import com.softgarden.baselibrary.utils.SPUtil;
 import com.softgarden.baselibrary.utils.ToastUtil;
 
+import java.util.List;
+
 import butterknife.BindView;
 
 public class TestToolbarActivity extends ToolbarActivity {
+
+    public static void start(Context context) {
+        Intent starter = new Intent(context, TestToolbarActivity.class);
+//        starter.putExtra();
+        context.startActivity(starter);
+    }
 
     @BindView(R.id.mViewPager)
     ViewPager mViewPager;
@@ -46,7 +56,7 @@ public class TestToolbarActivity extends ToolbarActivity {
                     changeDayNightMode(!BaseSPManager.isNightMode());
                     reload();
                 })
-                .addRightImage(R.mipmap.share, v -> startActivity(TestMvpActivity.class))
+                .addRightImage(R.mipmap.more, v -> startActivity(TestMvpActivity.class))
                 .setBottomDivider(Color.parseColor("#E4DFE1"), DisplayUtil.dip2px(this, 3))
                 .setTitleTextColor(Color.WHITE)
                 .setTitle(R.string.app_name);
@@ -107,11 +117,11 @@ public class TestToolbarActivity extends ToolbarActivity {
 
     private void loadData() {
         RetrofitClient.getTestService()
-                .getData(1)
+                .getData()
                 .compose(new NetworkTransformer<>(this))
-                .subscribe(new RxCallback<TestBean>() {
+                .subscribe(new RxCallback<List<GoodsBean>>() {
                     @Override
-                    public void onSuccess(@Nullable TestBean data) {
+                    public void onSuccess(@Nullable List<GoodsBean> data) {
 
                     }
                 });

@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">实例Demo</string>
+    <string name="app_name">集成框架库</string>
+    <string name="me">我的</string>
 </resources>

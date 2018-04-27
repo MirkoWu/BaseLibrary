@@ -12,8 +12,8 @@ public interface HostUrl {
      */
     String HOST_URL = "http://guocaitest.test2.ruanjiekeji.com/";
 
-    /*** 登录模块 */
-    String LOGIN_APP_LOGIN = "App/Main/index";//登录接口
+    /*** 模块 */
+    String HOST_GOODSLIST = "App/Goods/goodsList";//商品列表
 
 
 }

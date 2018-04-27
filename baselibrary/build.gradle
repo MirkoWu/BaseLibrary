@@ -46,6 +46,7 @@ dependencies {
     api library.logger
     api library.BaseToolbar
     api library.StatusBarUtil
+    api library.glide
 
     api library.butterknife
     //annotationProcessor library.butterknife_compiler

@@ -29,7 +29,7 @@ ext {
             okio                         : '1.14.0',
             okhttp                       : '3.10.0',
             gson                         : '2.8.2',
-            glide                        : '3.7.0',
+            glide                        : '4.6.1',
 
     ]
 
@@ -63,7 +63,7 @@ ext {
             retrofit2_adapter            : "com.squareup.retrofit2:adapter-rxjava2:$ver.retrofit2",
             gson                         : "com.google.code.gson:gson:$ver.gson",
             glide                        : "com.github.bumptech.glide:glide:$ver.glide",
-            glide_okhttp3                : 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar',
+            glide_compiler               : "com.github.bumptech.glide:compiler:$ver.glide",
             indexablestickylistview      : "me.yokeyword:indexablestickylistview:0.6.10",
             androideventbus              : "org.simple:androideventbus:1.0.5.1",
             ezviz                        : "com.hikvision.ezviz:ezviz-sdk:4.7.1",

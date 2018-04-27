@@ -307,6 +307,8 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
     }
 
+    /******************************************* MVP **********************************************/
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -315,8 +317,6 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
     }
 
-
-    /******************************************* MVP **********************************************/
     private P mPresenter;
 
 

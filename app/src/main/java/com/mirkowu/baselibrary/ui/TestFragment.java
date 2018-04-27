@@ -1,13 +1,16 @@
 package com.mirkowu.baselibrary.ui;
 
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.mirkowu.baselibrary.R;
-import com.mirkowu.baselibrary.bean.TestBean;
+import com.mirkowu.baselibrary.bean.GoodsBean;
 import com.mirkowu.baselibrary.network.NetworkTransformer;
 import com.mirkowu.baselibrary.network.RetrofitClient;
 import com.mirkowu.baselibrary.network.RxCallback;
 import com.softgarden.baselibrary.base.BaseLazyFragment;
+
+import java.util.List;
 
 /**
  * @author by DELL
@@ -16,6 +19,15 @@ import com.softgarden.baselibrary.base.BaseLazyFragment;
  */
 
 public class TestFragment extends BaseLazyFragment {
+
+    public static TestFragment newInstance() {
+        
+        Bundle args = new Bundle();
+        
+        TestFragment fragment = new TestFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
     @Override
     protected int getLayoutId() {
         return R.layout.activity_test_toolbar;
@@ -30,21 +42,16 @@ public class TestFragment extends BaseLazyFragment {
     @Override
     protected void lazyLoad() {
 //        loadData();
-//        loadData2();
-//        loadData();
-//        loadData2();
-//        loadData();
-//        loadData2();
-//        loadData();
+
     }
 
     private void loadData() {
         RetrofitClient.getTestService()
-                .getData(1)
+                .getData()
                 .compose(new NetworkTransformer<>(this))
-                .subscribe(new RxCallback<TestBean>() {
+                .subscribe(new RxCallback<List<GoodsBean>>() {
                     @Override
-                    public void onSuccess(@Nullable TestBean data) {
+                    public void onSuccess(@Nullable List<GoodsBean> data) {
 
                     }
                 });

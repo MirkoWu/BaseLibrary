@@ -55,6 +55,8 @@ dependencies {
     debugImplementation project(':baselibrary')
 
     annotationProcessor library.butterknife_compiler
+    annotationProcessor library.glide_compiler
+
     implementation library.okio
     implementation library.okhttp
     implementation library.okhttp_logging
@@ -62,7 +64,6 @@ dependencies {
     implementation library.retrofit2
     implementation library.retrofit2_gson
     implementation library.retrofit2_adapter
-    implementation library.glide
-    implementation library.glide_okhttp3
 
+    implementation library.TabLayout
 }

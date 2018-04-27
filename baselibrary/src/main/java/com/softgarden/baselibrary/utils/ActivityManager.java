@@ -60,7 +60,7 @@ public class ActivityManager {
      * @param cls
      * @return 未找到则返回 null
      */
-    public Activity find(Class cls) {
+    public <T extends Activity> T find(Class cls) {
         return findFirst(cls);
     }
 
@@ -70,13 +70,13 @@ public class ActivityManager {
      * @param cls
      * @return
      */
-    public Activity findFirst(Class cls) {
+    public <T extends Activity> T findFirst(Class cls) {
         if (mActStack.isEmpty()) return null;
 
         for (int i = 0; i < mActStack.size(); i++) {
             Activity act = mActStack.get(i);
             if (act.getClass().equals(cls))
-                return act;
+                return (T) act;
         }
         return null;
     }
@@ -87,13 +87,13 @@ public class ActivityManager {
      * @param cls
      * @return
      */
-    public Activity findLast(Class cls) {
+    public <T extends Activity> T findLast(Class cls) {
         if (mActStack.isEmpty()) return null;
 
         for (int i = mActStack.size() - 1; i >= 0; i--) {
             Activity act = mActStack.get(i);
             if (act.getClass().equals(cls))
-                return act;
+                return (T) act;
         }
 
         return null;
@@ -104,10 +104,10 @@ public class ActivityManager {
      *
      * @return
      */
-    public Activity getCurrent() {
+    public <T extends Activity> T getCurrent() {
         if (mActStack.isEmpty()) return null;
 
-        return mActStack.lastElement();
+        return (T) mActStack.lastElement();
     }
 
     /**
