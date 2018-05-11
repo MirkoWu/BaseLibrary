@@ -18,11 +18,11 @@ ext {
             multidex                     : '1.0.2',
 
             //libraryVersion
-            log                          : '1.15',
+            log                          : '2.2.0',//无混淆
             rxjava2                      : '2.1.12',
             rxandroid                    : '2.0.2',
             rxlifecycle2                 : '2.2.1',
-            SmartRefreshLayout           : '1.0.5.1',
+            SmartRefreshLayout           : '1.0.5.1',//无需混淆
             BaseRecyclerViewAdapterHelper: '2.9.34',
             butterknife                  : '8.8.1',
             retrofit2                    : '2.4.0',
@@ -46,8 +46,6 @@ ext {
             rxjava2                      : "io.reactivex.rxjava2:rxjava:$ver.rxjava2",
             rxandroid                    : "io.reactivex.rxjava2:rxandroid:$ver.rxandroid",
             rxpermissions2               : "com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar",
-            rxlifecycle2                 : "com.trello.rxlifecycle2:rxlifecycle:$ver.rxlifecycle2",
-            rxlifecycle2_android         : "com.trello.rxlifecycle2:rxlifecycle-android:$ver.rxlifecycle2",
             rxlifecycle2_components      : "com.trello.rxlifecycle2:rxlifecycle-components:$ver.rxlifecycle2",
             SmartRefreshLayout           : "com.scwang.smartrefresh:SmartRefreshLayout:$ver.SmartRefreshLayout",
             BaseRecyclerViewAdapterHelper: "com.github.CymChad:BaseRecyclerViewAdapterHelper:$ver.BaseRecyclerViewAdapterHelper",

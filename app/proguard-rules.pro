@@ -146,20 +146,85 @@
 # <<<<<<<<<<<<<<<----------基本不用动区域----------<<<<<<<<<<<<<<<
 
 
-
 # >>>>>>>>>>>>>>>----------1.实体类---------->>>>>>>>>>>>>>>
-
+-dontwarn com.mirkowu.baselibrary.bean.**
+-dontwarn com.mirkowu.baselibrary.network.BaseBean
 # <<<<<<<<<<<<<<<----------1.实体类----------<<<<<<<<<<<<<<<
 
 
 # >>>>>>>>>>>>>>>----------2.第三方包---------->>>>>>>>>>>>>>>
 # ==================okhttp start===================
--dontwarn com.squareup.okhttp.**
--keep class com.squareup.okhttp.** { *;}
+-dontwarn okhttp3.**
 -dontwarn okio.**
--keep class okio.**{*;}
--keep interface okio.**{*;}
+-dontwarn javax.annotation.**
+-dontwarn org.conscrypt.**
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
 # ==================okhttp end=====================
+
+# ==================retrofit2 start===================
+# Retain generic type information for use by reflection by converters and adapters.
+-keepattributes Signature
+# Retain service method parameters.
+-keepclassmembernames,allowobfuscation interface * {
+    @retrofit2.http.* <methods>;
+}
+# Ignore annotation used for build tooling.
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+# ==================retrofit2 end=====================
+
+# ==================logger start=====================
+-dontwarn com.orhanobut.logger.**
+-keep class com.orhanobut.logger.**{*;}
+-keep interface com.orhanobut.logger.**{*;}
+# ==================logger end=====================
+
+# ==================gson start=====================
+-dontwarn com.google.gson.**
+-keep class com.google.gson.**{*;}
+-keep interface com.google.gson.**{*;}
+# ==================gson end=====================
+
+# ==================BaseQuickAdapter start===================
+-keep class com.chad.library.adapter.** {
+*;
+}
+-keep public class * extends com.chad.library.adapter.base.BaseQuickAdapter
+-keep public class * extends com.chad.library.adapter.base.BaseViewHolder
+-keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
+     <init>(...);
+}
+-keepclassmembers class * extends com.chad.library.adapter.base.BaseViewHolder { <init>(...); }
+# ==================BaseQuickAdapter end=====================
+
+# ==================butterknife start===================
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+# ==================butterknife end=====================
+
+# ==================glide start===================
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+#glide如果你的API级别<=Android API 27 则需要添加
+-dontwarn com.bumptech.glide.load.resource.bitmap.VideoDecoder
+# for DexGuard only
+#-keepresourcexmlelements manifest/application/meta-data@value=GlideModule
+# ==================glide end=====================
+
+# ==================rxpermissions2 start===================
+-dontwarn com.tbruyelle.**
+# ==================rxpermissions2 start===================
 
 # <<<<<<<<<<<<<<<----------2.第三方包----------<<<<<<<<<<<<<<<
 

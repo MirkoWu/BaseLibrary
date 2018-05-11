@@ -80,6 +80,10 @@ public abstract class RefreshActivity<P extends IBasePresenter> extends ToolbarA
         mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
     }
 
+    public void setPageCount(int pageCount) {
+        PAGE_COUNT = pageCount;
+    }
+
     /**
      * 设置分割线
      *
@@ -114,7 +118,6 @@ public abstract class RefreshActivity<P extends IBasePresenter> extends ToolbarA
         if (mRefreshLayout != null)
             mRefreshLayout.finishRefresh(0);
     }
-
 
 
     /***
@@ -182,6 +185,7 @@ public abstract class RefreshActivity<P extends IBasePresenter> extends ToolbarA
         finishRefresh();//结束刷新
         if (mPage == 1) {
             adapter.setNewData(list);
+            //  adapter.disableLoadMoreIfNotFullPage(recyclerView);
             if (list == null || list.size() == 0) {
                 setEmptyView(adapter);
             }
@@ -250,6 +254,7 @@ public abstract class RefreshActivity<P extends IBasePresenter> extends ToolbarA
 //            adapter.setEmptyView(emptyView);
 //        }
     }
+
     /**
      * 结束刷新
      */

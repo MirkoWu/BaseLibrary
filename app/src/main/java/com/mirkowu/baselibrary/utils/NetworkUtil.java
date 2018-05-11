@@ -45,7 +45,7 @@ public class NetworkUtil {
     }
 
 
-    private static PromptDialog promptDialog;
+    private static volatile PromptDialog promptDialog;
 
     /**
      * 当判断当前手机没有网络时选择是否打开网络设置
@@ -53,37 +53,37 @@ public class NetworkUtil {
      * @param context
      */
     public static void showNoNetWorkDialog(final Context context) {
-        if (promptDialog != null && promptDialog.isShowing()) {
-            promptDialog.dismiss();
-            promptDialog = null;
-        }
         if (promptDialog == null) {
-            promptDialog = new PromptDialog(context)
-                    .setTitle("温馨提示")
-                    .setContent("检测到当前手机未连接网络，\n是否前往设置网络？")
-                    .setPositiveButton("前往")
-                    .setNegativeButton("取消")
-                    .setOnButtonClickListener(new PromptDialog.OnButtonClickListener() {
+            synchronized (PromptDialog.class) {
+                if (promptDialog == null) {
+                    promptDialog = new PromptDialog(context)
+                            .setTitle("温馨提示")
+                            .setContent("检测到当前手机未连接网络，\n是否前往设置网络？")
+                            .setPositiveButton("前往")
+                            .setNegativeButton("取消")
+                            .setOnButtonClickListener(new PromptDialog.OnButtonClickListener() {
+                                @Override
+                                public void onButtonClick(PromptDialog dialog, boolean isPositiveClick) {
+                                    if (isPositiveClick)
+                                        AppUtil.openNetworkSetting(context);//前往设置界面
+                                }
+                            });
+                    promptDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
-                        public void onButtonClick(PromptDialog dialog, boolean isPositiveClick) {
-                            if (isPositiveClick) AppUtil.openNetworkSetting(context);//前往设置界面
+                        public void onDismiss(DialogInterface dialog) {
+                            promptDialog = null;
                         }
                     });
-            promptDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    promptDialog = null;
+                    promptDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            promptDialog = null;
+                        }
+                    });
+                    //  promptDialog.show();
                 }
-            });
-            promptDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialog) {
-                    promptDialog = null;
-                }
-            });
-
-            promptDialog.show();
+            }
         }
+        promptDialog.show();
     }
-
 }

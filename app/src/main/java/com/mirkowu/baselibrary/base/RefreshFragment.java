@@ -115,16 +115,6 @@ public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazy
             mRefreshLayout.finishRefresh(0);
     }
 
-    /**
-     * 刷新中，当出现异常时，在此结束刷新
-     *
-     * @param throwable
-     */
-    @Override
-    public void showError(Throwable throwable) {
-        super.showError(throwable);
-        finishRefresh();
-    }
 
     /***
      * 是否启用空布局

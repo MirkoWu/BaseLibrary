@@ -43,7 +43,7 @@ public class TestRefreshActivity extends RefreshActivity<TestRefreshPresenter> i
     protected void initialize() {
         initRefreshLayout();
         initRecyclerView();
-
+        setPageCount(10);
         mAdapter = new BaseRVAdapter<String>(R.layout.item_bottom) {
             @Override
             public void onBindVH(BaseRVHolder holder, String data, int position) {
@@ -67,7 +67,7 @@ public class TestRefreshActivity extends RefreshActivity<TestRefreshPresenter> i
                     if (mPage == 5) {
                         count = 3;
                     } else {
-                        count = 10;
+                        count = PAGE_COUNT;
                     }
                     for (int i = 0; i < count; i++) {
                         data.add(mPage + "" + i);
