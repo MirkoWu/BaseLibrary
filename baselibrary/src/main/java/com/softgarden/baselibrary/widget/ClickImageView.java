@@ -15,14 +15,17 @@ public class ClickImageView extends AppCompatImageView {
 
     public ClickImageView(Context context) {
         super(context);
+        setClickable(true);
     }
 
     public ClickImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setClickable(true);
     }
 
     public ClickImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setClickable(true);
     }
 
     @Override
