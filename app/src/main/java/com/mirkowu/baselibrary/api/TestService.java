@@ -1,4 +1,4 @@
-package com.mirkowu.baselibrary.network.api;
+package com.mirkowu.baselibrary.api;
 
 
 import com.mirkowu.baselibrary.bean.GoodsBean;
