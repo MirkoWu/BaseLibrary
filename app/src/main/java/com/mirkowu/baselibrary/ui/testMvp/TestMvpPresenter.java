@@ -1,6 +1,12 @@
 package com.mirkowu.baselibrary.ui.testMvp;
 
+import com.mirkowu.baselibrary.bean.GoodsBean;
+import com.mirkowu.baselibrary.network.NetworkTransformer;
+import com.mirkowu.baselibrary.network.RetrofitClient;
+import com.mirkowu.baselibrary.network.RxCallback;
 import com.softgarden.baselibrary.base.BasePresenter;
+
+import java.util.List;
 
 /**
  * @author by DELL
@@ -11,7 +17,7 @@ public class TestMvpPresenter extends BasePresenter<TestMvpContract.Display> imp
 
     @Override
     public void getIndexData() {
-//        RetrofitClient.getTestService()
+//         RetrofitClient.getTestService()
 //                .getData()
 //                .compose(new NetworkTransformer<>(mView))
 //                .subscribe(new RxCallback<List<GoodsBean>>() {
@@ -47,5 +53,6 @@ public class TestMvpPresenter extends BasePresenter<TestMvpContract.Display> imp
 //                        mView.switchBluetooth(data);
 //                    }
 //                });
+
     }
 }

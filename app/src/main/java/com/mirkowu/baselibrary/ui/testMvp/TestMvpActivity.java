@@ -22,26 +22,25 @@ public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> implement
         context.startActivity(starter);
     }
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_test_mvp;
-    }
-
-
     @Nullable
     @Override
     protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
         return builder.setTitle("MVP模板");
     }
 
-
     /**
      * 2.要重写该方法 传入当前的Presenter
+     *
      * @return
      */
     @Override
     public TestMvpPresenter createPresenter() {
         return new TestMvpPresenter();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_test_mvp;
     }
 
     @Override

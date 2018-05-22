@@ -121,6 +121,4 @@ public class MainActivity extends ToolbarActivity {
         }
         return super.dispatchKeyEvent(event);
     }
-
-
 }

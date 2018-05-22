@@ -25,6 +25,8 @@ import com.softgarden.baselibrary.utils.ActivityManager;
 
 public class BaseApplication extends Application {
 
+    private static BaseApplication instance;
+
     //static 代码段可以防止内存泄露
     static {
         //设置全局的Header构建器
@@ -44,9 +46,6 @@ public class BaseApplication extends Application {
             }
         });
     }
-
-
-    private static BaseApplication instance;
 
     public static BaseApplication getInstance() {
         return instance;

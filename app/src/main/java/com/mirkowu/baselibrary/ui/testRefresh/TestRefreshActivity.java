@@ -20,18 +20,12 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class TestRefreshActivity extends RefreshActivity<TestRefreshPresenter> implements TestRefreshContract.Display {
+    private BaseRVAdapter<String> mAdapter;
+
     public static void start(Context context) {
         Intent starter = new Intent(context, TestRefreshActivity.class);
 //        starter.putExtra();
         context.startActivity(starter);
-    }
-
-    private BaseRVAdapter<String> mAdapter;
-
-    @Nullable
-    @Override
-    protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
-        return builder.setTitle("上拉刷新，下拉加载");
     }
 
     @Override
@@ -53,6 +47,12 @@ public class TestRefreshActivity extends RefreshActivity<TestRefreshPresenter> i
         mRecyclerView.setAdapter(mAdapter);
 
         loadData();
+    }
+
+    @Nullable
+    @Override
+    protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
+        return builder.setTitle("上拉刷新，下拉加载");
     }
 
     private void loadData() {
@@ -83,18 +83,16 @@ public class TestRefreshActivity extends RefreshActivity<TestRefreshPresenter> i
     }
 
     @Override
-    public void onRefresh() {
-        mPage = 1;
-        loadData();
-    }
-
-
-    @Override
     public void onLoadMoreRequested() {
         mPage++;
         loadData();
     }
 
+    @Override
+    public void onRefresh() {
+        mPage = 1;
+        loadData();
+    }
 
     @Override
     public void getData(List<GoodsBean> data) {

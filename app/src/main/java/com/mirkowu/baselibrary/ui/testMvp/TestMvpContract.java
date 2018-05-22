@@ -19,7 +19,7 @@ public class TestMvpContract {
     }
 
     interface Presenter extends IBasePresenter<Display> {
-        void getIndexData();
+       void getIndexData();
 
         void switchOnOff();
 
