@@ -18,7 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
         <!-- android:windowSoftInputMode="adjustPan|stateHidden" -->
         <activity
             android:name=".ui.main.MainActivity"
@@ -34,7 +33,7 @@
             android:configChanges="locale|layoutDirection" />
         <activity android:name=".ui.testMvp.TestMvpActivity" />
         <activity android:name=".ui.testRefresh.TestRefreshActivity" />
-
+        <activity android:name=".ui.SocketTestActivity"></activity>
     </application>
 
 </manifest>

@@ -2,8 +2,6 @@ package com.mirkowu.baselibrary.socketUtil;
 
 import com.softgarden.baselibrary.utils.L;
 
-import org.json.JSONObject;
-
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -14,7 +12,6 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.exceptions.Exceptions;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -27,63 +24,110 @@ import io.reactivex.schedulers.Schedulers;
 public class RxSocketManager {
     private static final String TAG = RxSocketManager.class.getSimpleName();
 
+    private String host;//ip
+    private int port;//端口号
+    private long timeOut = 1500;
+    private int tryCount = 0;//失败重试次数 默认0
+    private int tryCreateCount;//
+    private SocketType socketType /*= ISocket.SocketType.TCP*/;// TCP/UDP
+
+    private Disposable monitorTask;//循环读取数据任务
+    private List<Disposable> timeOutTaskList;//超时任务列表
+
+    private ResultCallback callback;
+    private OnSocketStatusListener onSocketStatusListener;
+
     private static RxSocketManager rxSocketManager;
     private static ISocket socket;
-    private Disposable monitorTask;
-    private List<Disposable> timeOutTaskList;//超时
-    private Callback callback;
-    private long timeOut =1500;
-    private String host;
-    private int port;
-    private OnSocketStatusListener onSocketStatusListener;
-    private int tryCount = 0;//失败重试次数
-    private int tryCreateCount;
-    private ISocket.SocketType socketType = ISocket.SocketType.TCP;//默认是tcp
 
     private RxSocketManager() {
     }
 
+    /**
+     * 获取单例 如有需要可自行实现DCL单例
+     *
+     * @return
+     */
     public static RxSocketManager getInstance() {
         if (rxSocketManager == null) rxSocketManager = new RxSocketManager();
         return rxSocketManager;
     }
 
-    public RxSocketManager setClient(String host, int port) {
+    /**
+     * @param socketType socket类型 TCP/UDP
+     * @param host       ip
+     * @param port       端口
+     * @return
+     */
+    public RxSocketManager setClient(SocketType socketType, String host, int port) {
+        this.socketType = socketType;
         this.host = host;
         this.port = port;
         return this;
     }
 
-    public RxSocketManager setClientType(ISocket.SocketType socketType) {
-        this.socketType = socketType;
-        return this;
-    }
+//    public RxSocketManager setClientType(ISocket.SocketType socketType) {
+//        this.socketType = socketType;
+//        return this;
+//    }
 
+    /**
+     * 设置读取超时时间 超过该时间后，没有返回数据则视为超时 或者视为断开连接 （视具体业务逻辑调整）
+     *
+     * @param timeOut
+     * @return
+     */
     public RxSocketManager setTimeOut(long timeOut) {
         this.timeOut = timeOut;
         return this;
     }
 
+    /**
+     * 设置socket创建失败 重试次数
+     *
+     * @param tryCount
+     * @return
+     */
     public RxSocketManager setTryCount(int tryCount) {
         this.tryCount = tryCount;
         return this;
     }
 
-    public RxSocketManager setCallback(Callback callback) {
+    /**
+     * 返回结果监听
+     *
+     * @param callback
+     * @return
+     */
+    public RxSocketManager setResultCallback(ResultCallback callback) {
         this.callback = callback;
         return this;
     }
 
+    /**
+     * socket 状态监听
+     *
+     * @param onSocketStatusListener
+     * @return
+     */
     public RxSocketManager setSocketStatusListener(OnSocketStatusListener onSocketStatusListener) {
         this.onSocketStatusListener = onSocketStatusListener;
         return this;
     }
 
+    /**
+     * 移除状态监听
+     *
+     * @return
+     */
     public RxSocketManager removeSocketStatusListener() {
         this.onSocketStatusListener = null;
         return this;
     }
 
+    /**
+     * 创建
+     */
     public void build() {
         initSocket();
     }
@@ -96,12 +140,13 @@ public class RxSocketManager {
 
     private void createSocket() {
         Observable.create((ObservableOnSubscribe<Boolean>) e -> {
-            L.d(TAG, "initSocket  create TCPClient");
             switch (socketType) {
                 case TCP:
+                    L.d(TAG, "initSocket  create TCPClient");
                     socket = new TCPClient(host, port);
                     break;
                 case UDP:
+                    L.d(TAG, "initSocket  create UDPClient");
                     socket = new UDPClient(host, port);
                     break;
             }
@@ -116,14 +161,14 @@ public class RxSocketManager {
                         monitorTask = createMonitorTask(callback);
                     }
                     if (socket != null && onSocketStatusListener != null) {
-                        onSocketStatusListener.onConnected();
+                        onSocketStatusListener.onConnectSucceed();
                     }
 
                 }, throwable -> {
+                    //创建连接失败重试
                     if (tryCreateCount == 0) {
                         throwable.printStackTrace();
                         tryCreateCount = tryCount;
-                        L.d("tryCount" + (socket == null));
                         if (onSocketStatusListener != null) {
                             onSocketStatusListener.onConnectFailed();
                         }
@@ -134,52 +179,25 @@ public class RxSocketManager {
                 });
     }
 
-    public Disposable sendUDPData(JSONObject jsonObject) {
-        if (jsonObject != null) {
-            return send(jsonObject.toString().getBytes(), false);
-        } else {
-            throw Exceptions.propagate(new Exception("send data is null"));
-        }
-    }
 
-    public Disposable send(JSONObject jsonObject) {
-        if (jsonObject != null) {
-            return send(jsonObject.toString().getBytes(), true);
-        } else {
-            throw Exceptions.propagate(new Exception("send data is null"));
-        }
-    }
-
-    public Disposable send(JSONObject jsonObject, boolean isTimeout) {
-        if (jsonObject != null) {
-            return send(jsonObject.toString().getBytes(), isTimeout);
-        } else {
-            throw Exceptions.propagate(new Exception("send data is null"));
-        }
-    }
-
-//    public Disposable send(TcpBean bean) {
-//        String jsonStr = new Gson().toJson(bean);
-//        if (bean != null) {
-//            return send(jsonStr.getBytes(), true);
-//        } else {
-//            throw Exceptions.propagate(new Exception("send data is null"));
-//        }
-//    }
-
-
+    /**
+     * 发送数据
+     *
+     * @param data
+     * @param isTimeout 该请求是否启用超时
+     * @return
+     */
     public synchronized Disposable send(byte[] data, boolean isTimeout) {
         return Observable.create((ObservableOnSubscribe<Boolean>) e -> {
-            // L.d("send  isConnected" + socket.isConnected() + " isClosed" + socket.isClosed());
             if (socket != null) {
-                if (socketType == ISocket.SocketType.TCP) {
+                if (socketType == SocketType.TCP) {
                     if (isConnected()) {
                         socket.send(data);
                         e.onNext(true);
                     } else {
                         e.onNext(false);
                     }
-                } else if (socketType == ISocket.SocketType.UDP) {
+                } else if (socketType == SocketType.UDP) {
                     socket.send(data);
                     e.onNext(true);
                 }
@@ -209,10 +227,16 @@ public class RxSocketManager {
                         });
     }
 
+    /**
+     * 创建超时 计时任务
+     */
     private void createTimeOutTask() {
         Disposable disposable = Observable.timer(timeOut, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aLong -> {
+                    /*** 这里需要根据业务逻辑 调整 是返回连接超时
+                     * 还是数据获取失败 {@link ResultCallback#onFailed(Throwable)}
+                     * */
                     if (onSocketStatusListener != null) {
                         onSocketStatusListener.onDisConnected();
                     }
@@ -220,6 +244,9 @@ public class RxSocketManager {
         timeOutTaskList.add(disposable);
     }
 
+    /**
+     * 取消超时
+     */
     private synchronized void disposeTimeOut() {
         if (timeOutTaskList.isEmpty()) return;
         Disposable disposable = timeOutTaskList.remove(0);
@@ -228,7 +255,13 @@ public class RxSocketManager {
         }
     }
 
-    private Disposable createMonitorTask(Callback callback) {
+    /**
+     * 接收数据
+     *
+     * @param callback
+     * @return
+     */
+    private Disposable createMonitorTask(ResultCallback callback) {
         return Observable.create((ObservableOnSubscribe<byte[]>) e -> {
             L.d(TAG, "createMonitorTask");
 
@@ -236,6 +269,7 @@ public class RxSocketManager {
                 while (socket != null) {
                     byte[] rec = socket.receive();
                     if (rec == null || rec.length == 0) {
+                        Thread.sleep(10);//适当的暂停，避免死循环造成内存消耗
                         continue;
                     }
                     e.onNext(rec);
@@ -244,15 +278,19 @@ public class RxSocketManager {
                 if (onSocketStatusListener != null) {
                     onSocketStatusListener.onConnectFailed();
                 }
+                // close();//异常时关闭socket 释放资源 可在回调中自行处理
+                e1.printStackTrace();
             } catch (SocketException e2) {
                 if (onSocketStatusListener != null) {
                     onSocketStatusListener.onDisConnected();
                 }
+                //  close();//异常时关闭socket 释放资源 可在回调中自行处理
                 e2.printStackTrace();
             } catch (Exception e3) {
                 if (onSocketStatusListener != null) {
                     onSocketStatusListener.onDisConnected();
                 }
+                //  close();//异常时关闭socket 释放资源 可在回调中自行处理
                 e3.printStackTrace();
             }
 
@@ -260,12 +298,12 @@ public class RxSocketManager {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bytes -> {
+                    L.d("Socket rec== ", new String(bytes));
                     if (callback != null) {
                         disposeTimeOut();
                         callback.onSucceed(bytes);
 
                     }
-                    handlerData(bytes);
                 }, throwable -> {
                     if (callback != null) {
                         callback.onFailed(throwable);
@@ -273,11 +311,12 @@ public class RxSocketManager {
                 });
     }
 
-    private void handlerData(byte[] bytes) {
 
-    }
-
+    /**
+     * 关闭socket 释放资源
+     */
     public void close() {
+        L.d(TAG, "close");
         try {
             if (socket != null) {
                 socket.close();
@@ -296,29 +335,56 @@ public class RxSocketManager {
         }
     }
 
+    /**
+     * 是否已经连接 系统给的不是很准，请以状态监听接口返回为准
+     *
+     * @return
+     */
     public boolean isConnected() {
         if (socket != null && !socket.isClosed() && socket.isConnected()) {
             return true;
         } else return false;
     }
 
-    public interface OnSocketStatusListener {
-        void onConnected();
 
+    public interface OnSocketStatusListener {
+        /**
+         * 连接成功
+         */
+        void onConnectSucceed();
+
+        /**
+         * 连接失败
+         */
         void onConnectFailed();
 
+        /**
+         * 断开连接
+         */
         void onDisConnected();
     }
 
+    /**
+     * 结果返回
+     */
+    public interface ResultCallback {
 
-    public interface Callback {
-
+        /**
+         * 成功返回
+         *
+         * @param data
+         */
         void onSucceed(byte[] data);
 
+        /**
+         * 失败
+         *
+         * @param t
+         */
         void onFailed(Throwable t);
     }
 
-    public static abstract class SimpleCallback implements Callback {
+    public static abstract class SimpleResultCallback implements ResultCallback {
 
         @Override
         public void onFailed(Throwable t) {

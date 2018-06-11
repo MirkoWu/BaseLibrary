@@ -21,6 +21,12 @@ public class ByteUtil {
         return c;
     }
 
+    /**
+     * 截取数组
+     * @param src
+     * @param length
+     * @return
+     */
     public static byte[] sub(byte[] src, int length) {
         byte[] des = new byte[length];
         System.arraycopy(src, 0, des, 0, length);
