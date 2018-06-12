@@ -17,11 +17,11 @@ import android.support.v7.app.AppCompatDelegate;
 import com.mirkowu.statusbarutil.StatusBarUtil;
 import com.softgarden.baselibrary.BuildConfig;
 import com.softgarden.baselibrary.R;
+import com.softgarden.baselibrary.dialog.LoadingDialog;
 import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.L;
 import com.softgarden.baselibrary.utils.LanguageUtil;
 import com.softgarden.baselibrary.utils.ToastUtil;
-import com.softgarden.baselibrary.dialog.LoadingDialogManager;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.util.Locale;
@@ -261,20 +261,51 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
         finish();
     }
 
+    /***********************************  LoadingDialog start   ***********************************/
     @Override
     public synchronized void showProgressDialog() {
-        LoadingDialogManager.showLoading(getActivity());
+        showLoading(getActivity(), null);
     }
 
     @Override
     public synchronized void showProgressDialog(CharSequence message) {
-        LoadingDialogManager.showLoading(getActivity(), message);
+        showLoading(getActivity(), message);
     }
 
     @Override
     public synchronized void hideProgressDialog() {
-        LoadingDialogManager.dismissLoading();
+        dismissLoading();
     }
+
+    private static int mCount = 0;
+    private static LoadingDialog mLoadingDialog;
+
+    private void showLoading(Activity activity, CharSequence message) {
+        if (mCount == 0) {
+            mLoadingDialog = new LoadingDialog(activity, message);
+            mLoadingDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialogInterface) {
+                    mCount = 0;
+                }
+            });
+            mLoadingDialog.show();
+        }
+        mCount++;
+    }
+
+    private void dismissLoading() {
+        if (mCount == 0) {
+            return;
+        }
+        mCount--;
+        if (mCount == 0) {
+            mLoadingDialog.dismiss();
+            mLoadingDialog = null;
+        }
+    }
+
+    /*******************************  LoadingDialog end  *****************************************/
 
     @Override
     public void showError(Throwable throwable) {
