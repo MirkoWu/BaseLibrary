@@ -87,7 +87,7 @@ public class MainActivity extends ToolbarActivity {
         mTabLayout.showDot(2);
         mTabLayout.showMsg(3, 10);
         mTabLayout.setMsgMargin(3, -3, 5);
-
+setOrientationPortrait(false);
     }
 
     public void openDrawer() {

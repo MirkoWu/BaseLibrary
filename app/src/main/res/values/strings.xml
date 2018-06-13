@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">集成框架库</string>
     <string name="me">我的</string>
+    <string name="change_daynight_mode">切换日夜模式</string>
+    <string name="changeLanguage">切换中英文</string>
+    <string name="MVPSample">MVP页面模板</string>
+    <string name="refresh_sample">刷新页面模板</string>
+    <string name="toolbar_sample">Toolbar页面模板</string>
 </resources>

@@ -85,16 +85,16 @@ public class TestToolbarActivity extends ToolbarActivity {
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(adapter.getCount());
         mTabLayout.setupWithViewPager(mViewPager);
-        loadData();
+       // loadData();
 
 
         UserBean userBean = new UserBean("1", "testName", 18, true);
         String key = "UseBean";
         SPUtil.putSerializableObject(key, userBean);
         UserBean userBean1 = SPUtil.getSerializableObject(key);
-        L.d(userBean1.getName());
-        L.d(userBean1.isCheck() + "");
-        L.d(userBean1.toString());
+//        L.d(userBean1.getName());
+//        L.d(userBean1.isCheck() + "");
+//        L.d(userBean1.toString());
 
 
     //    showPromptDialog();

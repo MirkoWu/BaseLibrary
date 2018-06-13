@@ -103,8 +103,32 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     }
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        Locale locale = isEnglish ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE;
+        super.attachBaseContext(LanguageUtil.attachBaseContext(newBase, locale));
+    }
+
+    /**
+     * 这个可以视情况 重写 (当横竖屏等配置发生改变时)
+     *
+     * @param newConfig
+     */
+    @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        Locale locale = isEnglish ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE;
+        LanguageUtil.switchLanguage(getContext(), locale);
+    }
+
+    /**
+     * 切换
+     *
+     * @param isEnglish
+     */
+    public void changeLanguage(boolean isEnglish) {
+        LanguageUtil.switchLanguage(getContext(), isEnglish ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE);//英语 和简体中文
+        BaseSPManager.setEnglish(isEnglish);
+
     }
 
     /**
@@ -112,6 +136,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
      */
     private void checkLanguage() {
         boolean english = BaseSPManager.isEnglish();
+        L.d("checkLanguage isEnglish==" + isEnglish);
         if (english != isEnglish) {
             isEnglish = english;
             reload();
@@ -150,17 +175,6 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
         //这是第二种方式
 //        UiModeManager uiModeManager= (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
 //        uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
-
-    }
-
-    /**
-     * 切换
-     *
-     * @param isEnglish
-     */
-    public void changeLanguage(boolean isEnglish) {
-        LanguageUtil.switchLanguage(isEnglish ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE);//英语 和简体中文
-        BaseSPManager.setEnglish(isEnglish);
 
     }
 

@@ -13,35 +13,35 @@
             style="@style/StyleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="切换日夜模式" />
+            android:text="@string/change_daynight_mode" />
 
         <Button
             android:id="@+id/mBtnChangeLanguage"
             style="@style/StyleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="切换中英文" />
+            android:text="@string/changeLanguage" />
 
         <Button
             android:id="@+id/mBtnMvpTemp"
             style="@style/StyleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="MVP页面模板" />
+            android:text="@string/MVPSample" />
 
         <Button
             android:id="@+id/mBtnRefreshTemp"
             style="@style/StyleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="刷新页面模板" />
+            android:text="@string/refresh_sample" />
 
         <Button
             android:id="@+id/mBtnToolbarTemp"
             style="@style/StyleButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Toolbar页面模板" />
+            android:text="@string/toolbar_sample" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

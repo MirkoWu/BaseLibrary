@@ -59,7 +59,6 @@ public class BaseApplication extends Application {
         registerActivityLifecycle();
     }
 
-
     /**
      * 全局管理Activity
      */
