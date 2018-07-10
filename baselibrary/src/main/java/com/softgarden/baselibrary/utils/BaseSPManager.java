@@ -1,5 +1,7 @@
 package com.softgarden.baselibrary.utils;
 
+import java.util.Locale;
+
 /**
  * @author by DELL
  * @date on 2017/11/29
@@ -7,17 +9,22 @@ package com.softgarden.baselibrary.utils;
  */
 
 public class BaseSPManager {
-    public static final String ENGLISH = "english";//语言
+    public static final String LANGUAGE = "language";//语言
+    public static final String LANGUAGE_COUNTRY = "language_country";//语言_国家地区
     public static final String DAY_NIGHT_MODE = "day_night_mode";//日夜模式
-    public static final String IS_FIRST_LUNCH = "is_first_lunch";//日夜模式
+    public static final String IS_FIRST_LUNCH = "is_first_lunch";//是否第一次登录
 
-    /*** 是否英语语言 */
-    public static boolean isEnglish() {
-        return (boolean) SPUtil.get(ENGLISH, false);
+
+    /***  语言 默认系统语言*/
+    public static Locale getLanguage() {
+        String language = (String) SPUtil.get(LANGUAGE, Locale.getDefault().getLanguage());//默认简体中文
+        String country = (String) SPUtil.get(LANGUAGE_COUNTRY, Locale.getDefault().getCountry());//默认简体中文
+        return new Locale(language, country);
     }
 
-    public static void setEnglish(boolean isEnglish) {
-        SPUtil.put(ENGLISH, isEnglish);
+    public static void setLanguage(Locale language) {
+        SPUtil.put(LANGUAGE, language.getLanguage());
+        SPUtil.put(LANGUAGE_COUNTRY, language.getCountry());
     }
 
 
@@ -32,11 +39,11 @@ public class BaseSPManager {
 
     /*** 是否第一次启动 */
     public static boolean isFirstLunch() {
-        return (boolean) SPUtil.get(DAY_NIGHT_MODE, true);
+        return (boolean) SPUtil.get(IS_FIRST_LUNCH, true);
     }
 
     public static void setIsFirstLunch(boolean isFirstLunch) {
-        SPUtil.put(DAY_NIGHT_MODE, isFirstLunch);
+        SPUtil.put(IS_FIRST_LUNCH, isFirstLunch);
     }
 
 

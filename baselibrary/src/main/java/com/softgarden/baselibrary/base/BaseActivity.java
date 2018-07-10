@@ -13,6 +13,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatDelegate;
+import android.text.TextUtils;
 
 import com.mirkowu.statusbarutil.StatusBarUtil;
 import com.softgarden.baselibrary.BuildConfig;
@@ -38,7 +39,7 @@ import butterknife.Unbinder;
  * 4.显示/隐藏Loading弹框
  * 5.ButterKnife 绑定数据
  * 6.控制RxJava生命周期，防止内存泄漏
- * 7.MVP模式
+ * 7.MVP模式 参考 https://github.com/north2016/T-MVP
  * 需要时 可重写createPresenter() {@link BaseActivity#createPresenter()}  并且使用泛型 <P extends BasePresenter> 为当前Presenter实例
  */
 
@@ -57,15 +58,15 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
     protected boolean mOrientationPortrait = true;//是否强制竖屏默认开启,视频界面全屏播放就要设置false
 
-    private boolean isEnglish;//是否英语
+    private Locale mLanguage;//语言
     private boolean isNightMode;//是否夜间模式
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //语言切换 要在setContentView()前
-        isEnglish = BaseSPManager.isEnglish();
-        changeLanguage(isEnglish);
+        mLanguage = BaseSPManager.getLanguage();
+        changeLanguage(mLanguage);
 
         isNightMode = BaseSPManager.isNightMode();
         changeDayNightMode(isNightMode);
@@ -104,8 +105,8 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        Locale locale = isEnglish ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE;
-        super.attachBaseContext(LanguageUtil.attachBaseContext(newBase, locale));
+        mLanguage = BaseSPManager.getLanguage();
+        super.attachBaseContext(LanguageUtil.attachBaseContext(newBase, mLanguage));
     }
 
     /**
@@ -116,31 +117,43 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        Locale locale = isEnglish ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE;
-        LanguageUtil.switchLanguage(getContext(), locale);
+        LanguageUtil.switchLanguage(getContext(), mLanguage);
     }
 
     /**
-     * 切换
+     * 切换语言 (设置完后要重启Activity才生效 {@link #reload()})
      *
-     * @param isEnglish
+     * @param language
      */
-    public void changeLanguage(boolean isEnglish) {
-        LanguageUtil.switchLanguage(getContext(), isEnglish ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE);//英语 和简体中文
-        BaseSPManager.setEnglish(isEnglish);
-
+    public void changeLanguage(Locale language) {
+        LanguageUtil.switchLanguage(getContext(), language);
+        BaseSPManager.setLanguage(language);
     }
 
     /**
      * 检查语言
      */
     private void checkLanguage() {
-        boolean english = BaseSPManager.isEnglish();
-        L.d("checkLanguage isEnglish==" + isEnglish);
-        if (english != isEnglish) {
-            isEnglish = english;
+        Locale language = BaseSPManager.getLanguage();
+        if (!isEqualsLanguage(mLanguage, language)) {
+            mLanguage = language;
             reload();
         }
+    }
+
+    /**
+     * 是否相同 二种语言 （语言和 国家都相同才算是相同）
+     *
+     * @param mLanguage
+     * @param locale
+     * @return
+     */
+    public boolean isEqualsLanguage(Locale mLanguage, Locale locale) {
+        if (TextUtils.equals(mLanguage.getLanguage(), locale.getLanguage())
+                && TextUtils.equals(mLanguage.getCountry(), locale.getCountry())) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -180,6 +193,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
 
     /**
+     * 重启Activity
      * 此方法会比 recreate() 效果更好
      */
     public void reload() {
@@ -276,25 +290,34 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     }
 
     /***********************************  LoadingDialog start   ***********************************/
+    /**
+     * 显示加载框
+     */
     @Override
-    public synchronized void showProgressDialog() {
+    public void showProgressDialog() {
         showLoading(getActivity(), null);
     }
 
+    /**
+     * 显示加载框（带文字）
+     */
     @Override
-    public synchronized void showProgressDialog(CharSequence message) {
+    public void showProgressDialog(CharSequence message) {
         showLoading(getActivity(), message);
     }
 
+    /**
+     * 隐藏加载框
+     */
     @Override
-    public synchronized void hideProgressDialog() {
+    public void hideProgressDialog() {
         dismissLoading();
     }
 
     private static int mCount = 0;
     private static LoadingDialog mLoadingDialog;
 
-    private void showLoading(Activity activity, CharSequence message) {
+    private synchronized void showLoading(Activity activity, CharSequence message) {
         if (mCount == 0) {
             mLoadingDialog = new LoadingDialog(activity, message);
             mLoadingDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
@@ -308,7 +331,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
         mCount++;
     }
 
-    private void dismissLoading() {
+    private synchronized void dismissLoading() {
         if (mCount == 0) {
             return;
         }
@@ -321,6 +344,11 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
     /*******************************  LoadingDialog end  *****************************************/
 
+    /**
+     * 默认 吐司显示错误，可重写
+     *
+     * @param throwable
+     */
     @Override
     public void showError(Throwable throwable) {
         ToastUtil.s(throwable.getMessage());
@@ -339,9 +367,9 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     }
 
     /**
-     * 登录返回
+     * 登录成功 返回回调
      *
-     * @param eventId
+     * @param eventId 一般为点击View的id，可根据id判断接点击事件，从而继续操作流程
      */
     protected void backFromLogin(int eventId) {
 
@@ -352,7 +380,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
     }
 
-    /******************************************* MVP **********************************************/
+    /*********************** MVP 参考 https://github.com/north2016/T-MVP ***************************/
 
     @Override
     protected void onDestroy() {
@@ -384,7 +412,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
         return null;
     }
 
-    /******************************************* MVP **********************************************/
+    /*********************** MVP 参考 https://github.com/north2016/T-MVP ***************************/
 
     @LayoutRes
     protected abstract int getLayoutId();

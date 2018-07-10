@@ -15,6 +15,8 @@ import com.softgarden.baselibrary.BuildConfig;
 import com.softgarden.baselibrary.utils.ToastUtil;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
+import java.util.Locale;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -27,7 +29,7 @@ import static com.softgarden.baselibrary.base.BaseActivity.REQUEST_LOGIN;
  * 1.显示/隐藏Loading弹框
  * 2.ButterKnife 绑定数据
  * 3.控制RxJava生命周期，防止内存泄漏
- * 4.MVP模式
+ * 4.MVP模式 参考 https://github.com/north2016/T-MVP
  * 需要时 可重写createPresenter() {@link BaseActivity#createPresenter()}  并且使用泛型 <P extends BasePresenter> 为当前Presenter实例
  */
 public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment implements IBaseDisplay {
@@ -81,30 +83,57 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
     }
 
 
+    /**
+     * 切换日夜模式
+     *
+     * @param isNightMode
+     */
     @Override
     public void changeDayNightMode(boolean isNightMode) {
         if (getActivity() instanceof BaseActivity)
             ((BaseActivity) getActivity()).changeDayNightMode(isNightMode);
     }
 
+    public boolean isEqualsLanguage(Locale mLanguage, Locale locale) {
+        if (getActivity() instanceof BaseActivity) {
+            return ((BaseActivity) getActivity()).isEqualsLanguage(mLanguage, locale);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 显示加载框
+     */
     @Override
-    public synchronized void showProgressDialog() {
+    public void showProgressDialog() {
         if (getActivity() instanceof BaseActivity)
             ((BaseActivity) getActivity()).showProgressDialog();
     }
 
+    /**
+     * 显示加载框（带文字）
+     */
     @Override
-    public synchronized void showProgressDialog(CharSequence message) {
+    public void showProgressDialog(CharSequence message) {
         if (getActivity() instanceof BaseActivity)
             ((BaseActivity) getActivity()).showProgressDialog(message);
     }
 
+    /**
+     * 隐藏加载框
+     */
     @Override
-    public synchronized void hideProgressDialog() {
+    public void hideProgressDialog() {
         if (getActivity() instanceof BaseActivity)
             ((BaseActivity) getActivity()).hideProgressDialog();
     }
 
+    /**
+     * 默认 吐司显示错误，可重写
+     *
+     * @param throwable
+     */
     @Override
     public void showError(Throwable throwable) {
         ToastUtil.s(throwable.getMessage());
@@ -127,6 +156,11 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
         }
     }
 
+    /**
+     * 登录成功 返回回调
+     *
+     * @param eventId 一般为点击View的id，可根据id判断接点击事件，从而继续操作流程
+     */
     protected void backFromLogin(int eventId) {
 
     }
@@ -153,7 +187,7 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
     }
 
 
-    /******************************************* MVP **********************************************/
+    /*********************** MVP 参考 https://github.com/north2016/T-MVP ***************************/
     private P mPresenter;
 
 
@@ -181,7 +215,7 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
         return null;
     }
 
-    /******************************************* MVP **********************************************/
+    /*********************** MVP 参考 https://github.com/north2016/T-MVP ***************************/
 
 
     @LayoutRes

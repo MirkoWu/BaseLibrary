@@ -27,6 +27,7 @@ import com.softgarden.baselibrary.utils.SPUtil;
 import com.softgarden.baselibrary.utils.ToastUtil;
 
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 
@@ -49,8 +50,9 @@ public class TestToolbarActivity extends ToolbarActivity {
         return builder
                 // .setStatusBarColor(Color.GRAY)
                 .addLeftText("语言切换", v -> {
-                    changeLanguage(!BaseSPManager.isEnglish());
-                    reload();
+                    Locale locale = isEqualsLanguage(BaseSPManager.getLanguage(), Locale.SIMPLIFIED_CHINESE) ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE;
+                    changeLanguage(locale);
+                    reload();//要重新启动Activity
                 })
                 .addRightText("日夜切换", v -> {
                     changeDayNightMode(!BaseSPManager.isNightMode());
@@ -85,7 +87,7 @@ public class TestToolbarActivity extends ToolbarActivity {
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(adapter.getCount());
         mTabLayout.setupWithViewPager(mViewPager);
-       // loadData();
+        // loadData();
 
 
         UserBean userBean = new UserBean("1", "testName", 18, true);
@@ -97,7 +99,7 @@ public class TestToolbarActivity extends ToolbarActivity {
 //        L.d(userBean1.toString());
 
 
-    //    showPromptDialog();
+        //    showPromptDialog();
 
     }
 

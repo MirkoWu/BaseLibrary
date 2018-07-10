@@ -39,8 +39,8 @@ android {
     }
 
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     lintOptions {
@@ -62,6 +62,7 @@ dependencies {
     annotationProcessor library.butterknife_compiler
     annotationProcessor library.glide_compiler
 
+    //网络框架
     implementation library.okio
     implementation library.okhttp
     implementation library.okhttp_logging

@@ -12,6 +12,9 @@ import com.mirkowu.baselibrary.ui.testMvp.TestMvpActivity;
 import com.mirkowu.baselibrary.ui.testRefresh.TestRefreshActivity;
 import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.utils.BaseSPManager;
+import com.softgarden.baselibrary.utils.L;
+
+import java.util.Locale;
 
 import butterknife.OnClick;
 
@@ -68,8 +71,10 @@ public class MainFragment extends ToolbarFragment {
                 getBaseActivity().reload();
                 break;
             case R.id.mBtnChangeLanguage://切换语言
-                BaseSPManager.setEnglish(!BaseSPManager.isEnglish());
-                getBaseActivity().reload();
+                L.d("语言=" + BaseSPManager.getLanguage().getLanguage() + "  " + BaseSPManager.getLanguage().getCountry());
+                Locale locale = isEqualsLanguage(BaseSPManager.getLanguage(), Locale.SIMPLIFIED_CHINESE) ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE;
+                BaseSPManager.setLanguage(locale);
+                getBaseActivity().reload();//要重新启动Activity
                 break;
             case R.id.mBtnMvpTemp://MVP模板
                 TestMvpActivity.start(getActivity());
