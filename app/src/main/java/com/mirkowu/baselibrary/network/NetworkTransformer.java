@@ -20,10 +20,16 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class NetworkTransformer<T> implements ObservableTransformer<BaseBean<T>, T> {
     private IBaseDisplay mView;
+    private boolean showLoading;
 
     public NetworkTransformer(IBaseDisplay mView) {
+        this(mView, true);
+    }
+
+    public NetworkTransformer(IBaseDisplay mView, boolean showLoading) {
         if (mView == null) throw new RuntimeException("IBaseDisplay is not NULL");
         this.mView = mView;
+        this.showLoading = showLoading;
     }
 
     @Override
@@ -36,10 +42,12 @@ public class NetworkTransformer<T> implements ObservableTransformer<BaseBean<T>,
                         NetworkUtil.showNoNetWorkDialog(mView.getContext());
                         disposable.dispose();
                     } else {
-                        mView.showProgressDialog();
+                        if (showLoading) mView.showProgressDialog();
                     }
                 })
-                .doFinally(() -> mView.hideProgressDialog())
+                .doFinally(() -> {
+                    if (showLoading) mView.hideProgressDialog();
+                })
                 .map(baseBean -> {
                     if (baseBean.status == 1) {
                         return baseBean;

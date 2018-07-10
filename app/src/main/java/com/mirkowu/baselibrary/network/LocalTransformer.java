@@ -15,10 +15,16 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class LocalTransformer<T> implements ObservableTransformer<T, T> {
     private IBaseDisplay mView;
+    private boolean showLoading;
 
     public LocalTransformer(IBaseDisplay mView) {
+        this(mView, true);
+    }
+
+    public LocalTransformer(IBaseDisplay mView, boolean showLoading) {
         if (mView == null) throw new RuntimeException("IBaseDisplay is not NULL");
         this.mView = mView;
+        this.showLoading = showLoading;
     }
 
     @Override
@@ -26,9 +32,17 @@ public class LocalTransformer<T> implements ObservableTransformer<T, T> {
         return upstream
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> mView.showProgressDialog())
+                .doOnSubscribe(disposable -> {
+                    if (showLoading) {
+                        mView.showProgressDialog();
+                    }
+                })
                 // .doOnTerminate(() -> mView.hideProgressDialog())
-                .doFinally(() -> mView.hideProgressDialog())
+                .doFinally(() -> {
+                    if (showLoading) {
+                        mView.hideProgressDialog();
+                    }
+                })
                 .compose(mView.bindToLifecycle());
 
     }
