@@ -35,6 +35,11 @@ public abstract class RxCallback<T> implements Callback<T> {
     }
 
     @Override
+    public void onStart() {
+
+    }
+
+    @Override
     public void onNext(T t) {
         onSuccess(t);
         onFinish();
@@ -58,14 +63,17 @@ public abstract class RxCallback<T> implements Callback<T> {
 
             //通用的Api异常处理
             ApiException apiException = (ApiException) e;
-            if (apiException.getStatus() == -1) {//token过期 这里不用管前面已处理
+            onApiException(apiException);
 
-            } else {
-                // mView.showError(e);//有需要的话可以 发送给View层处理异常
 
-                ToastUtil.s(e.getMessage());
-                e.printStackTrace();
-            }
+//            if (apiException.getStatus() == -1) {//token过期 这里不用管前面已处理
+//
+//            } else {
+//                // mView.showError(e);//有需要的话可以 发送给View层处理异常
+//
+//                ToastUtil.s(e.getMessage());
+//                e.printStackTrace();
+//            }
         } else {
             ToastUtil.s(e.getMessage());
             e.printStackTrace();
@@ -74,14 +82,17 @@ public abstract class RxCallback<T> implements Callback<T> {
     }
 
     @Override
+    public void onApiException(ApiException e) {
+        //默认 需要根据业务逻辑 处理了
+        ToastUtil.s(e.getMessage());
+        e.printStackTrace();
+    }
+
+    @Override
     public void onComplete() {
         onFinish();
     }
 
-    @Override
-    public void onStart() {
-
-    }
 
     @Override
     public void onFinish() {
