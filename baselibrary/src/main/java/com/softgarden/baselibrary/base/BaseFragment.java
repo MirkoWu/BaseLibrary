@@ -183,7 +183,7 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
+        if (unbinder != null) unbinder.unbind();
     }
 
 
