@@ -225,7 +225,7 @@ public class ImageUtil {
         if (imgList == null || imgList.isEmpty())
             return;
         //申请权限
-        RxPermissionsUtil.requestStorage(context).subscribe(aBoolean -> {
+        RxPermissionsUtil.request(context,RxPermissionsUtil.STORAGE).subscribe(aBoolean -> {
             if (aBoolean) {
                 LoadingDialog dialog = new LoadingDialog(context);
                 if (!isSilentLoad) {
@@ -291,7 +291,7 @@ public class ImageUtil {
             return;
 
         //申请权限
-        RxPermissionsUtil.requestStorage(context).subscribe(aBoolean -> {
+        RxPermissionsUtil.request(context,RxPermissionsUtil.STORAGE).subscribe(aBoolean -> {
             if (aBoolean) {
                 LoadingDialog dialog = new LoadingDialog(context);
                 if (!isSilentLoad) {
