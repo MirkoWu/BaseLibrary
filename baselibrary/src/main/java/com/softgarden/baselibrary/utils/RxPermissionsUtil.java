@@ -11,7 +11,6 @@ import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 
 import com.softgarden.baselibrary.R;
-import com.softgarden.baselibrary.base.BaseActivity;
 import com.tbruyelle.rxpermissions2.Permission;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
@@ -52,7 +51,7 @@ public class RxPermissionsUtil {
         return new RxPermissions(activity).shouldShowRequestPermissionRationale(activity, permissions);
     }
 
-    public static void check(final BaseActivity activity, final String[] permissions,
+    public static void check(final Activity activity, final String[] permissions,
                              final String title, /*final String cancelText, String ensureText, */
                              final OnPermissionRequestListener listener) {
         new RxPermissions(activity).requestEachCombined(permissions)
