@@ -45,7 +45,7 @@ ext {
             logger                       : "com.orhanobut:logger:$ver.log",
             rxjava2                      : "io.reactivex.rxjava2:rxjava:$ver.rxjava2",
             rxandroid                    : "io.reactivex.rxjava2:rxandroid:$ver.rxandroid",
-            rxpermissions2               : "com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar",
+            rxpermissions2               : "com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar",
             rxlifecycle2_components      : "com.trello.rxlifecycle2:rxlifecycle-components:$ver.rxlifecycle2",
             SmartRefreshLayout           : "com.scwang.smartrefresh:SmartRefreshLayout:$ver.SmartRefreshLayout",
             BaseRecyclerViewAdapterHelper: "com.github.CymChad:BaseRecyclerViewAdapterHelper:$ver.BaseRecyclerViewAdapterHelper",
@@ -74,7 +74,7 @@ ext {
             ShortcutBadger               : 'me.leolin:ShortcutBadger:1.1.19@aar',
             PickerView                   : 'com.contrarywind:Android-PickerView:3.2.5',
             BaseToolbar                  : 'com.mirkowu:BaseToolbar:0.0.5',
-            StatusBarUtil                : 'com.mirkowu:StatusBarUtil:0.0.2',
+            StatusBarUtil                : 'com.mirkowu:StatusBarUtil:0.0.4',
     ]
 
     //keystore
