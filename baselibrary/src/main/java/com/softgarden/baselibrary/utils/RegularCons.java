@@ -13,12 +13,13 @@ public class RegularCons {
      * <p>全球星：1349</p>
      * <p>虚拟运营商：170</p>
      */
-    public static final String REGEX_MOBILE_EXACT = "^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|(147))\\d{8}$";
+    @Deprecated //不太准确了
+    public static final String REGEX_MOBILE_EXACT = "^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|(199)|(166)|(147))\\d{8}$";
     /**
      * 正则：手机号 简单验证
      * 第一位必定为1，第二位必定为3或4或5或7或8，其他位置的可以为0-9
      */
-    public static final String REGEX_MOBILE_SIMPLE = "[1][34578]\\d{9}";
+    public static final String REGEX_MOBILE_SIMPLE = "[1][3456789]\\d{9}";
     /**
      * 正则：邮箱
      * 更严格

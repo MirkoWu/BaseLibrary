@@ -55,6 +55,7 @@ public class RegularUtil {
      * @param string 待验证文本
      * @return {@code true}: 匹配<br>{@code false}: 不匹配
      */
+    @Deprecated //不太准确了 建议模糊匹配
     public static boolean isMobileExact(String string) {
         return isMatch(REGEX_MOBILE_EXACT, string);
     }
@@ -68,6 +69,7 @@ public class RegularUtil {
     public static boolean isEmailSimple(String string) {
         return isMatch(REGEX_EMAIL_SIMPLE, string);
     }
+
     /**
      * 验证邮箱(精确)
      *
@@ -111,6 +113,7 @@ public class RegularUtil {
 
     /**
      * 验证密码
+     *
      * @param string 待验证文本
      * @return {@code true}: 匹配<br>{@code false}: 不匹配
      */
