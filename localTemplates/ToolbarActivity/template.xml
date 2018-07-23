@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<template
+    format="5"
+    revision="5"
+    name="Toolbar Activity"
+    minApi="9"
+    minBuildApi="14"
+    description="Creates a new Toolbar activity">
+
+    <category value="Activity" />
+    <formfactor value="Mobile" />
+
+    <parameter
+        id="instantAppActivityHost"
+        name="Instant App URL Host"
+        type="string"
+        suggest="${companyDomain}"
+        default="instantapp.example.com"
+        visibility="isInstantApp!false"
+        help="The domain to use in the Instant App route for this activity"/>
+
+    <parameter
+        id="instantAppActivityRouteType"
+        name="Instant App URL Route Type"
+        type="enum"
+        default="pathPattern"
+        visibility="isInstantApp!false"
+        help="The type of route to use in the Instant App route for this activity" >
+        <option id="path">Path</option>
+        <option id="pathPrefix">Path Prefix</option>
+        <option id="pathPattern">Path Pattern</option>
+    </parameter>
+
+    <parameter
+        id="instantAppActivityRoute"
+        name="Instant App URL Route"
+        type="string"
+        default="/.*"
+        visibility="isInstantApp!false"
+        help="The route to use in the Instant App route for this activity"/>
+
+    <parameter
+        id="activityClass"
+        name="Activity Name"
+        type="string"
+        constraints="class|unique|nonempty"
+        suggest="${layoutToActivity(layoutName)}"
+        default="MainActivity"
+        help="The name of the activity class to create" />
+
+    <parameter
+        id="generateLayout"
+        name="Generate Layout File"
+        type="boolean"
+        default="true"
+        help="If true, a layout file will be generated" />
+
+    <parameter
+        id="layoutName"
+        name="Layout Name"
+        type="string"
+        constraints="layout|unique|nonempty"
+        suggest="${activityToLayout(activityClass)}"
+        default="activity_main"
+        visibility="generateLayout"
+        help="The name of the layout to create for the activity" />
+
+    <parameter
+        id="isLauncher"
+        name="Launcher Activity"
+        type="boolean"
+        default="false"
+        help="If true, this activity will have a CATEGORY_LAUNCHER intent filter, making it visible in the launcher" />
+
+    <parameter
+        id="backwardsCompatibility"
+        name="Backwards Compatibility (AppCompat)"
+        type="boolean"
+        default="true"
+        help="If false, this activity base class will be Activity instead of AppCompatActivity" />
+    
+    <parameter
+        id="packageName"
+        name="Package name"
+        type="string"
+        constraints="package"
+        default="com.mycompany.myapp" />
+
+    <!-- 128x128 thumbnails relative to template.xml -->
+    <thumbs>
+        <!-- default thumbnail is required -->
+        <thumb>template_blank_activity.png</thumb>
+    </thumbs>
+
+    <globals file="globals.xml.ftl" />
+    <execute file="recipe.xml.ftl" />
+
+</template>

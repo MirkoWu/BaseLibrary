@@ -31,8 +31,8 @@ Base 大致功能如下：
 
 ### 2. Refresh + RecyclerView + Adapter ###
  刷新推荐使用的是: [SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)
- Adapter推荐使用: [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper),可直接继承BaseRVAdapter,更方便
- 。用到选择逻辑时可继承 SelectedAdapter 。
+ Adapter推荐使用: [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper),
+ 可直接继承本项目的BaseRVAdapter,更方便 。用到选择逻辑时可继承 SelectedAdapter 。
 ### 3. 各基础常用的Dialog ###
     BottomListDialog 类似BottomSheetDialog,从底部弹窗的选择框
     LoadingDialog 加载框
@@ -52,7 +52,6 @@ Base 大致功能如下：
 ### 6. Socket通信工具 ###
     可创建TCP/UDP连接
 
-### 6. Socket通信工具 ###
 
 ### 7. 其他工具（详情见utils包下文件） ###
      1.AppUtil  App信息、软键盘等。
@@ -67,7 +66,13 @@ Base 大致功能如下：
      等...
 
 
-### 7. 蓝牙开发（待更新） ###
+### 8. 蓝牙开发（待更新） ###
+
+##  关于模板 ##
+    项目 localTemplates 目录下的二个模板请Copy到 AndroidStudio安装目录下的模板路径:
+    某盘:\AndroidStudio安装路径\plugins\android\lib\templates\activities 。
+    例：我的studio安装路径在C:\AndroidStudio, 找到该目录下的
+    \plugins\android\lib\templates\activities ,copy进去 重启sudio 即可生效
 
 
 ### Log更新日志 ###
