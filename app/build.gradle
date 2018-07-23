@@ -72,4 +72,6 @@ dependencies {
     implementation library.retrofit2_adapter
 
     implementation library.TabLayout
+
+    compile 'com.google.android:flexbox:0.3.0-alpha2'
 }

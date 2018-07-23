@@ -189,7 +189,7 @@ public class ImageUtil {
                 .load(checkUrl(url))
                 .thumbnail(0.5f)
                 .dontAnimate()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.ic_launcher)
                 .into(imageView);
