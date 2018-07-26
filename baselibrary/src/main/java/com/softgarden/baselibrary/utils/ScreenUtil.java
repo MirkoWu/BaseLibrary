@@ -75,6 +75,23 @@ public class ScreenUtil {
     }
 
     /**
+     * 横屏时
+     * @param context
+     * @return
+     */
+    public static int getScreenRealWidth(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            display.getRealMetrics(dm);
+        } else {
+            display.getMetrics(dm);
+        }
+        int realHeight = dm.widthPixels;
+        return realHeight;
+    }
+    /**
      * 设置透明状态栏(api大于19方可使用)
      * <p>可在Activity的onCreat()中调用</p>
      * <p>需在顶部控件布局中加入以下属性让内容出现在状态栏之下</p>

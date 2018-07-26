@@ -109,7 +109,17 @@ public abstract class SelectedAdapter<T> extends BaseRVAdapter<T> {
 
     @Override
     public void setOnItemClick(View v, int position) {
+        setClickSelectState(position);
         super.setOnItemClick(v, position);
+
+    }
+
+    /**
+     * 设置选择的状态 需要是可以重写方法
+     *
+     * @param position
+     */
+    protected void setClickSelectState(int position) {
         //设置选择器
         if (selectMode) {
             if (multiSelected) {

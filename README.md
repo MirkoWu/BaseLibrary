@@ -1,7 +1,7 @@
 ## BaseLibrary ##
 
   本库旨在开发项目时能快速搭建框架，提供较为常用的开发工具。建议下载作为依赖库，
-  不要远程依赖，便于修改。部分功能会仅在demo中有体现，请详细看完demo。
+  便于修改。部分功能会仅在demo中有体现，请详细看完demo。
 -----------------------------------------------------
   下面介绍本库的主要内容
 ### 1. MVP模式(变种) ###
@@ -30,7 +30,7 @@ Base 大致功能如下：
     详情请查看源码。
 
 ### 2. Refresh + RecyclerView + Adapter ###
- 刷新推荐使用的是: [SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)
+ 刷新推荐使用: [SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)
  Adapter推荐使用: [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper),
  可直接继承本项目的BaseRVAdapter,更方便 。用到选择逻辑时可继承 SelectedAdapter 。
 ### 3. 各基础常用的Dialog ###
@@ -45,7 +45,7 @@ Base 大致功能如下：
     TimerTextView 获取验证码 倒计时View 语言需自己处理
     SquareFrameLayout/SquareLinearLayout 可用ConstraintLayout代替
 
-### 5. 网络加载 Retrofit + OkHttp + RxJava ###
+### 5. 网络加载 Retrofit + OkHttp + RxJava + Lifecycle ###
     网络加载使用 Retrofit + OkHttp + RxJava 配套方案，可以控制加载框，
     RxJava生命周期绑定,拦截器加密,数据泛型解析。
 
@@ -75,5 +75,10 @@ Base 大致功能如下：
     \plugins\android\lib\templates\activities ,copy进去 重启sudio 即可生效
 
 
-### Log更新日志 ###
-    *2018-7-23 添加说明文档
+## Log更新日志 ##
+    *2018-7-26
+        添加CompressUtil工具类：鲁班压缩方案
+        ScreenUtil 添加方法 getScreenRealWidth()
+    *2018-7-23
+        添加说明文档
+        添加模板文件
