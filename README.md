@@ -76,6 +76,8 @@ Base 大致功能如下：
 
 
 ## Log更新日志 ##
+    *2018-7-30
+        添加 TimerTextView :验证码倒计时View
     *2018-7-26
         添加CompressUtil工具类：鲁班压缩方案
         ScreenUtil 添加方法 getScreenRealWidth()
