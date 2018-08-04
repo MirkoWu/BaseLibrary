@@ -68,6 +68,19 @@ Base 大致功能如下：
 
 ### 8. 蓝牙开发（待更新） ###
 
+### 9. 屏幕适配方案 ###
+    原理同[今日头条适配法](https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA)
+    使用方法:
+        1.更新ScreenUtil、BaseActvity、BaseApplication文件， 默认开启适配功能;
+        2.Application 中 通过setDesignWidthInDp()方法 设置设计稿的宽度（单位dp）,
+          默认360dp,即以720x1280分辨率设计稿为开发;
+        3.继承BaseActivity后即可愉快使用
+        4.取消适配，BaseActivity中调用 cancelAdapterScreen()即可取消，
+          若项目不想使用该适配方法，直接注释 adapterScreen()方法即可。
+    优点：无入侵，随用随关。只要布局按照设计稿的大小来写（dp模式），（ <font color=#0099ff size=6 face="黑体">用的是dp,sp单位</font>）,即可。
+
+
+
 ##  关于模板 ##
     项目 localTemplates 目录下的二个模板请Copy到 AndroidStudio安装目录下的模板路径:
     某盘:\AndroidStudio安装路径\plugins\android\lib\templates\activities 。
@@ -76,6 +89,11 @@ Base 大致功能如下：
 
 
 ## Log更新日志 ##
+    *2018-8-4
+        <font color=#0099ff size=6 face="黑体">重要：</font>添加屏幕适配方案 [原理同今日头条适配法](https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA)
+        修改了ScreenUtil、 BaseActivity、BaseApplication
+    *2018-8-1
+        修复NetworkUtil 中判断是否为Wifi连接Bug
     *2018-7-30
         添加 TimerTextView :验证码倒计时View
     *2018-7-26

@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tvContent"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="5dp"
-    android:layout_marginVertical="5dp"
-    android:background="@color/colorPrimary"
-    android:paddingHorizontal="20dp"
-    android:paddingVertical="8dp"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:background="@drawable/shape_radius_red_1024dp"
     android:text="22"
     android:textColor="#ffffff" />
 

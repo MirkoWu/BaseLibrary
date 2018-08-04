@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.DisplayMetrics;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+
+import com.softgarden.baselibrary.BaseApplication;
 
 import java.lang.reflect.Method;
 
@@ -29,6 +32,128 @@ public class ScreenUtil {
     private ScreenUtil() {
         throw new UnsupportedOperationException("u can't fuck me...");
     }
+
+
+    /**
+     * Return whether screen is landscape.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+
+    public static boolean isLandscape(Activity activity) {
+
+        return activity.getResources().getConfiguration().orientation
+
+                == Configuration.ORIENTATION_LANDSCAPE;
+
+    }
+
+
+    /**
+     * Return whether screen is portrait.
+     *
+     * @return {@code true}: yes<br>{@code false}: no
+     */
+
+    public static boolean isPortrait(Activity activity) {
+
+        return activity.getResources().getConfiguration().orientation
+
+                == Configuration.ORIENTATION_PORTRAIT;
+
+    }
+
+    /**
+     * Adapt the screen for vertical slide.
+     *
+     * @param designWidthInDp The size of design diagram's width, in dp,
+     *                        <p>
+     *                        e.g. the design diagram width is 720px, in XHDPI device,
+     *                        <p>
+     *                        the designWidthInDp = 720 / 2.
+     */
+
+    public static void adaptScreenPortrait(final Activity activity,
+
+                                                 final int designWidthInDp) {
+
+        adaptScreen(activity, designWidthInDp, true);
+
+    }
+
+
+    /**
+     * Adapt the screen for horizontal slide.
+     *
+     * @param designHeightInDp The size of design diagram's height, in dp,
+     *                         <p>
+     *                         e.g. the design diagram height is 1080px, in XXHDPI device,
+     *                         <p>
+     *                         the designHeightInDp = 1080 / 3.
+     */
+
+    public static void adaptScreenLandscape(final Activity activity,
+
+                                                   final int designHeightInDp) {
+
+        adaptScreen(activity, designHeightInDp, false);
+
+    }
+
+
+    /**
+     * Cancel adapt the screen.
+     *
+     * @param activity The activity.
+     */
+
+    public static void cancelAdaptScreen(final Activity activity) {
+
+        final DisplayMetrics activityDm = activity.getResources().getDisplayMetrics();
+
+        activityDm.density = density;
+        activityDm.scaledDensity = scaledDensity;
+        activityDm.densityDpi = (int) densityDpi;
+
+    }
+
+    private static float scaledDensity;
+    private static float density;
+    private static float densityDpi;
+
+    /**
+     * Reference from: https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA
+     */
+
+    private static void adaptScreen(final Activity activity,
+
+                                    final float sizeInDp,
+
+                                    final boolean isVerticalSlide) {
+        final DisplayMetrics appDm = BaseApplication.getInstance().getResources().getDisplayMetrics();
+        //每次创建Activity时，这里的值都会是初始值
+        density = appDm.density;
+        scaledDensity = appDm.scaledDensity;
+        densityDpi = appDm.densityDpi;
+
+        final DisplayMetrics activityDm = activity.getResources().getDisplayMetrics();
+
+        if (isVerticalSlide) {
+
+            activityDm.density = activityDm.widthPixels / sizeInDp;
+
+        } else {
+
+            activityDm.density = activityDm.heightPixels / sizeInDp;
+
+        }
+
+        //当activity的density变化时，application的density也会跟着变化，所以这里要使用前面保存的值
+        activityDm.scaledDensity = activityDm.density * (scaledDensity / density);
+        activityDm.densityDpi = (int) (160 * activityDm.density);
+
+    }
+
 
     /**
      * 获取屏幕的宽度px
@@ -58,6 +183,7 @@ public class ScreenUtil {
 
     /**
      * 获取屏幕的真实高低 即包含底部虚拟导航栏
+     *
      * @param context
      * @return
      */
@@ -76,6 +202,7 @@ public class ScreenUtil {
 
     /**
      * 横屏时
+     *
      * @param context
      * @return
      */
@@ -91,6 +218,7 @@ public class ScreenUtil {
         int realHeight = dm.widthPixels;
         return realHeight;
     }
+
     /**
      * 设置透明状态栏(api大于19方可使用)
      * <p>可在Activity的onCreat()中调用</p>

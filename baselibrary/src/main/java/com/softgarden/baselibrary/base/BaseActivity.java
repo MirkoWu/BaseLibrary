@@ -16,12 +16,14 @@ import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 
 import com.mirkowu.statusbarutil.StatusBarUtil;
+import com.softgarden.baselibrary.BaseApplication;
 import com.softgarden.baselibrary.BuildConfig;
 import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.dialog.LoadingDialog;
 import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.L;
 import com.softgarden.baselibrary.utils.LanguageUtil;
+import com.softgarden.baselibrary.utils.ScreenUtil;
 import com.softgarden.baselibrary.utils.ToastUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -57,6 +59,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     protected Unbinder unbinder;
 
     protected boolean mOrientationPortrait = true;//是否强制竖屏默认开启,视频界面全屏播放就要设置false
+    protected boolean mIsAdapterScreen = true;//是否适配屏幕
 
     private Locale mLanguage;//语言
     private boolean isNightMode;//是否夜间模式
@@ -71,12 +74,34 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
         isNightMode = BaseSPManager.isNightMode();
         changeDayNightMode(isNightMode);
 
+        adapterScreen();
         initContentView();
         initPresenter();
         initialize();
 
         //显示当前的Activity路径
         if (BuildConfig.DEBUG) L.e("当前打开的Activity:  " + getClass().getName());
+    }
+
+    /**
+     * 适配屏幕
+     */
+    protected void adapterScreen() {
+        if (mIsAdapterScreen) {
+            if (ScreenUtil.isPortrait(this)) {
+                ScreenUtil.adaptScreenPortrait(this, BaseApplication.getInstance().getDesignWidthInDp());
+            } else {
+                ScreenUtil.adaptScreenLandscape(this, BaseApplication.getInstance().getDesignWidthInDp());
+            }
+        }
+    }
+
+
+    /**
+     * 取消适配
+     */
+    public void cancelAdapterScreen() {
+        ScreenUtil.cancelAdaptScreen(this);
     }
 
     protected void initContentView() {

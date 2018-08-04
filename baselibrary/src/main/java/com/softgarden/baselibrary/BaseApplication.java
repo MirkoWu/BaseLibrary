@@ -26,6 +26,25 @@ import com.softgarden.baselibrary.utils.ActivityManager;
 public class BaseApplication extends Application {
 
     private static BaseApplication instance;
+    private static int mDesignWidthInDp = 360;
+
+    /**
+     * 获取设计稿dp宽度
+     *
+     * @return
+     */
+    public int getDesignWidthInDp() {
+        return mDesignWidthInDp;
+    }
+
+    /**
+     * 设置设计稿dp宽度 默认360dp 即720*1280分辨率设计稿
+     *
+     * @param designWidthInDp
+     */
+    public void setDesignWidthInDp(int designWidthInDp) {
+        this.mDesignWidthInDp = designWidthInDp;
+    }
 
     //static 代码段可以防止内存泄露
     static {

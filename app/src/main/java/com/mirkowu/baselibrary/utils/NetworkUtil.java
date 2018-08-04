@@ -39,7 +39,7 @@ public class NetworkUtil {
      */
     public static boolean isWIFI(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivityManager == null)
+        if (connectivityManager == null || connectivityManager.getActiveNetworkInfo() == null)
             return false;
         return connectivityManager.getActiveNetworkInfo().getType() == ConnectivityManager.TYPE_WIFI;
     }
