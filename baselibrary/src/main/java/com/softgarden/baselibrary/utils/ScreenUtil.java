@@ -5,6 +5,7 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.DisplayMetrics;
@@ -75,7 +76,7 @@ public class ScreenUtil {
 
     public static void adaptScreenPortrait(final Activity activity,
 
-                                                 final int designWidthInDp) {
+                                           final int designWidthInDp) {
 
         adaptScreen(activity, designWidthInDp, true);
 
@@ -94,7 +95,7 @@ public class ScreenUtil {
 
     public static void adaptScreenLandscape(final Activity activity,
 
-                                                   final int designHeightInDp) {
+                                            final int designHeightInDp) {
 
         adaptScreen(activity, designHeightInDp, false);
 
@@ -123,6 +124,7 @@ public class ScreenUtil {
 
     /**
      * Reference from: https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA
+     * 我知道你的意思 依mdpi为例，设计图标的多少xml就写多少 ，实际就是1：1的意思，
      */
 
     private static void adaptScreen(final Activity activity,
@@ -136,6 +138,8 @@ public class ScreenUtil {
         scaledDensity = appDm.scaledDensity;
         densityDpi = appDm.densityDpi;
 
+
+        final DisplayMetrics sysDm = Resources.getSystem().getDisplayMetrics();
         final DisplayMetrics activityDm = activity.getResources().getDisplayMetrics();
 
         if (isVerticalSlide) {
@@ -147,11 +151,16 @@ public class ScreenUtil {
             activityDm.density = activityDm.heightPixels / sizeInDp;
 
         }
+        L.d("ScreenUtil", "density=" + density +" appDm.density=" +  appDm.density + " appDm.density==" + sysDm.density + " activityDm.density= " + activityDm.density);
 
         //当activity的density变化时，application的density也会跟着变化，所以这里要使用前面保存的值
-        activityDm.scaledDensity = activityDm.density * (scaledDensity / density);
+        // activityDm.scaledDensity = activityDm.density * (scaledDensity / density);
+        activityDm.scaledDensity = activityDm.density * (sysDm.scaledDensity / sysDm.density);
         activityDm.densityDpi = (int) (160 * activityDm.density);
 
+        appDm.density = activityDm.density;
+        appDm.scaledDensity = activityDm.scaledDensity;
+        appDm.densityDpi = activityDm.densityDpi;
     }
 
 

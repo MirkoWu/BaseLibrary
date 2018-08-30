@@ -37,8 +37,12 @@ public abstract class BaseDialogFragment<P extends IBasePresenter> extends RxApp
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         View mView = inflater.inflate(getLayoutId(), container, false);
-        unbinder = ButterKnife.bind(this, mView);
+        bindView(mView);
         return mView;
+    }
+
+    protected void bindView(View view) {
+        unbinder = ButterKnife.bind(this, view);
     }
 
     @Override
@@ -96,11 +100,6 @@ public abstract class BaseDialogFragment<P extends IBasePresenter> extends RxApp
         if (BuildConfig.DEBUG) throwable.printStackTrace();
     }
 
-    @Override
-    public void showReLoginDialog() {
-        if (getActivity() instanceof BaseActivity)
-            ((BaseActivity) getActivity()).showReLoginDialog();
-    }
 
     @Override
     public void changeDayNightMode(boolean isNightMode) {
@@ -108,6 +107,12 @@ public abstract class BaseDialogFragment<P extends IBasePresenter> extends RxApp
             ((BaseActivity) getActivity()).changeDayNightMode(isNightMode);
     }
 
+    public BaseActivity getBaseActivity() {
+        if (getActivity() instanceof BaseActivity) {
+            return (BaseActivity) getActivity();
+        }
+        throw new RuntimeException("getActivity is not instanceof BaseActivity");
+    }
 
     @Override
     public void onCancel(DialogInterface dialog) {
@@ -138,6 +143,10 @@ public abstract class BaseDialogFragment<P extends IBasePresenter> extends RxApp
         void onDismiss(DialogFragment dialog);
     }
 
+    @Override
+    public void onRequestFinish() {
+
+    }
 
     /******************************************* MVP **********************************************/
     private P mPresenter;

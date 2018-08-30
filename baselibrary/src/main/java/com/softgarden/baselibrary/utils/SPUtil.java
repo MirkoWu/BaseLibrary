@@ -2,6 +2,7 @@ package com.softgarden.baselibrary.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Base64;
 
@@ -133,7 +134,7 @@ public class SPUtil {
      * @param defaultObject
      * @return
      */
-    public static Object get(String key, Object defaultObject) {
+    public static Object get(String key, @NonNull Object defaultObject) {
         SharedPreferences sp = getSP();
 
         if (defaultObject instanceof String) {
@@ -146,9 +147,9 @@ public class SPUtil {
             return sp.getFloat(key, (Float) defaultObject);
         } else if (defaultObject instanceof Long) {
             return sp.getLong(key, (Long) defaultObject);
+        } else {
+            throw new RuntimeException("The default value defaultObject not be null,you must define Class type");
         }
-
-        return null;
     }
 
     /**

@@ -33,10 +33,10 @@ public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> implement
      *
      * @return
      */
-    @Override
-    public TestMvpPresenter createPresenter() {
-        return new TestMvpPresenter();
-    }
+//    @Override
+//    public TestMvpPresenter createPresenter() {
+//        return new TestMvpPresenter();
+//    }
 
     @Override
     protected int getLayoutId() {

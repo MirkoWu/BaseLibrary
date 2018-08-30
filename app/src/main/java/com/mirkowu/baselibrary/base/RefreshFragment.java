@@ -29,7 +29,7 @@ import java.util.List;
  * 当然也可以自己调整
  */
 public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazyFragment<P> implements
-        IBaseRefreshDisplay, BaseQuickAdapter.RequestLoadMoreListener {
+        BaseQuickAdapter.RequestLoadMoreListener {
     /*** 每页请求数量 */
     public static int PAGE_COUNT = 10;
     /*** 页码，默认从1开始 */
@@ -254,7 +254,8 @@ public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazy
      * 结束刷新
      */
     @Override
-    public void onFinishRefresh() {
+    public void showError(Throwable throwable) {
+        super.showError(throwable);
         finishRefresh();
     }
 

@@ -47,6 +47,10 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
+    
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -60,7 +64,6 @@ dependencies {
     debugImplementation project(':baselibrary')
 
     annotationProcessor library.butterknife_compiler
-    annotationProcessor library.glide_compiler
 
     //网络框架
     implementation library.okio

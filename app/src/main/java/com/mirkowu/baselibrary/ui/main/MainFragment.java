@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.base.ToolbarFragment;
+import com.mirkowu.baselibrary.ui.ScreenAdapterActivity;
 import com.mirkowu.baselibrary.ui.TestToolbarActivity;
 import com.mirkowu.baselibrary.ui.testMvp.TestMvpActivity;
 import com.mirkowu.baselibrary.ui.testRefresh.TestRefreshActivity;
@@ -62,7 +63,8 @@ public class MainFragment extends ToolbarFragment {
 
     }
 
-    @OnClick({R.id.mBtnChangeDayNightMode, R.id.mBtnChangeLanguage, R.id.mBtnMvpTemp, R.id.mBtnRefreshTemp, R.id.mBtnToolbarTemp,})
+    @OnClick({R.id.mBtnChangeDayNightMode, R.id.mBtnChangeLanguage, R.id.mBtnMvpTemp,
+            R.id.mBtnRefreshTemp, R.id.mBtnToolbarTemp, R.id.mBtnDataBindingTemp})
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
@@ -84,6 +86,9 @@ public class MainFragment extends ToolbarFragment {
                 break;
             case R.id.mBtnToolbarTemp://Toolbar页面模板
                 TestToolbarActivity.start(getActivity());
+                break;
+            case R.id.mBtnDataBindingTemp://Toolbar页面模板
+                ScreenAdapterActivity.start(getActivity());
                 break;
 
         }

@@ -1,5 +1,7 @@
 package com.softgarden.baselibrary.utils;
 
+import com.softgarden.baselibrary.BaseApplication;
+
 import java.util.Locale;
 
 /**
@@ -13,7 +15,7 @@ public class BaseSPManager {
     public static final String LANGUAGE_COUNTRY = "language_country";//语言_国家地区
     public static final String DAY_NIGHT_MODE = "day_night_mode";//日夜模式
     public static final String IS_FIRST_LUNCH = "is_first_lunch";//是否第一次登录
-
+    public static final String VERSION_CODE = "version_code";//版本号
 
     /***  语言 默认系统语言*/
     public static Locale getLanguage() {
@@ -46,5 +48,15 @@ public class BaseSPManager {
         SPUtil.put(IS_FIRST_LUNCH, isFirstLunch);
     }
 
+    /*** 是否新版本 */
+    public static boolean isNewVersion() {
+        int versionCode = (int) SPUtil.get(VERSION_CODE, 0);
+        int curCode = AppUtil.getPackageInfo(BaseApplication.getInstance()).versionCode;
+        return curCode > versionCode;
+    }
 
+    public static void updateVersionCode() {
+        int curCode = AppUtil.getPackageInfo(BaseApplication.getInstance()).versionCode;
+        SPUtil.put(VERSION_CODE, curCode);
+    }
 }

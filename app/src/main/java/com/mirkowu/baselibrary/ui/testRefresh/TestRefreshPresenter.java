@@ -28,12 +28,6 @@ public class TestRefreshPresenter extends BasePresenter<TestRefreshContract.Disp
                     public void onSuccess(@Nullable List<GoodsBean> data) {
                         mView.getData(data);
                     }
-
-                    @Override
-                    public void onFinish() {
-                        super.onFinish();
-                        mView.onFinishRefresh();
-                    }
                 });
     }
 }

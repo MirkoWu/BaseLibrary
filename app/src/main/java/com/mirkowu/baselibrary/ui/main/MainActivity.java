@@ -43,7 +43,6 @@ public class MainActivity extends ToolbarActivity {
         return R.layout.activity_main;
     }
 
-
     @Nullable
     @Override
     protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {

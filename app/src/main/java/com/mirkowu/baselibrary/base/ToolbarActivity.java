@@ -24,13 +24,12 @@ public abstract class ToolbarActivity<P extends IBasePresenter> extends BaseActi
 
 
     @Override
-    protected void initContentView() {
-
+    public void bindView( ) {
         /*** 这里可以对Toolbar进行统一的预设置 */
         BaseToolbar.Builder builder
                 = new BaseToolbar.Builder(getContext())
                 .setBackButton(R.mipmap.back)//统一设置返回键
-            //    .setStatusBarColor(ContextUtil.getColor(R.color.colorPrimary))//统一设置颜色
+                //    .setStatusBarColor(ContextUtil.getColor(R.color.colorPrimary))//统一设置颜色
                 .setBackgroundColor(ContextUtil.getColor(R.color.colorPrimary))
                 .setSubTextColor(Color.WHITE)
                 .setTitleTextColor(Color.WHITE);
@@ -41,23 +40,25 @@ public abstract class ToolbarActivity<P extends IBasePresenter> extends BaseActi
         }
         if (mBaseToolbar != null) {
             //添加Toolbar
-            LinearLayout layout = new LinearLayout(this);
+            LinearLayout layout = new LinearLayout(getContext());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
             layout.setLayoutParams(params);
             layout.setOrientation(LinearLayout.VERTICAL);
             layout.addView(mBaseToolbar);
-            View mView = getLayoutInflater().inflate(getLayoutId(), layout, false);
+            View mView = getActivity().getLayoutInflater().inflate(getLayoutId(), layout, false);
             layout.addView(mView);
+
             setContentView(layout);
+
             //将toolbar设置为actionbar
-            setSupportActionBar(mBaseToolbar);
+             setSupportActionBar(mBaseToolbar);
         } else {
             setContentView(getLayoutId());
         }
 
         //设置沉浸式透明状态栏
         //StatusBarUtil.setTransparent(this);
-        StatusBarUtil.setStatusBarColor(this, ContextUtil.getColor(R.color.colorPrimary));
+        StatusBarUtil.setStatusBarColor(getActivity(), ContextUtil.getColor(R.color.colorPrimary));
 
         //ButterKnife
         unbinder = ButterKnife.bind(this);
@@ -66,10 +67,9 @@ public abstract class ToolbarActivity<P extends IBasePresenter> extends BaseActi
         // setStatusBarLightMode();
     }
 
-    @Override
     public void setStatusBarLightMode() {
         if (!BaseSPManager.isNightMode()) {
-            if (StatusBarUtil.setStatusBarLightModeWithNoSupport(this, true)) {
+            if (StatusBarUtil.setStatusBarLightModeWithNoSupport(getActivity(), true)) {
                 getToolbar().hideStatusBar();
             }
         }
@@ -97,3 +97,5 @@ public abstract class ToolbarActivity<P extends IBasePresenter> extends BaseActi
     @Nullable
     protected abstract BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder);
 }
+
+

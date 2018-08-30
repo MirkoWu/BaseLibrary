@@ -5,5 +5,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:overScrollMode="never"
-    app:layoutManager="LinearLayoutManager" />
+    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 

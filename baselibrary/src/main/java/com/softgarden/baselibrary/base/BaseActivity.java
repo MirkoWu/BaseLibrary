@@ -1,32 +1,26 @@
 package com.softgarden.baselibrary.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDelegate;
-import android.text.TextUtils;
 
 import com.mirkowu.statusbarutil.StatusBarUtil;
-import com.softgarden.baselibrary.BaseApplication;
 import com.softgarden.baselibrary.BuildConfig;
 import com.softgarden.baselibrary.R;
-import com.softgarden.baselibrary.dialog.LoadingDialog;
 import com.softgarden.baselibrary.utils.BaseSPManager;
+import com.softgarden.baselibrary.utils.InstanceUtil;
 import com.softgarden.baselibrary.utils.L;
-import com.softgarden.baselibrary.utils.LanguageUtil;
-import com.softgarden.baselibrary.utils.ScreenUtil;
-import com.softgarden.baselibrary.utils.ToastUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Locale;
 
 import butterknife.ButterKnife;
@@ -52,30 +46,30 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     public static final String KEY_DATA = "data";
     public static final String KEY_TITLE = "title";
     public static final String KEY_TYPE = "type";
+    public static final String KEY_LOGIN_EVENT = "login_event";
 
     public static final int REQUEST_LOGIN = 0x00001234;
     public static final int REQUEST_CODE = 0x00005678;
 
     protected Unbinder unbinder;
+    protected BaseDelegate mBaseDelegate;
 
-    protected boolean mOrientationPortrait = true;//是否强制竖屏默认开启,视频界面全屏播放就要设置false
-    protected boolean mIsAdapterScreen = true;//是否适配屏幕
-
-    private Locale mLanguage;//语言
-    private boolean isNightMode;//是否夜间模式
+    @NonNull
+    public BaseDelegate getBaseDelegate() {
+        if (mBaseDelegate == null) {
+            mBaseDelegate = new BaseDelegate(this);
+        }
+        return mBaseDelegate;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //语言切换 要在setContentView()前
-        mLanguage = BaseSPManager.getLanguage();
-        changeLanguage(mLanguage);
 
-        isNightMode = BaseSPManager.isNightMode();
-        changeDayNightMode(isNightMode);
+        final BaseDelegate delegate = getBaseDelegate();
+        delegate.onCreate(savedInstanceState);
 
-        adapterScreen();
-        initContentView();
+        bindView();
         initPresenter();
         initialize();
 
@@ -83,28 +77,14 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
         if (BuildConfig.DEBUG) L.e("当前打开的Activity:  " + getClass().getName());
     }
 
-    /**
-     * 适配屏幕
-     */
-    protected void adapterScreen() {
-        if (mIsAdapterScreen) {
-            if (ScreenUtil.isPortrait(this)) {
-                ScreenUtil.adaptScreenPortrait(this, BaseApplication.getInstance().getDesignWidthInDp());
-            } else {
-                ScreenUtil.adaptScreenLandscape(this, BaseApplication.getInstance().getDesignWidthInDp());
-            }
-        }
-    }
+//    /**
+//     * 取消适配
+//     */
+//    public void cancelAdapterScreen() {
+//        ScreenUtil.cancelAdaptScreen(this);
+//    }
 
-
-    /**
-     * 取消适配
-     */
-    public void cancelAdapterScreen() {
-        ScreenUtil.cancelAdaptScreen(this);
-    }
-
-    protected void initContentView() {
+    protected void bindView() {
         setContentView(getLayoutId());
         unbinder = ButterKnife.bind(this);//ButterKnife
     }
@@ -112,26 +92,13 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
     @Override
     protected void onResume() {
-        checkScreenOrientation();
-        checkDayNightMode();
-        checkLanguage();
+        getBaseDelegate().onResume();
         super.onResume();
-    }
-
-    /**
-     * 检查是否为竖屏
-     */
-    private void checkScreenOrientation() {
-        if (mOrientationPortrait && getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-            //调用此方法会重新创建Activity导致onCreate()执行二次,最好在manifest中配置 android:screenOrientation="portrait"
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
     }
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        mLanguage = BaseSPManager.getLanguage();
-        super.attachBaseContext(LanguageUtil.attachBaseContext(newBase, mLanguage));
+        super.attachBaseContext(getBaseDelegate().attachBaseContext(newBase));
     }
 
     /**
@@ -142,8 +109,22 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        LanguageUtil.switchLanguage(getContext(), mLanguage);
+        getBaseDelegate().onConfigurationChanged(newConfig);
     }
+
+    /**
+     * 设置横屏竖屏
+     *
+     * @param mOrientationPortrait true 竖屏 false 横屏
+     */
+    public void setOrientationPortrait(boolean mOrientationPortrait) {
+        getBaseDelegate().setOrientationPortrait(mOrientationPortrait);
+    }
+
+    public boolean isOrientationPortrait() {
+        return getBaseDelegate().mOrientationPortrait;
+    }
+
 
     /**
      * 切换语言 (设置完后要重启Activity才生效 {@link #reload()})
@@ -151,20 +132,9 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
      * @param language
      */
     public void changeLanguage(Locale language) {
-        LanguageUtil.switchLanguage(getContext(), language);
-        BaseSPManager.setLanguage(language);
+        getBaseDelegate().changeLanguage(language);
     }
 
-    /**
-     * 检查语言
-     */
-    private void checkLanguage() {
-        Locale language = BaseSPManager.getLanguage();
-        if (!isEqualsLanguage(mLanguage, language)) {
-            mLanguage = language;
-            reload();
-        }
-    }
 
     /**
      * 是否相同 二种语言 （语言和 国家都相同才算是相同）
@@ -174,24 +144,9 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
      * @return
      */
     public boolean isEqualsLanguage(Locale mLanguage, Locale locale) {
-        if (TextUtils.equals(mLanguage.getLanguage(), locale.getLanguage())
-                && TextUtils.equals(mLanguage.getCountry(), locale.getCountry())) {
-            return true;
-        }
-        return false;
+        return getBaseDelegate().isEqualsLanguage(mLanguage, locale);
     }
 
-    /**
-     * 检查日夜模式
-     */
-    private void checkDayNightMode() {
-        //检查日夜模式
-        boolean nightMode = BaseSPManager.isNightMode();
-        if (nightMode != isNightMode) {
-            isNightMode = nightMode;
-            reload();
-        }
-    }
 
     /**
      * 切换日夜模式
@@ -204,16 +159,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
      */
     @Override
     public void changeDayNightMode(boolean isNightMode) {
-        BaseSPManager.setNightMode(isNightMode);
-        if (isNightMode) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
-        //这是第二种方式
-//        UiModeManager uiModeManager= (UiModeManager) getSystemService(Context.UI_MODE_SERVICE);
-//        uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
-
+        getBaseDelegate().changeDayNightMode(isNightMode);
     }
 
 
@@ -222,20 +168,14 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
      * 此方法会比 recreate() 效果更好
      */
     public void reload() {
-        Intent intent = getIntent();
-        overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        finish();
-        overridePendingTransition(0, 0);
-        startActivity(intent);
-        System.gc();
+        getBaseDelegate().reload();
     }
 
     /**
      * 权限提示对话框
      */
     public void showPermissionDialog() {
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(this)
                 .setTitle(R.string.prompt_message)
                 .setMessage(R.string.permission_lack)
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -263,19 +203,6 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
 
     /**
-     * 设置横屏竖屏
-     *
-     * @param mOrientationPortrait true 竖屏 false 横屏
-     */
-    public void setOrientationPortrait(boolean mOrientationPortrait) {
-        this.mOrientationPortrait = mOrientationPortrait;
-    }
-
-    public boolean isOrientationPortrait() {
-        return mOrientationPortrait;
-    }
-
-    /**
      * 设置为亮色模式 状态栏 颜色变黑
      */
     public void setStatusBarLightMode() {
@@ -300,27 +227,24 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
         return this;
     }
 
+    public BaseActivity getBaseActivity() {
+        return this;
+    }
+
     @Override
     public Context getContext() {
         return this;
     }
 
-    public void startActivity(Class<? extends Activity> cls) {
-        this.startActivity(new Intent(this, cls));
-    }
-
-    public void startActivityFinishSelf(Class<? extends Activity> cls) {
-        this.startActivity(new Intent(this, cls));
-        finish();
-    }
 
     /***********************************  LoadingDialog start   ***********************************/
+
     /**
      * 显示加载框
      */
     @Override
     public void showProgressDialog() {
-        showLoading(getActivity(), null);
+        getBaseDelegate().showProgressDialog();
     }
 
     /**
@@ -328,7 +252,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
      */
     @Override
     public void showProgressDialog(CharSequence message) {
-        showLoading(getActivity(), message);
+        getBaseDelegate().showProgressDialog(message);
     }
 
     /**
@@ -336,35 +260,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
      */
     @Override
     public void hideProgressDialog() {
-        dismissLoading();
-    }
-
-    private static int mCount = 0;
-    private static LoadingDialog mLoadingDialog;
-
-    private synchronized void showLoading(Activity activity, CharSequence message) {
-        if (mCount == 0) {
-            mLoadingDialog = new LoadingDialog(activity, message);
-            mLoadingDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                @Override
-                public void onCancel(DialogInterface dialogInterface) {
-                    mCount = 0;
-                }
-            });
-            mLoadingDialog.show();
-        }
-        mCount++;
-    }
-
-    private synchronized void dismissLoading() {
-        if (mCount == 0) {
-            return;
-        }
-        mCount--;
-        if (mCount == 0) {
-            mLoadingDialog.dismiss();
-            mLoadingDialog = null;
-        }
+        getBaseDelegate().hideProgressDialog();
     }
 
     /*******************************  LoadingDialog end  *****************************************/
@@ -376,8 +272,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
      */
     @Override
     public void showError(Throwable throwable) {
-        ToastUtil.s(throwable.getMessage());
-        if (BuildConfig.DEBUG) throwable.printStackTrace();
+        getBaseDelegate().showError(throwable);
     }
 
 
@@ -386,7 +281,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_LOGIN) {
             int eventId = 0;
-            if (data != null) eventId = data.getIntExtra("eventId", 0);
+            if (data != null) eventId = data.getIntExtra(KEY_LOGIN_EVENT, 0);
             backFromLogin(eventId);//从登陆界面返回  登录成功
         }
     }
@@ -400,8 +295,12 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
     }
 
+
+    /**
+     * 网络请求结束（无论成功还是失败）
+     */
     @Override
-    public void showReLoginDialog() {
+    public void onRequestFinish() {
 
     }
 
@@ -417,7 +316,6 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
     private P mPresenter;
 
-
     protected void initPresenter() {
         mPresenter = createPresenter();
         if (mPresenter != null) mPresenter.attachView(this);
@@ -427,13 +325,19 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
         return mPresenter;
     }
 
-
     /**
      * 创建Presenter 此处已重写 需要时重写即可
      *
      * @return
      */
     public P createPresenter() {
+        if (this instanceof IBaseDisplay
+                && this.getClass().getGenericSuperclass() instanceof ParameterizedType
+                && ((ParameterizedType) (this.getClass().getGenericSuperclass())).getActualTypeArguments().length > 0) {
+            Class mPresenterClass = (Class) ((ParameterizedType) (this.getClass().getGenericSuperclass()))
+                    .getActualTypeArguments()[0];//获取Presenter的class
+            return InstanceUtil.getInstance(mPresenterClass);
+        }
         return null;
     }
 

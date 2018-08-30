@@ -58,7 +58,7 @@ public class TestToolbarActivity extends ToolbarActivity {
                     changeDayNightMode(!BaseSPManager.isNightMode());
                     reload();
                 })
-                .addRightImage(R.mipmap.more, v -> startActivity(TestMvpActivity.class))
+                .addRightImage(R.mipmap.more, v -> TestMvpActivity.start(this))
                 .setBottomDivider(Color.parseColor("#E4DFE1"), DisplayUtil.dip2px(this, 3))
                 .setTitleTextColor(Color.WHITE)
                 .setTitle(R.string.app_name);

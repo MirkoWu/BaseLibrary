@@ -1,6 +1,5 @@
 package com.mirkowu.baselibrary.ui.testRefresh;
 
-import com.mirkowu.baselibrary.base.IBaseRefreshDisplay;
 import com.mirkowu.baselibrary.bean.GoodsBean;
 import com.softgarden.baselibrary.base.IBaseDisplay;
 import com.softgarden.baselibrary.base.IBasePresenter;
@@ -12,10 +11,10 @@ import java.util.List;
  * @date on 2018/4/12
  * @describe
  */
-public class TestRefreshContract {
+public interface TestRefreshContract {
 
     //这里可以继承IBaseRefreshDispaly
-    interface Display extends IBaseDisplay, IBaseRefreshDisplay {
+     interface Display extends IBaseDisplay {
         void getData(List<GoodsBean> bean);
     }
 

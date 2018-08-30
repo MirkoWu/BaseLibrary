@@ -29,7 +29,7 @@ import java.util.List;
  * 当然也可以自己调整
  */
 public abstract class RefreshActivity<P extends IBasePresenter> extends ToolbarActivity<P> implements
-        IBaseRefreshDisplay, BaseQuickAdapter.RequestLoadMoreListener {
+         BaseQuickAdapter.RequestLoadMoreListener {
     /*** 每页请求数量 */
     public static int PAGE_COUNT = 10;
     /*** 页码，默认从1开始 */
@@ -259,10 +259,10 @@ public abstract class RefreshActivity<P extends IBasePresenter> extends ToolbarA
      * 结束刷新
      */
     @Override
-    public void onFinishRefresh() {
+    public void showError(Throwable throwable) {
+        super.showError(throwable);
         finishRefresh();
     }
-
 
     /**
      * 如需上拉更多 请重写该方法

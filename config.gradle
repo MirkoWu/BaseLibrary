@@ -73,8 +73,8 @@ ext {
             amap                         : 'com.amap.api:location:latest.integration',
             ShortcutBadger               : 'me.leolin:ShortcutBadger:1.1.19@aar',
             PickerView                   : 'com.contrarywind:Android-PickerView:3.2.5',
-            BaseToolbar                  : 'com.mirkowu:BaseToolbar:0.0.5',
-            StatusBarUtil                : 'com.mirkowu:StatusBarUtil:0.0.4',
+            BaseToolbar                  : 'com.mirkowu:BaseToolbar:0.0.8',
+            StatusBarUtil                : 'com.mirkowu:StatusBarUtil:0.0.6',
     ]
 
     //keystore

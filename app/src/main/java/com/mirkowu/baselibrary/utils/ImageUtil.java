@@ -10,12 +10,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.mirkowu.baselibrary.R;
 import com.softgarden.baselibrary.base.BaseActivity;
 import com.softgarden.baselibrary.dialog.LoadingDialog;
 import com.softgarden.baselibrary.utils.EmptyUtil;
+import com.softgarden.baselibrary.utils.FileUtil;
 import com.softgarden.baselibrary.utils.L;
 import com.softgarden.baselibrary.utils.RxPermissionsUtil;
 import com.softgarden.baselibrary.utils.ToastUtil;
@@ -42,8 +45,14 @@ import io.reactivex.schedulers.Schedulers;
 public class ImageUtil {
     public static final String TAG = ImageUtil.class.getName();
 
+    /**
+     * 七牛地址
+     *
+     * @param url
+     * @return
+     */
     public static String getImageUrl(String url) {
-        return url;
+        return"自己定义要添加的路径"+ url;
     }
 
 
@@ -57,7 +66,9 @@ public class ImageUtil {
         //有完整路径的url不用拼接 本地图片也不用
         if (url != null && (url.startsWith("http://")
                 || url.startsWith("https://")
-                || url.startsWith(FileCacheUtil.getRootDir().getAbsolutePath()))) {
+                || url.startsWith("file:///android_asset/")
+                || url.startsWith("file:///android_asset/")
+                || url.startsWith(FileUtil.getAppRootDir().getAbsolutePath()))) {
         } else {
             url = getImageUrl(url);
         }
@@ -91,34 +102,47 @@ public class ImageUtil {
      * @param url
      */
     public static void load(ImageView imageView, @Nullable String url) {
-        GlideApp.with(imageView.getContext())
+        Glide.with(imageView.getContext())
                 .load(checkUrl(url))
-                .dontAnimate()
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(imageView);
     }
 
-
     /**
-     * 加载图片长方形图片
-     * 默认图是长方形
+     * 加载本地视频 自动获取缩略图
+     *
+     * @param imageView
+     * @param path
+     */
+    public static void loadLocalVideo(ImageView imageView, @Nullable String path) {
+        Glide.with(imageView.getContext())
+                .load(path)
+                .apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                .into(imageView);
+    }
+    /**
+     * 加载本地图片 最好override一下宽高，不然滑动会卡顿
      *
      * @param imageView
      * @param url
+     * @param width
      */
-    public static void loadRectangle(ImageView imageView, String url) {
-        GlideApp.with(imageView.getContext())
-                .load(checkUrl(url))
-                .dontAnimate()
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+    public static void loadLocalSize(ImageView imageView, @Nullable String url, int width) {
+        Glide.with(imageView.getContext())
+                .load(url)
+                .apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .override(width, width)
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(imageView);
     }
-
-
     /**
      * 加载头像
      *
@@ -126,12 +150,12 @@ public class ImageUtil {
      * @param url
      */
     public static void loadHeader(ImageView imageView, String url) {
-        GlideApp.with(imageView.getContext())
+        Glide.with(imageView.getContext())
                 .load(checkUrl(url))
-                .dontAnimate()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
+                .apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(imageView);
     }
 
@@ -143,12 +167,30 @@ public class ImageUtil {
      * @param url
      */
     public static void loadBigHeader(ImageView imageView, String url) {
-        GlideApp.with(imageView.getContext())
+        Glide.with(imageView.getContext())
                 .load(checkUrl(url))
-                .dontAnimate()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
+                .apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                .into(imageView);
+    }
+
+
+
+    /**
+     * 没有占位图
+     *
+     * @param imageView
+     * @param url
+     */
+    public static void loadNoHolder(ImageView imageView, @Nullable String url) {
+        Glide.with(imageView.getContext())
+                .load(checkUrl(url))
+                .apply(RequestOptions.noAnimation()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                //  .placeholder(R.mipmap.ic_launcher)
+                //  .error(R.mipmap.ic_launcher)
                 .into(imageView);
     }
 
@@ -160,49 +202,52 @@ public class ImageUtil {
      * @param url
      */
     public static void loadBlur(ImageView imageView, String url) {
-        GlideApp.with(imageView.getContext())
+        Glide.with(imageView.getContext())
                 .load(checkUrl(url))
-                .dontAnimate()
-                .placeholder(R.mipmap.ic_launcher)
-                // .bitmapTransform(new BlurTransformation(imageView.getContext(), 1, 3))
-                .error(R.mipmap.ic_launcher)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .dontAnimate()
+                        // .bitmapTransform(new BlurTransformation(imageView.getContext(), 1, 3))
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(imageView);
     }
 
     public static void loadBlur(ImageView imageView, String url, int radius, int sampling) {
         // radius "23":模糊度；sampling "4":图片缩放4倍后再进行模糊a
-        GlideApp.with(imageView.getContext())
+        Glide.with(imageView.getContext())
                 .load(checkUrl(url))
-                .dontAnimate()
-                // .placeholder(R.mipmap.ic_launcher)
-                // .bitmapTransform(new BlurTransformation(imageView.getContext(), radius, sampling))
-                .error(R.mipmap.ic_launcher)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .dontAnimate()
+                        // .bitmapTransform(new BlurTransformation(imageView.getContext(), radius, sampling))
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(imageView);
     }
 
 
     public static void loadAsGif(ImageView imageView, String url) {
-        GlideApp.with(imageView.getContext())
+        Glide.with(imageView.getContext())
                 .asGif()
-                .load(checkUrl(url))
                 .thumbnail(0.5f)
-                .dontAnimate()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
+                .load(checkUrl(url))
+                .apply(RequestOptions.placeholderOf(R.mipmap.ic_launcher)
+                        .error(R.mipmap.ic_launcher)
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(imageView);
     }
 
     /**
      * 清除缓存
+     * {@link FileUtil#clearImageAllCache()}
+     *
      * @param context
      * @return
      */
     public static Observable<Boolean> clearCache(BaseActivity context) {
         return Observable.create((ObservableOnSubscribe<Boolean>) e -> {
-            GlideApp.get(context).clearDiskCache();
+            // GlideApp.get(context).clearDiskCache();
+            FileUtil.clearImageAllCache();
             e.onNext(true);
             e.onComplete();
 
@@ -225,7 +270,7 @@ public class ImageUtil {
         if (imgList == null || imgList.isEmpty())
             return;
         //申请权限
-        RxPermissionsUtil.request(context,RxPermissionsUtil.STORAGE).subscribe(aBoolean -> {
+        RxPermissionsUtil.request(context, RxPermissionsUtil.STORAGE).subscribe(aBoolean -> {
             if (aBoolean) {
                 LoadingDialog dialog = new LoadingDialog(context);
                 if (!isSilentLoad) {
@@ -236,7 +281,7 @@ public class ImageUtil {
                     for (String path : imgList) {
                         save2SDCard(context, ImageUtil.checkUrl(path))
                                 .subscribe(bitmap -> {
-                                    saveBitmap2File(context, bitmap, FileCacheUtil.getRootDir(), path.hashCode() + ".jpeg");
+                                    saveBitmap2File(context, bitmap, FileUtil.getAppRootDir(), path.hashCode() + ".jpeg");
                                     count.add(path);
                                     if (!e.isDisposed())
                                         e.onNext(count);
@@ -250,7 +295,7 @@ public class ImageUtil {
                             if (count.size() == imgList.size()) {
                                 if (!isSilentLoad) {
                                     dialog.dismiss();
-                                    ToastUtil.l(String.format("图片已保存至%s文件夹内", FileCacheUtil.getRootDir()));
+                                    ToastUtil.l(String.format("图片已保存至%s文件夹内", FileUtil.getAppRootDir()));
                                 }
                             }
                         }, throwable -> {
@@ -291,7 +336,7 @@ public class ImageUtil {
             return;
 
         //申请权限
-        RxPermissionsUtil.request(context,RxPermissionsUtil.STORAGE).subscribe(aBoolean -> {
+        RxPermissionsUtil.request(context, RxPermissionsUtil.STORAGE).subscribe(aBoolean -> {
             if (aBoolean) {
                 LoadingDialog dialog = new LoadingDialog(context);
                 if (!isSilentLoad) {
@@ -300,7 +345,7 @@ public class ImageUtil {
                 Observable.create((ObservableOnSubscribe<String>) e -> {
                     save2SDCard(context, ImageUtil.checkUrl(imageUrl))
                             .subscribe(bitmap -> {
-                                saveBitmap2File(context, bitmap, FileCacheUtil.getRootDir(), saveName);
+                                saveBitmap2File(context, bitmap, FileUtil.getAppRootDir(), saveName);
                                 e.onNext(" ");
                             }/*, throwable -> {
                                 if (!isSilentLoad) ToastUtil.s(R.string.load_img_failed);
@@ -311,7 +356,7 @@ public class ImageUtil {
                         .subscribe(count -> {
                             if (!isSilentLoad) {
                                 dialog.dismiss();
-                                ToastUtil.l(String.format("图片已保存至%s文件夹内", FileCacheUtil.getRootDir()));
+                                ToastUtil.l(String.format("图片已保存至%s文件夹内", FileUtil.getAppRootDir()));
                             }
                         }, throwable -> {
                             if (!isSilentLoad) {
@@ -348,7 +393,7 @@ public class ImageUtil {
         return Observable.create(new ObservableOnSubscribe<Bitmap>() {
             @Override
             public void subscribe(ObservableEmitter<Bitmap> e) throws Exception {
-                Bitmap bitmap = GlideApp.with(context)
+                Bitmap bitmap = Glide.with(context)
                         .asBitmap()
                         .load(url)
                         .submit(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)

@@ -81,6 +81,7 @@ Base 大致功能如下：
     优点：无入侵，随用随关。只要布局按照设计稿的大小来写（dp模式,用的单位是dp,sp ）即可。
    ```
 
+##  Demo下载 ##
 
 ##  关于模板 ##
     项目 localTemplates 目录下的二个模板请Copy到 AndroidStudio安装目录下的模板路径:
@@ -91,6 +92,11 @@ Base 大致功能如下：
 
 ## Log更新日志 ##
 
+    *2018-8-17
+        更新SPUtil  get()方法 defValue 默认值不能为空
+        更新RefreshFragment/RefreshActivity 刷新请求失败时的UI状态自动化
+    *2018-8-16
+        更新BaseSPManager 增加 判断是否新版本方法
     *2018-8-4
         重要更新: 添加屏幕适配方案, 原理同今日头条适配法
         修改了ScreenUtil、 BaseActivity、BaseApplication文件

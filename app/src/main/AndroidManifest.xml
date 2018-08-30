@@ -33,7 +33,11 @@
             android:configChanges="locale|layoutDirection" />
         <activity android:name=".ui.testMvp.TestMvpActivity" />
         <activity android:name=".ui.testRefresh.TestRefreshActivity" />
-        <activity android:name=".ui.SocketTestActivity"></activity>
+        <activity android:name=".ui.SocketTestActivity" />
+        <!--android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"-->
+        <activity android:name=".ui.ScreenAdapterActivity" >
+
+        </activity>
     </application>
 
 </manifest>

@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
+import static com.softgarden.baselibrary.base.BaseActivity.KEY_LOGIN_EVENT;
 import static com.softgarden.baselibrary.base.BaseActivity.REQUEST_LOGIN;
 
 /**
@@ -70,8 +71,12 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View mView = inflater.inflate(getLayoutId(), container, false);
-        unbinder = ButterKnife.bind(this, mView);
+        bindView(mView);
         return mView;
+    }
+
+    protected void bindView(View mView) {
+        unbinder = ButterKnife.bind(this, mView);
     }
 
 
@@ -140,18 +145,14 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
         if (BuildConfig.DEBUG) throwable.printStackTrace();
     }
 
-    @Override
-    public void showReLoginDialog() {
-        if (getActivity() instanceof BaseActivity)
-            ((BaseActivity) getActivity()).showReLoginDialog();
-    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == REQUEST_LOGIN) {
             int eventId = 0;
-            if (data != null) eventId = data.getIntExtra("eventId", 0);
+            if (data != null) eventId = data.getIntExtra(KEY_LOGIN_EVENT, 0);
             backFromLogin(eventId);//从登陆界面返回  登录成功
         }
     }
@@ -186,6 +187,10 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
         if (unbinder != null) unbinder.unbind();
     }
 
+    @Override
+    public void onRequestFinish() {
+
+    }
 
     /*********************** MVP 参考 https://github.com/north2016/T-MVP ***************************/
     private P mPresenter;
