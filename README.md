@@ -63,6 +63,7 @@ Base 大致功能如下：
      7.ToastUtil 吐司工具
      8.RxPermissionsUtil 权限申请
      9.RegularUtil 正则工具
+     10.AESUtil、RSAUtil、MD5Util 常用加解密工具
      等...
 
 
@@ -92,6 +93,9 @@ Base 大致功能如下：
 
 ## Log更新日志 ##
 
+    *2018-8-30
+        调整框架结构 抽离BaseDelegate 增加 DataBinding 用法即示例
+        增加AES和RSA加解密算法工具
     *2018-8-17
         更新SPUtil  get()方法 defValue 默认值不能为空
         更新RefreshFragment/RefreshActivity 刷新请求失败时的UI状态自动化
