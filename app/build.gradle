@@ -76,5 +76,5 @@ dependencies {
 
     implementation library.TabLayout
 
-    implementation 'com.google.android:flexbox:0.3.0-alpha2'
+    implementation 'com.google.android:flexbox:1.0.0'
 }

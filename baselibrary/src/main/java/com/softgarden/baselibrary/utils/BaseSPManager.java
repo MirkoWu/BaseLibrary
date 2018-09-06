@@ -14,7 +14,7 @@ public class BaseSPManager {
     public static final String LANGUAGE = "language";//语言
     public static final String LANGUAGE_COUNTRY = "language_country";//语言_国家地区
     public static final String DAY_NIGHT_MODE = "day_night_mode";//日夜模式
-    public static final String IS_FIRST_LUNCH = "is_first_lunch";//是否第一次登录
+    public static final String IS_FIRST_LAUNCH = "is_first_launch";//是否第一次启动
     public static final String VERSION_CODE = "version_code";//版本号
 
     /***  语言 默认系统语言*/
@@ -40,12 +40,12 @@ public class BaseSPManager {
     }
 
     /*** 是否第一次启动 */
-    public static boolean isFirstLunch() {
-        return (boolean) SPUtil.get(IS_FIRST_LUNCH, true);
+    public static boolean isFirstLaunch() {
+        return (boolean) SPUtil.get(IS_FIRST_LAUNCH, true);
     }
 
-    public static void setIsFirstLunch(boolean isFirstLunch) {
-        SPUtil.put(IS_FIRST_LUNCH, isFirstLunch);
+    public static void setIsFirstLaunch(boolean isFirstLunch) {
+        SPUtil.put(IS_FIRST_LAUNCH, isFirstLunch);
     }
 
     /*** 是否新版本 */

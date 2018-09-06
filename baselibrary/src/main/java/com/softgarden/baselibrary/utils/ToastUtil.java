@@ -1,7 +1,6 @@
 package com.softgarden.baselibrary.utils;
 
 import android.content.Context;
-import android.support.annotation.StringRes;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -71,12 +70,13 @@ public class ToastUtil {
 
     /**
      * short Toast
+     * 多语言适配时 getString跟context.getResources() 有关，必须使用当前Context
      *
      * @param msgId
      */
-    public static void s(@StringRes int msgId) {
-        s(BaseApplication.getInstance().getApplicationContext().getResources().getString(msgId));
-    }
+//    public static void s(@StringRes int msgId) {
+//        s(BaseApplication.getInstance().getApplicationContext().getResources().getString(msgId));
+//    }
 
     /**
      * long Toast
@@ -89,10 +89,11 @@ public class ToastUtil {
 
     /**
      * long Toast
+     * 多语言适配时 getString跟context.getResources() 有关，必须使用当前Context
      *
      * @param msgId
      */
-    public static void l(@StringRes int msgId) {
-        l(BaseApplication.getInstance().getApplicationContext().getResources().getString(msgId));
-    }
+//    public static void l(@StringRes int msgId) {
+//        l(BaseApplication.getInstance().getApplicationContext().getResources().getString(msgId));
+//    }
 }

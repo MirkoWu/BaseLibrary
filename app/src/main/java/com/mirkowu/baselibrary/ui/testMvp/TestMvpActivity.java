@@ -70,6 +70,6 @@ public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> implement
 
 
     public void onClick(View view) {
-        ToastUtil.s("测试吐司");
+        ToastUtil.s(getString(R.string.app_name));
     }
 }
