@@ -31,8 +31,10 @@ dependencies {
     api library.supportV7
     api library.design
     api library.cardview
-    api library.recyclerview
     api library.constraint
+    api library.recyclerview
+    api library.circleimageview
+
     api library.rxjava2
     api library.rxlifecycle2_components
     api library.BaseRecyclerViewAdapterHelper

@@ -1,8 +1,6 @@
 package com.softgarden.baselibrary.widget;
 
-import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.annotation.ColorInt;
@@ -22,7 +20,7 @@ public class ColorDividerDecoration extends RecyclerView.ItemDecoration {
     public static final int MIDDLE = 1;
     public static final int MIDDLE_END = 2;
 
-    private Context mContext;
+   // private Context mContext;
     /**
      * 画笔
      */
@@ -49,27 +47,27 @@ public class ColorDividerDecoration extends RecyclerView.ItemDecoration {
 //    private int mRightPadding;//
 
 
-    public ColorDividerDecoration(Context mContext) {
-        this(mContext, VERTICAL, Color.parseColor("#CCCCCC"), 1, BEGINNING_MIDDLE);
-    }
-    public ColorDividerDecoration(Context mContext, @ColorInt int mDividerColor) {
-        this(mContext, VERTICAL, mDividerColor, 1, BEGINNING_MIDDLE);
-    }
-     public ColorDividerDecoration(Context mContext, @ColorInt int mDividerColor, int mDividerHeight) {
-        this(mContext, VERTICAL, mDividerColor, mDividerHeight, BEGINNING_MIDDLE);
-    }
-    public ColorDividerDecoration(Context mContext, int mOrientation, @ColorInt int mDividerColor, int mDividerHeight) {
-        this(mContext, mOrientation, mDividerColor, mDividerHeight, BEGINNING_MIDDLE);
+    public ColorDividerDecoration(@ColorInt int mDividerColor) {
+        this(VERTICAL, mDividerColor, 1, BEGINNING_MIDDLE);
     }
 
- public ColorDividerDecoration(Context mContext, int mOrientation, @ColorInt int mDividerColor, int mDividerHeight, int mShowDividers) {
-        this.mContext = mContext;
+
+    public ColorDividerDecoration(@ColorInt int mDividerColor, int mDividerHeight) {
+        this(VERTICAL, mDividerColor, mDividerHeight, BEGINNING_MIDDLE);
+    }
+
+    public ColorDividerDecoration(int mOrientation, @ColorInt int mDividerColor, int mDividerHeight) {
+        this(mOrientation, mDividerColor, mDividerHeight, BEGINNING_MIDDLE);
+    }
+
+    public ColorDividerDecoration(int mOrientation, @ColorInt int mDividerColor, int mDividerHeight, int mShowDividers) {
         this.mOrientation = mOrientation;
         this.mDividerColor = mDividerColor;
         this.mDividerHeight = mDividerHeight;
         this.mShowDividers = mShowDividers;
         initPaint();
     }
+
 
     private void initPaint() {
         mPaint = new Paint();

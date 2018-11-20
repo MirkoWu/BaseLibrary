@@ -24,7 +24,7 @@ public abstract class ToolbarActivity<P extends IBasePresenter> extends BaseActi
 
 
     @Override
-    public void bindView( ) {
+    public void bindView() {
         /*** 这里可以对Toolbar进行统一的预设置 */
         BaseToolbar.Builder builder
                 = new BaseToolbar.Builder(getContext())
@@ -51,7 +51,7 @@ public abstract class ToolbarActivity<P extends IBasePresenter> extends BaseActi
             setContentView(layout);
 
             //将toolbar设置为actionbar
-             setSupportActionBar(mBaseToolbar);
+            setSupportActionBar(mBaseToolbar);
         } else {
             setContentView(getLayoutId());
         }
@@ -70,7 +70,7 @@ public abstract class ToolbarActivity<P extends IBasePresenter> extends BaseActi
     public void setStatusBarLightMode() {
         if (!BaseSPManager.isNightMode()) {
             if (StatusBarUtil.setStatusBarLightModeWithNoSupport(getActivity(), true)) {
-                getToolbar().hideStatusBar();
+                if (getToolbar() != null) getToolbar().hideStatusBar();
             }
         }
     }

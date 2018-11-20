@@ -47,15 +47,16 @@ public abstract class RxCallback<T> implements Callback<T> {
 
     @Override
     public void onError(Throwable e) {
+
         if (e instanceof ConnectException) {
-            // ToastUtil.s(R.string.network_connection_failed);
+            ToastUtil.s("服务器连接失败");
         } else if (e instanceof UnknownHostException) {
-            // ToastUtil.s(R.string.network_request_failed);
+            ToastUtil.s("请求失败");
         } else if (e instanceof SocketTimeoutException) {
-            //ToastUtil.s(R.string.network_connection_timeout);
+            ToastUtil.s("请求超时");
         } else if (e instanceof JsonParseException) {
-            //ToastUtil.s(R.string.json_failed);
-            // e.printStackTrace();
+            ToastUtil.s("数据解析失败");
+            e.printStackTrace();
         } else if (e instanceof RxJava2NullException) {//RxJava2不能发送null
             onSuccess(null);
         } else if (e instanceof ApiException) {
@@ -65,15 +66,6 @@ public abstract class RxCallback<T> implements Callback<T> {
             ApiException apiException = (ApiException) e;
             onApiException(apiException);
 
-
-//            if (apiException.getStatus() == -1) {//token过期 这里不用管前面已处理
-//
-//            } else {
-//                // mView.showError(e);//有需要的话可以 发送给View层处理异常
-//
-//                ToastUtil.s(e.getMessage());
-//                e.printStackTrace();
-//            }
         } else {
             ToastUtil.s(e.getMessage());
             e.printStackTrace();
@@ -96,6 +88,8 @@ public abstract class RxCallback<T> implements Callback<T> {
 
     @Override
     public void onFinish() {
-
+        if (mView != null) {
+            mView.onRequestFinish();
+        }
     }
 }

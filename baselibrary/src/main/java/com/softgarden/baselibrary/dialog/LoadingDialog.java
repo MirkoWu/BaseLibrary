@@ -59,10 +59,18 @@ public class LoadingDialog extends ProgressDialog {
 
 
     public void setMessage(String message) {
-        if (!TextUtils.isEmpty(message)) mLoadingTextView.setText(message);
+        if (!TextUtils.isEmpty(message)) {
+            if (mLoadingTextView.getVisibility() != View.VISIBLE) {
+                mLoadingTextView.setVisibility(View.VISIBLE);
+            }
+            mLoadingTextView.setText(message);
+        }
     }
 
     public void setMessage(@StringRes int message) {
+        if (mLoadingTextView.getVisibility() != View.VISIBLE) {
+            mLoadingTextView.setVisibility(View.VISIBLE);
+        }
         mLoadingTextView.setText(message);
     }
 

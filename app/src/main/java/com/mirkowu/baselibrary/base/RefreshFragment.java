@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.annotation.ColorRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.mirkowu.baselibrary.R;
@@ -12,6 +13,7 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.softgarden.baselibrary.base.BaseLazyFragment;
 import com.softgarden.baselibrary.base.IBasePresenter;
+import com.softgarden.baselibrary.utils.DisplayUtil;
 import com.softgarden.baselibrary.utils.EmptyUtil;
 import com.softgarden.baselibrary.widget.ColorDividerDecoration;
 
@@ -31,8 +33,9 @@ import java.util.List;
 public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazyFragment<P> implements
         BaseQuickAdapter.RequestLoadMoreListener {
     /*** 每页请求数量 */
-    public static int PAGE_COUNT = 10;
+    public int PAGE_COUNT = 10;
     /*** 页码，默认从1开始 */
+    protected int PageStart = 1;
     protected int mPage = 1;
     /*** 空布局类型 可以在这里设置默认值 */
     protected int emptyType;
@@ -41,6 +44,7 @@ public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazy
 
     protected SmartRefreshLayout mRefreshLayout;
     protected RecyclerView mRecyclerView;
+    private BaseQuickAdapter mAdapter;
 
     /**
      * 设置刷新框架，需要时调用即可
@@ -63,6 +67,14 @@ public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazy
         }
     }
 
+    public void setPageCount(int pageCount) {
+        PAGE_COUNT = pageCount;
+    }
+
+    public void setPageStart(int pageStart) {
+        PageStart = pageStart;
+    }
+
     /**
      * 开关刷新
      *
@@ -78,6 +90,7 @@ public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazy
      */
     protected void initRecyclerView() {
         mRecyclerView = (RecyclerView) getView().findViewById(R.id.mRecyclerView);
+        ((SimpleItemAnimator) mRecyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
     }
 
     /**
@@ -87,14 +100,20 @@ public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazy
      */
     protected void addItemDecoration(@ColorRes int id) {
         if (mRecyclerView != null) {
-            mRecyclerView.addItemDecoration(new ColorDividerDecoration(getActivity(), ContextCompat.getColor(getActivity(), id)));
+            mRecyclerView.addItemDecoration(new ColorDividerDecoration(ContextCompat.getColor(getActivity(), id)));
+        }
+    }
+
+    protected void addItemDecoration(@ColorRes int id, int dp) {
+        if (mRecyclerView != null) {
+            mRecyclerView.addItemDecoration(new ColorDividerDecoration(ContextCompat.getColor(getActivity(), id), DisplayUtil.dip2px(getActivity(), dp)));
         }
     }
 
     protected void addItemDecoration() {
         //设置默认分割线
         if (mRecyclerView != null) {
-            mRecyclerView.addItemDecoration(new ColorDividerDecoration(getActivity(), Color.parseColor("#CCCCCC")));
+            mRecyclerView.addItemDecoration(new ColorDividerDecoration(Color.parseColor("#CCCCCC")));
         }
     }
 
@@ -142,7 +161,10 @@ public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazy
      * @param emptyType
      */
     public void setLoadData(BaseQuickAdapter adapter, List<?> list, int emptyType) {
+        this.mAdapter = adapter;
         this.emptyType = emptyType;
+        adapter.setHeaderFooterEmpty(true, true);//是否显示头部和底部
+
         finishRefresh();
         adapter.setNewData(list);
         if (EmptyUtil.isEmpty(list)) {
@@ -177,17 +199,26 @@ public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazy
      * @param list
      */
     public void setLoadMore(RecyclerView recyclerView, BaseQuickAdapter adapter, List<?> list, int emptyType) {
+        this.mAdapter = adapter;
         this.emptyType = emptyType;
+        adapter.setHeaderFooterEmpty(true, true);//是否显示头部和底部
+
         finishRefresh();//结束刷新
-        if (mPage == 1) {
+        if (mPage == PageStart) {
             adapter.setNewData(list);
-            if (list == null || list.size() == 0) {
+            if (EmptyUtil.isEmpty(list)) {
                 setEmptyView(adapter);
             }
         } else {
-            adapter.addData(list);
+            if (list != null && !list.isEmpty()) {
+                adapter.addData(list);
+            }
         }
 
+        handleLoadMore(recyclerView, adapter, list);
+    }
+
+    public void handleLoadMore(RecyclerView recyclerView, BaseQuickAdapter adapter, List<?> list) {
         if (list == null || list.size() < PAGE_COUNT) {
             adapter.loadMoreEnd();
         } else {
@@ -206,57 +237,67 @@ public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazy
      */
     protected void setEmptyView(BaseQuickAdapter adapter) {
 
-//        if (enableEmptyView) {
+        if (enableEmptyView) {
 
-//            View emptyView = View.inflate(this, R.layout.layout_empty, null);
+//            View emptyView = View.inflate(getActivity(), R.layout.layout_empty, null);
 //            ImageView ivEmpty = (ImageView) emptyView.findViewById(R.id.ivEmpty);
 //            TextView tvEmptyHint = (TextView) emptyView.findViewById(R.id.tvEmptyHint);
-
+//
 //            String hintDef = "亲，暂未查找到相关数据哦~";
-//            int imgResId = R.mipmap.empty_default;
-//        switch (emptyType) {
-//                case Constants.emptyType.SHOPCART:
-//                    imgResId = R.mipmap.empty_shopcart;
-//                    hintDef = "亲，你的购物车还没有宝贝哦~";
+//            int imgResId = R.mipmap.meiyouxinqing;
+//            switch (emptyType) {
+//                case EmptyConfig.NO_PUBLISH_MEDIA:
+//                    imgResId = R.mipmap.meiyoushipin;
+//                    hintDef = "您还没有拍摄的视频\n快去开拍吧~";
+//                    android.widget.LinearLayout.LayoutParams params = (android.widget.LinearLayout.LayoutParams) tvEmptyHint.getLayoutParams();
+//                    params.bottomMargin = (int) ((ScreenUtil.getScreenRealHeight(getActivity()) - emptyView.getHeight()) / 2f);
 //                    break;
-//                case Constants.emptyType.MESSAGE:
-//                    imgResId = R.mipmap.empty_message;
-//                    hintDef = "亲，你还没有消息哦~";
+//                case EmptyConfig.NO_LIKE_MEDIA:
+//                    imgResId = R.mipmap.meiyoudianzang;
+//                    hintDef = "您还没有喜欢的视频\n快去点赞吧~";
+//                    params = (android.widget.LinearLayout.LayoutParams) tvEmptyHint.getLayoutParams();
+//                    params.bottomMargin = (int) ((ScreenUtil.getScreenRealHeight(getActivity()) - emptyView.getHeight()) / 2f);
 //                    break;
-//                case Constants.emptyType.ORDER:
-//                    imgResId = R.mipmap.empty_order;
-//                    hintDef = "亲，你还没有订单哦~";
+//                case EmptyConfig.NO_FOLLOW:
+//                    imgResId = R.mipmap.meiyouguanzhu;
+//                    hintDef = "您还没有关注的人\n快去关注一下吧~";
 //                    break;
-//                case Constants.emptyType.ADDRESS:
-//                    imgResId = R.mipmap.empty_address;
-//                    hintDef = "亲，你还没有添加地址哦~";
+//                case EmptyConfig.NO_MOOD:
+//                    imgResId = R.mipmap.meiyouxinqing;
+//                    hintDef = "您还没有发布的心情\n快去发布一下吧~";
 //                    break;
-//                case Constants.emptyType.BENIFT:
-//                    imgResId = R.mipmap.empty_benift;
-//                    hintDef = "亲，你还没有收益哦~";
+//                case EmptyConfig.NO_CIRCLE:
+//                    imgResId = R.mipmap.no_circle;
+//                    hintDef = "您当前还没有加入圈子\n快去加入吧~";
 //                    break;
-//                case Constants.emptyType.COUPON:
-//                    imgResId = R.mipmap.empty_coupon;
-//                    hintDef = "亲，你还没有购物券哦~";
+//                case EmptyConfig.NO_ORDER:
+//                    imgResId = R.mipmap.no_order;
+//                    hintDef = "您还没有订单";
 //                    break;
-//                case Constants.emptyType.COLLETION:
-//                    imgResId = R.mipmap.empty_collection;
-//                    hintDef = "亲，你还没有收藏宝贝哦~";
+//                case EmptyConfig.NO_FOLLOW_ME:
+//                    imgResId = R.mipmap.meiyouren_guanzhuwo;
+//                    hintDef = "暂时还没有人关注您\n拍摄视频获取关注吧~";
 //                    break;
 //            }
+//
 //            ivEmpty.setImageResource(imgResId);
 //            tvEmptyHint.setText(hintDef);
 //            adapter.setEmptyView(emptyView);
-//        }
+        }
     }
 
     /**
      * 结束刷新
      */
     @Override
-    public void showError(Throwable throwable) {
-        super.showError(throwable);
+    public void onRequestFinish() {
+        super.onRequestFinish();
         finishRefresh();
+    }
+
+    public void onRefresh() {
+        mPage = 1;
+        lazyLoad();
     }
 
     /**
@@ -264,9 +305,9 @@ public abstract class RefreshFragment<P extends IBasePresenter> extends BaseLazy
      */
     @Override
     public void onLoadMoreRequested() {
+        mPage++;
+        lazyLoad();
 
     }
-
-    public abstract void onRefresh();
 
 }

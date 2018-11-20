@@ -8,7 +8,7 @@ import java.util.Stack;
 /**
  * Activity管理类
  * <p>
- * 添加/删除 建议在{@link android.app.Application#registerActivityLifecycleCallbacks(Application.ActivityLifecycleCallbacks)}中统一处理
+ * 添加/删除 建议在{@link Application#registerActivityLifecycleCallbacks(Application.ActivityLifecycleCallbacks)}中统一处理
  * (此方法比在BaseActivity中处理要好)
  */
 public class ActivityManager {
@@ -37,6 +37,9 @@ public class ActivityManager {
             mActStack.remove(activity);
     }
 
+    public int getCount() {
+        return mActStack.size();
+    }
 
     /**
      * 栈内是否包含此activity
@@ -139,17 +142,50 @@ public class ActivityManager {
     }
 
     /**
-     * 结束此Activity之前的所有Activity 最终显示此Activity
+     * 结束此Activity之前的所有Activity（不包括当前的 ，结束当前需手动） 最终显示此Activity
+     * 1-2-3  * 4-5
+     * 1-2  * 4-5
+     * 1  * 4-5
+     * * 4-5
      *
      * @param activity
      */
-    public void finishUntil(Activity activity) {
+    public void finishBefore(Activity activity) {
         if (mActStack.contains(activity)) {
             int index = mActStack.indexOf(activity);
-            for (int i = index + 1; i < mActStack.size(); i++) {
-                finish(mActStack.get(i));
+            if (index != -1) {
+                for (int i = index - 1; i >= 0; i--) {
+                    finish(mActStack.get(i));
+                }
             }
         }
+    }
+
+    public void finishBefore(Class cls) {
+        finishBefore(findFirst(cls));
+    }
+
+    /**
+     * 结束此Activity之后的所有Activity（不包括当前的 ，结束当前需手动） 最终显示此Activity
+     * 1-2-3 * 4-5
+     * 1-2-3 * 5
+     * 1-2-3 *
+     *
+     * @param activity
+     */
+    public void finishAfter(Activity activity) {
+        if (mActStack.contains(activity)) {
+            int index = mActStack.indexOf(activity);
+            if (index != -1) {
+                for (int i = index + 1; i < mActStack.size(); i++) {
+                    finish(mActStack.get(i));
+                }
+            }
+        }
+    }
+
+    public void finishAfter(Class cls) {
+        finishAfter(findFirst(cls));
     }
 
     public void finishAll() {
