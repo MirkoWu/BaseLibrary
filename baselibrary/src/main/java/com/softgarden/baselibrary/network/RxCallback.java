@@ -1,7 +1,6 @@
 package com.softgarden.baselibrary.network;
 
 import com.softgarden.baselibrary.base.IBaseDisplay;
-import com.softgarden.baselibrary.utils.ToastUtil;
 
 import io.reactivex.disposables.Disposable;
 
@@ -50,7 +49,7 @@ public abstract class RxCallback<T> implements Callback<T> {
             onApiException(apiException);
         } else {
 //            ToastUtil.s(t.getMessage());
-            t.printStackTrace();
+//            t.printStackTrace();
         }
 
     }
@@ -58,8 +57,8 @@ public abstract class RxCallback<T> implements Callback<T> {
     @Override
     public void onApiException(ApiException e) {
         //默认 需要根据业务逻辑 处理了
-        ToastUtil.s(e.getMessage());
-        e.printStackTrace();
+//        ToastUtil.s(e.getMessage());
+//        e.printStackTrace();
     }
 
     @Override
