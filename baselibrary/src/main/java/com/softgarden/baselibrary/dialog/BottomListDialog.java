@@ -84,7 +84,7 @@ public class BottomListDialog extends BaseDialogFragment<IBasePresenter> {
         });
         $(R.id.btnCancel).setVisibility(hideCancelBtn ? View.GONE : View.VISIBLE);
         mRecyclerView = $(R.id.mRecyclerView);
-        mRecyclerView.addItemDecoration(new ColorDividerDecoration(getContext(), LinearLayoutManager.VERTICAL,
+        mRecyclerView.addItemDecoration(new ColorDividerDecoration(  LinearLayoutManager.VERTICAL,
                 Color.parseColor("#CCCCCC"), 1, ColorDividerDecoration.MIDDLE));
 
         bottomListAdapter = new BaseRVAdapter<String>(R.layout.item_bottom) {
@@ -114,7 +114,7 @@ public class BottomListDialog extends BaseDialogFragment<IBasePresenter> {
     }
 
     public BottomListDialog setTitle(@StringRes int id) {
-        return setTitle(ContextUtil.getString(id));
+        return setTitle(getContext().getString(id));
     }
 
     public BottomListDialog setData(List<String> data) {

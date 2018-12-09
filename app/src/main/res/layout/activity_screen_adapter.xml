@@ -13,14 +13,14 @@
             android:id="@+id/mToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ff0000">
+            android:background="@color/colorPrimary">
 
         </android.support.v7.widget.Toolbar>
 
         <ImageView
             android:layout_width="88dp"
             android:layout_height="88dp"
-            android:layout_marginTop="33dp"
+            android:layout_marginTop="13dp"
             android:src="@mipmap/ic_launcher" />
 
         <android.support.v7.widget.AppCompatTextView
@@ -60,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="39dp"
                 android:layout_marginTop="18dp"
-                android:background="#ff00ff"
+                android:background="#d4d4d4"
                 android:gravity="center_vertical"
                 android:inputType="phone"
                 android:paddingHorizontal="38dp"
@@ -79,7 +79,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="39dp"
                 android:layout_marginTop="9dp"
-                android:background="#ff00ff">
+                android:background="#d4d4d4">
 
                 <android.support.v7.widget.AppCompatEditText
                     android:layout_width="0dp"
@@ -104,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="44dp"
                 android:layout_marginTop="28dp"
-                android:background="#ff00ff"
+                android:background="#d4d4d4"
                 android:text="登录"
                 android:textSize="15sp" />
 

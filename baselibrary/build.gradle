@@ -21,22 +21,41 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     publishNonDefault true //默认不为发布版本
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
+    //Android支持库
     api library.supportV4
     api library.supportV7
     api library.design
     api library.cardview
     api library.constraint
     api library.recyclerview
-    api library.circleimageview
 
+    //RxJava2+Retrofit2 网络框架
+    api library.okio
+    api library.okhttp
+    api library.okhttp_logging
+    api library.retrofit2
+    api library.gson
+    api library.retrofit2_gson
+    api library.retrofit2_adapter
     api library.rxjava2
     api library.rxlifecycle2_components
+
+    //屏幕适配
+    api library.autosize
+
+    //常用工具库
+    api library.circleimageview
     api library.BaseRecyclerViewAdapterHelper
     api library.SmartRefreshLayout
     api library.rxpermissions2

@@ -1,5 +1,8 @@
 package com.softgarden.baselibrary.utils;
 
+/**
+ * Created by Administrator on 2016/7/1 0001.
+ */
 
 import android.text.TextUtils;
 import android.util.Base64;
@@ -14,19 +17,27 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-/**
- * AES 加密算法工具
- */
-
 public class AESUtil {
+    /**
+     * 算法/模式/填充
+     **/
+    private static final String CipherMode = "AES/CBC/PKCS5Padding";
+    public static final String IV = "1234567887654321";
 
-
+    /**
+     * 公钥加密
+     *
+     * @param contentStr
+     * @param key  得到的公钥
+     * @param iv
+     * @return 已被Base64加密过的字符串
+     */
     public static String encrypt(String contentStr, String key, String iv) {
         key = getPassword(key);//截取key 16位
         try {
-            byte[] strByte = contentStr.getBytes("utf-8");
-            byte[] keyByte = key.getBytes("utf-8");
-            byte[] ivByte = iv.getBytes("utf-8");
+            byte[] strByte = contentStr.getBytes("UTF-8");
+            byte[] keyByte = key.getBytes("UTF-8");
+            byte[] ivByte = iv.getBytes("UTF-8");
             byte[] result = encrypt(strByte, keyByte, ivByte);//AES加密
 
             return Base64.encodeToString(result, Base64.NO_PADDING);//要进行base64再一次加密
@@ -36,15 +47,24 @@ public class AESUtil {
         return null;
     }
 
-    public static String decrypt(String base64Str, String key, String iv) {
+    /**
+     * 私钥解密
+     *
+     * @param base64Str
+     * @param key
+     * @param iv
+     * @return
+     */
+
+    public static String decryptWithBase64(String base64Str, String key, String iv) {
         key = getPassword(key);//截取key 16位
         try {
             byte[] strByte = Base64.decode(base64Str, Base64.NO_PADDING);//要先base64解密
 
-            byte[] keyByte = key.getBytes("utf-8");
-            byte[] ivByte = iv.getBytes("utf-8");
+            byte[] keyByte = key.getBytes("UTF-8");
+            byte[] ivByte = iv.getBytes("UTF-8");
             byte[] result = decrypt(strByte, keyByte, ivByte);//AES解密
-            return new String(result, "utf-8");
+            return new String(result, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -59,7 +79,7 @@ public class AESUtil {
      * @return
      */
     private static String getPassword(String key) {
-        if (TextUtils.isEmpty(key)) return "";//这是错的，因为 128要求必须有16位密码
+        if (TextUtils.isEmpty(key)) return "0000000000000000";//这是错的，因为 128要求必须有16位密码
         if (key.length() >= 16) {
             return key.substring(0, 16);//长度大于16则截取前16位
         } else {
@@ -72,7 +92,7 @@ public class AESUtil {
 //            byte[] raw = getRawKey(keyBytes);
             SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
 
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(CipherMode);
             cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
             byte[] result = cipher.doFinal(content);
             return result;
@@ -89,7 +109,7 @@ public class AESUtil {
 
             SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
 
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+            Cipher cipher = Cipher.getInstance(CipherMode);
             cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
             byte[] result = cipher.doFinal(content);
             return result;
@@ -207,14 +227,14 @@ public class AESUtil {
 //        String API_ENCRYPT_KEY = "1467f4699214cec412f7c2a1d513fe08";
 //        String data = "b+W8eZv9suf1DgHEzeny5DtAPrd4L5dBHHL+0YF85ey2W\\/oFX9sBVD3azJkOP\\/M0BXUJu7f0eiQLi2oIbz56LOC1Pto1qVx3dgg\\/agidWTU=";
 //        System.out.println(data);
-//        System.out.println(data.getBytes("utf-8"));
+//        System.out.println(data.getBytes("UTF-8"));
 //        try {
 //
 //            String key = MD5Util.ToMD5NOKey("1522220376" + API_ENCRYPT_KEY + "e879ada9061d176a498812c62770b9c3");
-//            // byte[] en = encrypt(data.getBytes("utf-8"), API_ENCRYPT_KEY.getBytes("utf-8"), IV.getBytes("utf-8"));
+//            // byte[] en = encrypt(data.getBytes("UTF-8"), API_ENCRYPT_KEY.getBytes("UTF-8"), IV.getBytes("UTF-8"));
 //            System.out.println("key==" + key);
 //            byte[] bytes = java.util.Base64.getDecoder().decode(data);
-//            System.out.println("解密后数据==" + new String(decrypt(bytes, key.getBytes("utf-8"), IV.getBytes("utf-8")), "utf-8"));
+//            System.out.println("解密后数据==" + new String(decrypt(bytes, key.getBytes("UTF-8"), IV.getBytes("UTF-8")), "UTF-8"));
 //
 //        } catch (Exception e) {
 //            e.printStackTrace();

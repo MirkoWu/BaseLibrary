@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tvContent"
-    android:layout_width="30dp"
+    android:layout_width="match_parent"
+    android:gravity="center"
     android:layout_height="30dp"
-    android:background="@drawable/shape_radius_red_1024dp"
     android:text="22"
-    android:textColor="#ffffff" />
+    android:textColor="#333333" />
 

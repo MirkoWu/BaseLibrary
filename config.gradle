@@ -62,6 +62,8 @@ ext {
             gson                         : "com.google.code.gson:gson:$ver.gson",
             glide                        : "com.github.bumptech.glide:glide:$ver.glide",
             glide_compiler               : "com.github.bumptech.glide:compiler:$ver.glide",
+            autosize                     : 'me.jessyan:autosize:1.1.0',
+
             indexablestickylistview      : "me.yokeyword:indexablestickylistview:0.6.10",
             androideventbus              : "org.simple:androideventbus:1.0.5.1",
             ezviz                        : "com.hikvision.ezviz:ezviz-sdk:4.7.1",

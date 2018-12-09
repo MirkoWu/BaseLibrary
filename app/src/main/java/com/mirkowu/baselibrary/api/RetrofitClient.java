@@ -1,8 +1,6 @@
-package com.mirkowu.baselibrary.network;
+package com.mirkowu.baselibrary.api;
 
 
-import com.mirkowu.baselibrary.api.HostUrl;
-import com.mirkowu.baselibrary.api.TestService;
 import com.softgarden.baselibrary.utils.L;
 
 import java.util.concurrent.TimeUnit;

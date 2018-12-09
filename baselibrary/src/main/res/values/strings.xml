@@ -1,7 +1,14 @@
 <resources>
-    <string name="prompt_message">提示信息</string>
-    <string name="permission_lack">当前应用缺少必要权限，该功能暂时无法使用。如若需要，请点击【确定】按钮前往设置中心进行权限授权。</string>
-    <string name="ok">确定</string>
-    <string name="cancel">取消</string>
-    <string name="dialog_loading">加载中...</string>
+    <string name="base_prompt_message">提示信息</string>
+    <string name="base_permission_lack">当前应用缺少必要权限，该功能暂时无法使用。如若需要，请点击【确定】按钮前往设置中心进行权限授权。</string>
+    <string name="base_ok">确定</string>
+    <string name="base_cancel">取消</string>
+    <string name="base_dialog_loading">加载中...</string>
+    <string name="base_connect_failed">服务器连接失败</string>
+    <string name="base_request_serve_failed">请求失败</string>
+    <string name="base_socket_timeout">请求超时</string>
+    <string name="base_parse_failed">数据解析失败</string>
+    <string name="base_warm_hint">温馨提示</string>
+    <string name="base_no_network_hint">检测到当前手机未连接网络， 是否前往设置网络？</string>
+    <string name="base_go">前往</string>
 </resources>

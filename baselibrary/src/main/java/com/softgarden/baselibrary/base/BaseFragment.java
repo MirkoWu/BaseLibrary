@@ -11,8 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.softgarden.baselibrary.BuildConfig;
-import com.softgarden.baselibrary.utils.ToastUtil;
+import com.softgarden.baselibrary.network.ApiException;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
 import java.util.Locale;
@@ -134,15 +133,16 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
             ((BaseActivity) getActivity()).hideProgressDialog();
     }
 
-    /**
-     * 默认 吐司显示错误，可重写
-     *
-     * @param throwable
-     */
     @Override
     public void showError(Throwable throwable) {
-        ToastUtil.s(throwable.getMessage());
-        if (BuildConfig.DEBUG) throwable.printStackTrace();
+        if (getActivity() instanceof BaseActivity)
+            ((BaseActivity) getActivity()).showError(throwable);
+    }
+
+    @Override
+    public void onApiException(ApiException e) {
+        if (getActivity() instanceof BaseActivity)
+            ((BaseActivity) getActivity()).onApiException(e);
     }
 
 

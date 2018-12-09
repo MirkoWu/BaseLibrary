@@ -56,8 +56,8 @@ public class BaseDelegate {
         isNightMode = BaseSPManager.isNightMode();
         changeDayNightMode(isNightMode);
 
-        //屏幕适配
-        adapterScreen();
+        //屏幕适配 已使用AutoSize
+      //  adapterScreen();
     }
 
     /**

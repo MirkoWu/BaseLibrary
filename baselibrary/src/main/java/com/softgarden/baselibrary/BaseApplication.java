@@ -74,6 +74,9 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        //屏幕适配
+        //AutoSizeConfig.getInstance().setDesignWidthInDp(360).setDesignHeightInDp(640);
         Logger.addLogAdapter(new AndroidLogAdapter());//logger
         registerActivityLifecycle();
     }

@@ -99,8 +99,13 @@ public class AppUtil {
         context.startActivity(intent);
     }
 
+    public static void openAppSetting(Context context) {
+        openAppSetting(context, context.getPackageName());
+    }
+
     /**
      * 前往网络设置界面
+     *
      * @param context
      */
     public static void openNetworkSetting(Context context) {

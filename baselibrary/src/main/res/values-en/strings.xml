@@ -1,8 +1,15 @@
 <resources>
-    <string name="prompt_message">Prompt Message</string>
-    <string name="permission_lack">The current application lacks the necessary permissions, which is temporarily unavailable.
+    <string name="base_prompt_message">Prompt Message</string>
+    <string name="base_permission_lack">The current application lacks the necessary permissions, which is temporarily unavailable.
         If you need it, please click the confirm button to go to the setting Center for permission authorization. </string>
-    <string name="ok">OK</string>
-    <string name="cancel">CANCEL</string>
-    <string name="dialog_loading">Loading...</string>
+    <string name="base_ok">Ok</string>
+    <string name="base_cancel">Cancel</string>
+    <string name="base_dialog_loading">Loading...</string>
+    <string name="base_connect_failed">ConnectException</string>
+    <string name="base_request_serve_failed">UnknownHostException</string>
+    <string name="base_socket_timeout">SocketTimeoutException</string>
+    <string name="base_parse_failed">JsonParseException</string>
+    <string name="base_warm_hint">Warm Hint</string>
+    <string name="base_no_network_hint">Detecting that the current mobile phone is not connected to the network, do you go to set up the network? </string>
+    <string name="base_go">Go</string>
 </resources>

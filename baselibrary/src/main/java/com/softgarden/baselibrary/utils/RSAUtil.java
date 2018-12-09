@@ -3,6 +3,7 @@ package com.softgarden.baselibrary.utils;
 import android.util.Base64;
 import android.util.Log;
 
+import java.io.UnsupportedEncodingException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -13,42 +14,75 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.HashMap;
 
 import javax.crypto.Cipher;
 
 /**
- * RSA 加密算法工具
+ * @Author: liujinghui
+ * @Date: 2018-08-15
+ * @Version 1.0
+ * @Desc: 描述...
  */
 public class RSAUtil {
 
     private static final String RSA = "RSA";
+    private static final String UTF_8 = "UFT-8";
     private static final String TRANSFORMATION = "RSA/None/PKCS1Padding";
+    //    private static KeyPair keyPair;
+    private static int keyLength = 1024;
+    static HashMap<String, KeyPair> hashMap = new HashMap<>();
+    static String urlKey;
+
     private KeyPair keyPair;
-    private int keyLength = 1024;
+
 
     public RSAUtil() {
         try {
-            keyPair = generateRSAKeyPair(keyLength);
+            if (keyPair == null) {
+                keyPair = generateRSAKeyPair(keyLength);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public String getPublic() {
+
+    public String getPublicByKey() {
+        //获取公钥
+        byte[] publicKey = getPublicKey(hashMap.get(urlKey));
+        //公钥用base64编码
+        String encodePublic = Base64.encodeToString(publicKey, Base64.DEFAULT);
+//        Log.d("TAG", "base64编码的公钥：" + encodePublic);
+
+        return encodePublic;
+    }
+
+    public String getPublicKey() {
         //获取公钥
         byte[] publicKey = getPublicKey(keyPair);
         //公钥用base64编码
         String encodePublic = Base64.encodeToString(publicKey, Base64.DEFAULT);
-        Log.d("TAG", "base64编码的公钥：" + encodePublic);
+//        Log.d("TAG", "base64编码的公钥：" + encodePublic);
+
         return encodePublic;
     }
 
-    public String getPrivate() {
+    public String getPrivateByKey() {
+        //获取私钥
+        byte[] privateKey = getPrivateKey(hashMap.get(urlKey));
+        //私钥用base64编码
+        String encodePrivate = Base64.encodeToString(privateKey, Base64.DEFAULT);
+//        Log.d("TAG", "base64编码的私钥：" + encodePrivate);
+        return encodePrivate;
+    }
+
+    public String getPrivateKey() {
         //获取私钥
         byte[] privateKey = getPrivateKey(keyPair);
         //私钥用base64编码
         String encodePrivate = Base64.encodeToString(privateKey, Base64.DEFAULT);
-        Log.d("TAG", "base64编码的私钥：" + encodePrivate);
+//        Log.d("TAG", "base64编码的私钥：" + encodePrivate);
         return encodePrivate;
     }
 
@@ -80,11 +114,35 @@ public class RSAUtil {
 
     /**
      * 使用公钥加密
+     *
+     * @param data
+     * @param base64PublicKey
+     * @return
+     * @throws Exception
      */
-    public static byte[] encryptByPublicKey(byte[] data, byte[] publicKey) throws Exception {
+    public static String encryptWithBase64(String data, String base64PublicKey) {
+        try {
+            byte[] bytes = data.getBytes("UTF-8");
+            byte[] publicKey = Base64.decode(base64PublicKey, Base64.DEFAULT);
+
+            byte[] encrypted = encrypt(bytes, publicKey);
+            return Base64.encodeToString(encrypted, Base64.DEFAULT);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * 使用公钥加密
+     */
+    public static byte[] encrypt(byte[] data, byte[] publicKey) throws Exception {
         // 得到公钥对象
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKey);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        KeyFactory keyFactory = KeyFactory.getInstance(RSA);
         PublicKey pubKey = keyFactory.generatePublic(keySpec);
         // 加密数据
         Cipher cp = Cipher.getInstance(TRANSFORMATION);
@@ -92,10 +150,35 @@ public class RSAUtil {
         return cp.doFinal(data);
     }
 
+
     /**
      * 使用私钥解密
+     *
+     * @param base64Str        密文内容
+     * @param base64PrivateKey 秘钥内容
+     * @return
+     * @throws Exception
      */
-    public static byte[] decryptByPrivateKey(byte[] encrypted, byte[] privateKey) throws Exception {
+    public static String decryptWithBase64(String base64Str, String base64PrivateKey)   {
+        byte[] encrypted = Base64.decode(base64Str, Base64.DEFAULT);//密文要先base64解密
+        byte[] privateKey = Base64.decode(base64PrivateKey, Base64.DEFAULT);//秘钥要先base64解密
+        try {
+            return new String(decrypt(encrypted, privateKey), "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 使用私钥解密
+     *
+     * @param encrypted  密文内容
+     * @param privateKey 秘钥内容
+     * @return
+     * @throws Exception
+     */
+    public static byte[] decrypt(byte[] encrypted, byte[] privateKey) throws Exception {
         // 得到私钥对象
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKey);
         KeyFactory kf = KeyFactory.getInstance(RSA);
@@ -105,6 +188,29 @@ public class RSAUtil {
         cp.init(Cipher.DECRYPT_MODE, keyPrivate);
         byte[] arr = cp.doFinal(encrypted);
         return arr;
+    }
+
+
+    private void test() {
+        int keyLength = 1024;
+        try {
+            //生成密钥对
+            KeyPair keyPair = generateRSAKeyPair(keyLength);
+
+            //获取公钥
+            byte[] publicKey = getPublicKey(keyPair);
+            //公钥用base64编码
+            String encodePublic = Base64.encodeToString(publicKey, Base64.DEFAULT);
+            Log.d("TAG", "base64编码的公钥：" + encodePublic);
+
+            //获取私钥
+            byte[] privateKey = getPrivateKey(keyPair);
+            //私钥用base64编码
+            String encodePrivate = Base64.encodeToString(privateKey, Base64.DEFAULT);
+            Log.d("TAG", "base64编码的私钥：" + encodePrivate);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 
 }

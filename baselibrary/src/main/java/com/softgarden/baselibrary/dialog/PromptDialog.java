@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
-import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -140,9 +139,9 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    public PromptDialog setContent(@StringRes int id) {
-        return setContent(ContextUtil.getString(id));
-    }
+//    public PromptDialog setContent(@StringRes int id) {
+//        return setContent(ContextUtil.getString(id));
+//    }
 
 
     /**
@@ -151,9 +150,9 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
      * @param negativeLabel
      * @return
      */
-    public PromptDialog setNegativeButton(@StringRes int negativeLabel, @ColorRes int textColorInt) {
-        return setNegativeButton(ContextUtil.getString(negativeLabel), textColorInt);
-    }
+//    public PromptDialog setNegativeButton(@StringRes int negativeLabel, @ColorRes int textColorInt) {
+//        return setNegativeButton(ContextUtil.getString(negativeLabel), textColorInt);
+//    }
 
     public PromptDialog setNegativeButton(String negativeLabel, @ColorRes int textColorInt) {
         this.negativeLabel = negativeLabel;
@@ -162,9 +161,9 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
     }
 
 
-    public PromptDialog setNegativeButton(@StringRes int negativeLabel) {
-        return setNegativeButton(ContextUtil.getString(negativeLabel));
-    }
+//    public PromptDialog setNegativeButton(@StringRes int negativeLabel) {
+//        return setNegativeButton(ContextUtil.getString(negativeLabel));
+//    }
 
     public PromptDialog setNegativeButton(String negativeLabel) {
         this.negativeLabel = negativeLabel;
@@ -176,9 +175,9 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
      *
      * @return
      */
-    public PromptDialog setPositiveButton(@StringRes int positiveLabel, @ColorRes int textColorInt) {
-        return setPositiveButton(ContextUtil.getString(positiveLabel), textColorInt);
-    }
+//    public PromptDialog setPositiveButton(@StringRes int positiveLabel, @ColorRes int textColorInt) {
+//        return setPositiveButton(ContextUtil.getString(positiveLabel), textColorInt);
+//    }
 
     public PromptDialog setPositiveButton(String positiveLabel, @ColorRes int textColorInt) {
         this.positiveLabel = positiveLabel;
@@ -186,9 +185,9 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-    public PromptDialog setPositiveButton(@StringRes int positiveLabel) {
-        return setPositiveButton(ContextUtil.getString(positiveLabel));
-    }
+//    public PromptDialog setPositiveButton(@StringRes int positiveLabel) {
+//        return setPositiveButton(ContextUtil.getString(positiveLabel));
+//    }
 
     public PromptDialog setPositiveButton(String positiveLabel) {
         this.positiveLabel = positiveLabel;

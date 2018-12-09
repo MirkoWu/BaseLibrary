@@ -109,7 +109,7 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
     }
 
     public PromptDialogFragment setTitle(@StringRes int id) {
-        return setTitle(ContextUtil.getString(id));
+        return setTitle(getContext().getString(id));
     }
 
     public PromptDialogFragment setContent(String content) {
@@ -118,7 +118,7 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
     }
 
     public PromptDialogFragment setContent(@StringRes int id) {
-        return setContent(ContextUtil.getString(id));
+        return setContent(getContext().getString(id));
     }
 
 
@@ -129,7 +129,7 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
      * @return
      */
     public PromptDialogFragment setNegativeButton(@StringRes int negativeLabel, @ColorRes int textColorInt) {
-        return setNegativeButton(ContextUtil.getString(negativeLabel), textColorInt);
+        return setNegativeButton(getContext().getString(negativeLabel), textColorInt);
     }
 
     public PromptDialogFragment setNegativeButton(String negativeLabel, @ColorRes int textColorInt) {
@@ -140,7 +140,7 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
 
 
     public PromptDialogFragment setNegativeButton(@StringRes int negativeLabel) {
-        return setNegativeButton(ContextUtil.getString(negativeLabel));
+        return setNegativeButton(getContext().getString(negativeLabel));
     }
 
     public PromptDialogFragment setNegativeButton(String negativeLabel) {
@@ -154,7 +154,7 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
      * @return
      */
     public PromptDialogFragment setPositiveButton(@StringRes int positiveLabel, @ColorRes int textColorInt) {
-        return setPositiveButton(ContextUtil.getString(positiveLabel), textColorInt);
+        return setPositiveButton(getContext().getString(positiveLabel), textColorInt);
     }
 
     public PromptDialogFragment setPositiveButton(String positiveLabel, @ColorRes int textColorInt) {
@@ -164,7 +164,7 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
     }
 
     public PromptDialogFragment setPositiveButton(@StringRes int positiveLabel) {
-        return setPositiveButton(ContextUtil.getString(positiveLabel));
+        return setPositiveButton(getContext().getString(positiveLabel));
     }
 
     public PromptDialogFragment setPositiveButton(String positiveLabel) {

@@ -1,4 +1,4 @@
-package com.mirkowu.baselibrary.network;
+package com.softgarden.baselibrary.network;
 
 /**
  * Created by Administrator on 2016/11/11 0011.

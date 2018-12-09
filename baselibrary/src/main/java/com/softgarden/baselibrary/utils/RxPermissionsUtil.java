@@ -95,13 +95,13 @@ public class RxPermissionsUtil {
         new AlertDialog.Builder(context)
                 .setTitle(title)
                 .setMessage(message)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.base_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
                 })
-                .setPositiveButton(R.string.ok, onClickListener).show();
+                .setPositiveButton(R.string.base_ok, onClickListener).show();
     }
 
     /**
@@ -109,29 +109,20 @@ public class RxPermissionsUtil {
      */
     public static void showLackPermissionDialog(final Context context) {
         new AlertDialog.Builder(context)
-                .setTitle(R.string.prompt_message)
-                .setMessage(R.string.permission_lack)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                .setTitle(R.string.base_prompt_message)
+                .setMessage(R.string.base_permission_lack)
+                .setNegativeButton(R.string.base_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                     }
                 })
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.base_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        startAppSettings(context);
+                        AppUtil.openAppSetting(context);
                     }
                 }).show();
-    }
-
-    /**
-     * 启动当前应用设置页面
-     */
-    public static void startAppSettings(Context context) {
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + context.getPackageName()));
-        context.startActivity(intent);
     }
 
 

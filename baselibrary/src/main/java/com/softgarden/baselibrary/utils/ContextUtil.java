@@ -2,7 +2,6 @@ package com.softgarden.baselibrary.utils;
 
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
-import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 
 import com.softgarden.baselibrary.BaseApplication;
@@ -24,13 +23,14 @@ public class ContextUtil {
         return ContextCompat.getColor(BaseApplication.getInstance(), id);
     }
 
-    public static String getString(@StringRes int resId) {
-        return BaseApplication.getInstance().getString(resId);
-    }
+    //多语言中 context 不对应 转换会失败
+//    public static String getString(@StringRes int resId) {
+//        return BaseApplication.getInstance().getString(resId);
+//    }
 
-    public static String getString(@StringRes int resId, Object... formatArgs) {
-        return BaseApplication.getInstance().getString(resId, formatArgs);
-    }
+//    public static String getString(@StringRes int resId, Object... formatArgs) {
+//        return BaseApplication.getInstance().getString(resId, formatArgs);
+//    }
 
 
 }

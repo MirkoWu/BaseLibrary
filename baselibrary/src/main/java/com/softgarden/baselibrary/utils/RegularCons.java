@@ -45,7 +45,25 @@ public class RegularCons {
 
     /**
      * 正则：密码
-     * (长度在6~18之间，只能包含字母、数字和下划线)
+     * (长度在6~18之间，只能包含字母、数字和下划线)  ^[a-zA-Z0-9_]{6,18}$
      */
     public static final String REGEX_PASSWORD = "^[a-zA-Z0-9]{6}$";
+
+    /**
+
+     * Regex of id card number which length is 15.
+
+     */
+
+    public static final String REGEX_ID_CARD15     = "^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$";
+
+    /**
+
+     * Regex of id card number which length is 18.
+
+     */
+
+    public static final String REGEX_ID_CARD18     = "^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9Xx])$";
+
+
 }

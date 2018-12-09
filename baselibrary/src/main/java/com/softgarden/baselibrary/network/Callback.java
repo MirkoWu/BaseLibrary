@@ -1,4 +1,4 @@
-package com.mirkowu.baselibrary.network;
+package com.softgarden.baselibrary.network;
 
 import android.support.annotation.Nullable;
 

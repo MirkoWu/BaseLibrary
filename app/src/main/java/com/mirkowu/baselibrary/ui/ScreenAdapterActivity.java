@@ -11,7 +11,6 @@ import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.dataBinding.BaseBindActivity;
 import com.mirkowu.baselibrary.bean.GoodsBean;
 import com.mirkowu.baselibrary.databinding.ActivityScreenAdapterBinding;
-import com.mirkowu.baselibrary.ui.testRefresh.TestRefreshContract;
 import com.mirkowu.baselibrary.ui.testRefresh.TestRefreshPresenter;
 import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.utils.FileUtil;
@@ -20,7 +19,7 @@ import com.softgarden.baselibrary.utils.ScreenUtil;
 
 import java.util.List;
 
-public class ScreenAdapterActivity extends BaseBindActivity<TestRefreshPresenter, ActivityScreenAdapterBinding> implements TestRefreshContract.Display {
+public class ScreenAdapterActivity extends BaseBindActivity<TestRefreshPresenter, ActivityScreenAdapterBinding>   {
 
     public static void start(Context context) {
         Intent starter = new Intent(context, ScreenAdapterActivity.class);
@@ -39,7 +38,7 @@ public class ScreenAdapterActivity extends BaseBindActivity<TestRefreshPresenter
 
         binder.mToolbar.setTitle("这是DataBinding示例");
 
-        getPresenter().getData();
+
 
         L.d("getAppRootDir=" + FileUtil.getAppRootDir().getAbsolutePath());
         L.d("getStatusBarHeight=" + ScreenUtil.getStatusBarHeight(this));
@@ -65,7 +64,7 @@ public class ScreenAdapterActivity extends BaseBindActivity<TestRefreshPresenter
         return null;
     }
 
-    @Override
+
     public void getData(List<GoodsBean> bean) {
 
     }

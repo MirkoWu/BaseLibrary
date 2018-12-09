@@ -18,10 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
         <!-- android:windowSoftInputMode="adjustPan|stateHidden" -->
         <activity
             android:name=".ui.main.MainActivity"
-            android:configChanges="locale|layoutDirection|keyboard">
+            android:configChanges="locale|layoutDirection|keyboard|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +36,7 @@
         <activity android:name=".ui.testRefresh.TestRefreshActivity" />
         <activity android:name=".ui.SocketTestActivity" />
         <!--android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"-->
-        <activity android:name=".ui.ScreenAdapterActivity" >
+        <activity android:name=".ui.ScreenAdapterActivity">
 
         </activity>
     </application>

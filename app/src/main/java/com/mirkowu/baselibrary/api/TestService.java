@@ -2,7 +2,7 @@ package com.mirkowu.baselibrary.api;
 
 
 import com.mirkowu.baselibrary.bean.GoodsBean;
-import com.mirkowu.baselibrary.network.BaseBean;
+import com.softgarden.baselibrary.network.BaseBean;
 
 import java.util.List;
 

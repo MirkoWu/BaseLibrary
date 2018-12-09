@@ -148,7 +148,7 @@
 
 # >>>>>>>>>>>>>>>----------1.实体类---------->>>>>>>>>>>>>>>
 -dontwarn com.mirkowu.baselibrary.bean.**
--dontwarn com.mirkowu.baselibrary.network.BaseBean
+-dontwarn com.softgarden.baselibrary.network.BaseBean
 # <<<<<<<<<<<<<<<----------1.实体类----------<<<<<<<<<<<<<<<
 
 

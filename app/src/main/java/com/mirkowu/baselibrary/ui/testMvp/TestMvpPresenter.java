@@ -1,25 +1,26 @@
 package com.mirkowu.baselibrary.ui.testMvp;
 
+import com.mirkowu.baselibrary.api.RetrofitClient;
 import com.mirkowu.baselibrary.bean.GoodsBean;
-import com.mirkowu.baselibrary.network.NetworkTransformer;
-import com.mirkowu.baselibrary.network.RetrofitClient;
-import com.mirkowu.baselibrary.network.RxCallback;
 import com.softgarden.baselibrary.base.BasePresenter;
+import com.softgarden.baselibrary.network.NetworkTransformer;
 
 import java.util.List;
+
+import io.reactivex.Observable;
 
 /**
  * @author by DELL
  * @date on 2018/4/12
  * @describe
  */
-public class TestMvpPresenter extends BasePresenter<TestMvpContract.Display> implements TestMvpContract.Presenter {
+public class TestMvpPresenter extends BasePresenter {
 
-    @Override
-    public void getIndexData() {
-//         RetrofitClient.getTestService()
-//                .getData()
-//                .compose(new NetworkTransformer<>(mView))
+
+    public Observable<List<GoodsBean>> getIndexData() {
+        return RetrofitClient.getTestService()
+                .getData()
+                .compose(new NetworkTransformer<>(this));
 //                .subscribe(new RxCallback<List<GoodsBean>>() {
 //                    @Override
 //                    public void onSuccess(@Nullable List<GoodsBean> data) {
@@ -29,20 +30,20 @@ public class TestMvpPresenter extends BasePresenter<TestMvpContract.Display> imp
 //                });
     }
 
-    @Override
-    public void switchOnOff() {
-//        RetrofitClient.getHomeService()
+
+//    public void switchOnOff() {
+//      return;  RetrofitClient.getHomeService()
 //                .switchOnOff()
-//                .compose(new NetworkTransformer<>(mView))
+//                .compose(new NetworkTransformer<>(mView));
 //                .subscribe(new RxCallback<String>() {
 //                    @Override
 //                    public void onSuccess(@Nullable String data) {
 //                        mView.switchOnOff(data);
 //                    }
 //                });
-    }
+//    }
 
-    @Override
+
     public void switchBluetooth() {
 //        RetrofitClient.getHomeService()
 //                .switchBluetooth()

@@ -5,17 +5,16 @@
 -----------------------------------------------------
   下面介绍本库的主要内容
 ### 1. MVP模式(变种) ###
-  View ：Activity/Fragment
+  Model ：使用 Retrofit + OkHttp + RxJava 框架
 
-  Contract ：用来连接 View 和 Presenter
+  View ：Activity/Fragment
 
   Presenter ：执行代理
 
  使用方法:
 
     1.继承BaseActivity/BaseFragment/BaseDialogFragment
-    2.写好Presenter泛型，实现View接口
-    3.重写createPresenter() 方法创建，getPresenter()获取对象
+    2.创建Presenter（可选）
 
 Base 大致功能如下：
 
@@ -25,9 +24,7 @@ Base 大致功能如下：
     4.显示/隐藏Loading弹框
     5.ButterKnife 绑定数据
     6.控制RxJava生命周期，防止内存泄漏
-    7.MVP模式 参考 https://github.com/north2016/T-MVP
-    需要时 可重写createPresenter() {@link BaseActivity#createPresenter()}  并且使用泛型 <P extends BasePresenter> 为当前Presenter实例
-    详情请查看源码。
+    7.MVP模式
 
 ### 2. Refresh + RecyclerView + Adapter ###
  刷新推荐使用: [SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)
@@ -71,16 +68,21 @@ Base 大致功能如下：
 
 ### 9. 屏幕适配方案 ###
 原理同[今日头条适配法](https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA)
+使用库[AndroidAutoSize](https://github.com/JessYanCoding/AndroidAutoSize)
     使用方法:
    ```
-    1.更新ScreenUtil、BaseActvity、BaseApplication文件， 默认开启适配功能;
-    2.Application 中 通过setDesignWidthInDp()方法 设置设计稿的宽度（单位dp）,
-      默认360dp,即以720x1280分辨率设计稿为开发;
-    3.继承BaseActivity后即可愉快使用
-    4.取消适配，BaseActivity中调用 cancelAdapterScreen()即可取消，
-      若项目不想使用该适配方法，直接注释 adapterScreen()方法即可。
-    优点：无入侵，随用随关。只要布局按照设计稿的大小来写（dp模式,用的单位是dp,sp ）即可。
+   <manifest>
+       <application>
+           <meta-data
+               android:name="design_width_in_dp"
+               android:value="360"/>
+           <meta-data
+               android:name="design_height_in_dp"
+               android:value="640"/>
+        </application>
+   </manifest>
    ```
+   优点：无入侵，随用随关。只要布局按照设计稿的大小来写（dp模式,用的单位是dp,sp ）即可。
 
 ##  Demo下载 ##
 
@@ -92,7 +94,11 @@ Base 大致功能如下：
 
 
 ## Log更新日志 ##
-
+    *2018-12-9
+        根据实际情况简化MVP模式，剔除繁琐的Contact。
+        更新适配方案 AndroidAutoSize
+        优化 NetworkTransformer
+        更新工具库
     *2018-8-30
         调整框架结构 抽离BaseDelegate 增加 DataBinding 用法即示例
         增加AES和RSA加解密算法工具

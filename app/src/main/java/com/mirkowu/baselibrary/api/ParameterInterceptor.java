@@ -1,4 +1,4 @@
-package com.mirkowu.baselibrary.network;
+package com.mirkowu.baselibrary.api;
 
 import android.support.annotation.NonNull;
 import android.text.TextUtils;

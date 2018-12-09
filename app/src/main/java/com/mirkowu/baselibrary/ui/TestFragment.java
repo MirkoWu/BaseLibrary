@@ -5,9 +5,9 @@ import android.support.annotation.Nullable;
 
 import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.bean.GoodsBean;
-import com.mirkowu.baselibrary.network.NetworkTransformer;
-import com.mirkowu.baselibrary.network.RetrofitClient;
-import com.mirkowu.baselibrary.network.RxCallback;
+import com.softgarden.baselibrary.network.NetworkTransformer;
+import com.mirkowu.baselibrary.api.RetrofitClient;
+import com.softgarden.baselibrary.network.RxCallback;
 import com.softgarden.baselibrary.base.BaseLazyFragment;
 
 import java.util.List;

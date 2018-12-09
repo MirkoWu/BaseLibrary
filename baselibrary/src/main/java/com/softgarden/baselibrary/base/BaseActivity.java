@@ -12,15 +12,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 
+import com.google.gson.JsonParseException;
 import com.mirkowu.statusbarutil.StatusBarUtil;
 import com.softgarden.baselibrary.BuildConfig;
 import com.softgarden.baselibrary.R;
+import com.softgarden.baselibrary.network.ApiException;
 import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.InstanceUtil;
 import com.softgarden.baselibrary.utils.L;
+import com.softgarden.baselibrary.utils.ToastUtil;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
 import java.lang.reflect.ParameterizedType;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.util.Locale;
 
 import butterknife.ButterKnife;
@@ -39,7 +45,7 @@ import butterknife.Unbinder;
  * 需要时 可重写createPresenter() {@link BaseActivity#createPresenter()}  并且使用泛型 <P extends BasePresenter> 为当前Presenter实例
  */
 
-public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompatActivity implements IBaseDisplay {
+public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompatActivity implements IBaseDisplay   {
     public final String TAG = getClass().getSimpleName();
 
     /*** 通用的 用于传递数据的Key  */
@@ -176,15 +182,15 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
      */
     public void showPermissionDialog() {
         new AlertDialog.Builder(this)
-                .setTitle(R.string.prompt_message)
-                .setMessage(R.string.permission_lack)
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                .setTitle(R.string.base_prompt_message)
+                .setMessage(R.string.base_permission_lack)
+                .setNegativeButton(R.string.base_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
                 })
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.base_ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         startAppSettings();
@@ -266,15 +272,38 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     /*******************************  LoadingDialog end  *****************************************/
 
     /**
-     * 默认 吐司显示错误，可重写
+     * 全局简单异常处理
      *
-     * @param throwable
+     * @param t
      */
     @Override
-    public void showError(Throwable throwable) {
-        getBaseDelegate().showError(throwable);
+    public void showError(Throwable t) {
+        if (t instanceof ConnectException) {
+            ToastUtil.s(getString(R.string.base_connect_failed));
+        } else if (t instanceof UnknownHostException) {
+            ToastUtil.s(getString(R.string.base_request_serve_failed));
+        } else if (t instanceof SocketTimeoutException) {
+            ToastUtil.s(getString(R.string.base_socket_timeout));
+        } else if (t instanceof JsonParseException) {
+            ToastUtil.s(getString(R.string.base_parse_failed));
+            t.printStackTrace();
+        } else if (t instanceof ApiException) {
+            //通用的Api异常处理
+            onApiException((ApiException) t);
+        } else {
+            getBaseDelegate().showError(t);
+        }
     }
 
+    /**
+     * 全局的详细异常处理 根据项目情况重写
+     *
+     * @param t
+     */
+    @Override
+    public void onApiException(ApiException t) {
+        getBaseDelegate().showError(t);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

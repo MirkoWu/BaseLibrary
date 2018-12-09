@@ -13,8 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
-import com.softgarden.baselibrary.BuildConfig;
-import com.softgarden.baselibrary.utils.ToastUtil;
+import com.softgarden.baselibrary.network.ApiException;
 import com.trello.rxlifecycle2.components.support.RxAppCompatDialogFragment;
 
 import butterknife.ButterKnife;
@@ -96,10 +95,15 @@ public abstract class BaseDialogFragment<P extends IBasePresenter> extends RxApp
 
     @Override
     public void showError(Throwable throwable) {
-        ToastUtil.s(throwable.getMessage());
-        if (BuildConfig.DEBUG) throwable.printStackTrace();
+        if (getActivity() instanceof BaseActivity)
+            ((BaseActivity) getActivity()).showError(throwable);
     }
 
+    @Override
+    public void onApiException(ApiException e) {
+        if (getActivity() instanceof BaseActivity)
+            ((BaseActivity) getActivity()).onApiException(e);
+    }
 
     @Override
     public void changeDayNightMode(boolean isNightMode) {

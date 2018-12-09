@@ -2,6 +2,7 @@ package com.softgarden.baselibrary.base;
 
 import android.content.Context;
 
+import com.softgarden.baselibrary.network.ApiException;
 import com.trello.rxlifecycle2.LifecycleTransformer;
 
 /**
@@ -19,6 +20,8 @@ public interface IBaseDisplay {
     void hideProgressDialog();
 
     void showError(Throwable t);
+
+    void onApiException(ApiException e);
 
     void onRequestFinish();
 

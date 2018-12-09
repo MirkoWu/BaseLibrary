@@ -8,13 +8,17 @@ import android.view.View;
 
 import com.mirkowu.baselibrary.R;
 import com.mirkowu.baselibrary.base.ToolbarActivity;
+import com.mirkowu.baselibrary.bean.GoodsBean;
 import com.mirkowu.basetoolbar.BaseToolbar;
+import com.softgarden.baselibrary.network.RxCallback;
 import com.softgarden.baselibrary.utils.ToastUtil;
+
+import java.util.List;
 
 /**
  * 1.这里要泛型 要记得写上当前Presenter  要继承view的接口Contract.Display
  */
-public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> implements TestMvpContract.Display {
+public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> {
 
     public static void start(Context context) {
         Intent starter = new Intent(context, TestMvpActivity.class);
@@ -28,15 +32,6 @@ public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> implement
         return builder.setTitle("MVP模板");
     }
 
-    /**
-     * 2.要重写该方法 传入当前的Presenter
-     *
-     * @return
-     */
-//    @Override
-//    public TestMvpPresenter createPresenter() {
-//        return new TestMvpPresenter();
-//    }
 
     @Override
     protected int getLayoutId() {
@@ -46,25 +41,19 @@ public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> implement
     @Override
     protected void initialize() {
         /**
-         * 3.调用
+         * 2.调用 多种方式任选
          */
-        getPresenter().getIndexData();
-        getPresenter().switchBluetooth();
-        getPresenter().switchOnOff();
-    }
+        getPresenter().getIndexData().subscribe(new RxCallback<List<GoodsBean>>() {
+            @Override
+            public void onSuccess(@Nullable List<GoodsBean> data) {
 
-    @Override
-    public void getIndexData(String bean) {
+            }
+        });
 
-    }
 
-    @Override
-    public void switchOnOff(String bean) {
+        getPresenter().getIndexData().subscribe(goodsBeans -> {
 
-    }
-
-    @Override
-    public void switchBluetooth(String bean) {
+        }, throwable -> showError(throwable));
 
     }
 

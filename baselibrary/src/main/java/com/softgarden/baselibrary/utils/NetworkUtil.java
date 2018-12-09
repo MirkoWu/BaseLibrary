@@ -1,4 +1,4 @@
-package com.mirkowu.baselibrary.utils;
+package com.softgarden.baselibrary.utils;
 
 
 import android.content.Context;
@@ -6,8 +6,8 @@ import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.dialog.PromptDialog;
-import com.softgarden.baselibrary.utils.AppUtil;
 
 /**
  * 类描述：判断网络是否可以连接工具类
@@ -57,10 +57,10 @@ public class NetworkUtil {
             synchronized (PromptDialog.class) {
                 if (promptDialog == null) {
                     promptDialog = new PromptDialog(context)
-                            .setTitle("温馨提示")
-                            .setContent("检测到当前手机未连接网络，\n是否前往设置网络？")
-                            .setPositiveButton("前往")
-                            .setNegativeButton("取消")
+                            .setTitle(context.getString(R.string.base_warm_hint))
+                            .setContent(context.getString(R.string.base_no_network_hint))
+                            .setPositiveButton(context.getString(R.string.base_go))
+                            .setNegativeButton(context.getString(R.string.base_cancel))
                             .setOnButtonClickListener(new PromptDialog.OnButtonClickListener() {
                                 @Override
                                 public void onButtonClick(PromptDialog dialog, boolean isPositiveClick) {

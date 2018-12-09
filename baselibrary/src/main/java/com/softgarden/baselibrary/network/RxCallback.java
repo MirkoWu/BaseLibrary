@@ -1,12 +1,7 @@
-package com.mirkowu.baselibrary.network;
+package com.softgarden.baselibrary.network;
 
-import com.google.gson.JsonParseException;
 import com.softgarden.baselibrary.base.IBaseDisplay;
 import com.softgarden.baselibrary.utils.ToastUtil;
-
-import java.net.ConnectException;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
 
 import io.reactivex.disposables.Disposable;
 
@@ -24,9 +19,9 @@ public abstract class RxCallback<T> implements Callback<T> {
 
     }
 
-    public RxCallback(IBaseDisplay mView) {
-        this.mView = mView;
-    }
+//    public RxCallback(IBaseDisplay mView) {
+//        this.mView = mView;
+//    }
 
 
     @Override
@@ -46,31 +41,18 @@ public abstract class RxCallback<T> implements Callback<T> {
     }
 
     @Override
-    public void onError(Throwable e) {
-
-        if (e instanceof ConnectException) {
-            ToastUtil.s("服务器连接失败");
-        } else if (e instanceof UnknownHostException) {
-            ToastUtil.s("请求失败");
-        } else if (e instanceof SocketTimeoutException) {
-            ToastUtil.s("请求超时");
-        } else if (e instanceof JsonParseException) {
-            ToastUtil.s("数据解析失败");
-            e.printStackTrace();
-        } else if (e instanceof RxJava2NullException) {//RxJava2不能发送null
+    public void onError(Throwable t) {
+        if (t instanceof RxJava2NullException) {//RxJava2不能发送null
             onSuccess(null);
-        } else if (e instanceof ApiException) {
-            // mView.showError(e);//有需要的话可以 发送给View层处理异常
-
+        } else if (t instanceof ApiException) {
             //通用的Api异常处理
-            ApiException apiException = (ApiException) e;
+            ApiException apiException = (ApiException) t;
             onApiException(apiException);
-
         } else {
-            ToastUtil.s(e.getMessage());
-            e.printStackTrace();
+//            ToastUtil.s(t.getMessage());
+            t.printStackTrace();
         }
-        onFinish();
+
     }
 
     @Override
@@ -88,8 +70,6 @@ public abstract class RxCallback<T> implements Callback<T> {
 
     @Override
     public void onFinish() {
-        if (mView != null) {
-            mView.onRequestFinish();
-        }
+
     }
 }
