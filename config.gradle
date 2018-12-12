@@ -30,6 +30,7 @@ ext {
             okhttp                       : '3.10.0',
             gson                         : '2.8.2',
             glide                        : '4.6.1',
+            autosize                     : '1.1.0',
 
     ]
 
@@ -47,7 +48,7 @@ ext {
             rxandroid                    : "io.reactivex.rxjava2:rxandroid:$ver.rxandroid",
             rxpermissions2               : "com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar",
             rxlifecycle2_components      : "com.trello.rxlifecycle2:rxlifecycle-components:$ver.rxlifecycle2",
-            SmartRefreshLayout           : "com.scwang.smartrefresh:SmartRefreshLayout:$ver.SmartRefreshLayout",
+            SmartRefreshLayout           : "com.scwang.smartrefresh:SmartRefreshLayout:$ver.SmartRefreshLayout",//刷新库
             BaseRecyclerViewAdapterHelper: "com.github.CymChad:BaseRecyclerViewAdapterHelper:$ver.BaseRecyclerViewAdapterHelper",
 
             butterknife                  : "com.jakewharton:butterknife:$ver.butterknife",
@@ -62,21 +63,25 @@ ext {
             gson                         : "com.google.code.gson:gson:$ver.gson",
             glide                        : "com.github.bumptech.glide:glide:$ver.glide",
             glide_compiler               : "com.github.bumptech.glide:compiler:$ver.glide",
-            autosize                     : 'me.jessyan:autosize:1.1.0',
+            autosize                     : "me.jessyan:autosize:$ver.autosize",//屏幕适配
 
+            stickynestedscrollview       : 'com.github.didikk:sticky-nestedscrollview:1.0.1',//粘性头部
             indexablestickylistview      : "me.yokeyword:indexablestickylistview:0.6.10",
-            androideventbus              : "org.simple:androideventbus:1.0.5.1",
+            TabLayout                    : 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar',
+            androideventbus              : "org.simple:androideventbus:1.0.5.1",//EventBus
+            roundedimageview             : 'com.makeramen:roundedimageview:2.3.0',//圆角图片
+            circleimageview              : 'de.hdodenhof:circleimageview:2.2.0',//圆形图片
+            ShortcutBadger               : 'me.leolin:ShortcutBadger:1.1.19@aar',//角标
+            PickerView                   : 'com.contrarywind:Android-PickerView:3.2.5',
+            BaseToolbar                  : 'com.mirkowu:BaseToolbar:0.1.0',
+            StatusBarUtil                : 'com.mirkowu:StatusBarUtil:0.0.6',//状态栏
+            ImagePicker                  : 'com.mirkowu:ImagePicker:0.0.7',//图片选择
+
+            //高德地图
+            amap                         : 'com.amap.api:location:latest.integration',
             ezviz                        : "com.hikvision.ezviz:ezviz-sdk:4.7.1",
             jpush                        : "cn.jiguang.sdk:jpush:3.0.9",
             jcore                        : "cn.jiguang.sdk:jcore:1.1.7",
-            circleimageview              : 'de.hdodenhof:circleimageview:2.2.0',
-            TabLayout                    : 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar',
-            //高德地图
-            amap                         : 'com.amap.api:location:latest.integration',
-            ShortcutBadger               : 'me.leolin:ShortcutBadger:1.1.19@aar',
-            PickerView                   : 'com.contrarywind:Android-PickerView:3.2.5',
-            BaseToolbar                  : 'com.mirkowu:BaseToolbar:0.0.8',
-            StatusBarUtil                : 'com.mirkowu:StatusBarUtil:0.0.6',
     ]
 
     //keystore
