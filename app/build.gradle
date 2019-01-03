@@ -7,7 +7,7 @@ android {
     compileSdkVersion config.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.mirkowu.baselibrary"
+        applicationId "com.mirkowu.baselibrarysample"
         minSdkVersion config.minSdkVersion
         targetSdkVersion config.targetSdkVersion
         versionCode config.versionCode
@@ -70,4 +70,5 @@ dependencies {
     implementation library.TabLayout
 
     implementation 'com.google.android:flexbox:1.0.0'
+   // implementation 'com.afollestad:aesthetic:1.0.0-beta05'
 }

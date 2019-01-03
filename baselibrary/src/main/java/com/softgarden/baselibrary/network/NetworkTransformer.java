@@ -42,6 +42,7 @@ public class NetworkTransformer<T> implements ObservableTransformer<BaseBean<T>,
                     //请求前检测网络
                     if (!NetworkUtil.isConnected(mView.getContext())) {
                         NetworkUtil.showNoNetWorkDialog(mView.getContext());
+                        mView.onRequestFinish();
                         disposable.dispose();
                     } else {
                         if (showLoading) mView.showProgressDialog();

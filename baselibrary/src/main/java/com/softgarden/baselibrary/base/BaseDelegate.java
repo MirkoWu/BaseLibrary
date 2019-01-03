@@ -10,12 +10,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
 
-import com.softgarden.baselibrary.BaseApplication;
 import com.softgarden.baselibrary.BuildConfig;
 import com.softgarden.baselibrary.dialog.LoadingDialog;
 import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.LanguageUtil;
-import com.softgarden.baselibrary.utils.ScreenUtil;
 import com.softgarden.baselibrary.utils.ToastUtil;
 
 import java.util.Locale;
@@ -57,29 +55,6 @@ public class BaseDelegate {
         changeDayNightMode(isNightMode);
 
         //屏幕适配 已使用AutoSize
-      //  adapterScreen();
-    }
-
-    /**
-     * 是否适配屏幕 要在 onCreate()前调用
-     *
-     * @param isAdapterScreen
-     */
-    public void setAdapterScreen(boolean isAdapterScreen) {
-        this.mIsAdapterScreen = isAdapterScreen;
-    }
-
-    /**
-     * 适配屏幕
-     */
-    protected void adapterScreen() {
-        if (mIsAdapterScreen) {
-            if (ScreenUtil.isPortrait(mActivity)) {
-                ScreenUtil.adaptScreenPortrait(mActivity, BaseApplication.getInstance().getDesignWidthInDp());
-            } else {
-                ScreenUtil.adaptScreenLandscape(mActivity, BaseApplication.getInstance().getDesignWidthInDp());
-            }
-        }
     }
 
 
@@ -141,8 +116,8 @@ public class BaseDelegate {
     }
 
 
-    private static int mCount = 0;
-    private static LoadingDialog mLoadingDialog;
+    private int mCount = 0;
+    private LoadingDialog mLoadingDialog;
 
     public synchronized void showLoading(Activity activity, CharSequence message) {
         if (mCount == 0) {
@@ -163,12 +138,19 @@ public class BaseDelegate {
             return;
         }
         mCount--;
-        if (mCount == 0) {
+        if (mCount == 0 && mLoadingDialog != null) {
             mLoadingDialog.dismiss();
             mLoadingDialog = null;
         }
     }
 
+    public void clearLoading() {
+        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
+            mCount = 0;
+            mLoadingDialog.dismiss();
+            mLoadingDialog = null;
+        }
+    }
     /*******************************  LoadingDialog end  *****************************************/
 
 
@@ -203,6 +185,7 @@ public class BaseDelegate {
 
     /**
      * 7.0后适配语言
+     *
      * @param newBase
      * @return
      */

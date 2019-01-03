@@ -26,25 +26,6 @@ import com.softgarden.baselibrary.utils.ActivityManager;
 public class BaseApplication extends Application {
 
     private static BaseApplication instance;
-    private static int mDesignWidthInDp = 360;
-
-    /**
-     * 获取设计稿dp宽度
-     *
-     * @return
-     */
-    public int getDesignWidthInDp() {
-        return mDesignWidthInDp;
-    }
-
-    /**
-     * 设置设计稿dp宽度 默认360dp 即720*1280分辨率设计稿
-     *
-     * @param designWidthInDp
-     */
-    public void setDesignWidthInDp(int designWidthInDp) {
-        this.mDesignWidthInDp = designWidthInDp;
-    }
 
     //static 代码段可以防止内存泄露
     static {
@@ -52,7 +33,7 @@ public class BaseApplication extends Application {
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-                layout.setPrimaryColorsId(android.R.color.white);//全局设置主题颜色
+                layout.setPrimaryColorsId(android.R.color.transparent);//全局设置主题颜色
                 return new ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate);//指定为经典Header，默认是 贝塞尔雷达Header
             }
         });

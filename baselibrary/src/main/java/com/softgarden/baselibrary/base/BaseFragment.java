@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.softgarden.baselibrary.network.ApiException;
+import com.softgarden.baselibrary.utils.InstanceUtil;
 import com.trello.rxlifecycle2.components.support.RxFragment;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Locale;
 
 import butterknife.ButterKnife;
@@ -217,6 +219,13 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
      * @return
      */
     public P createPresenter() {
+        if (this instanceof IBaseDisplay
+                && this.getClass().getGenericSuperclass() instanceof ParameterizedType
+                && ((ParameterizedType) (this.getClass().getGenericSuperclass())).getActualTypeArguments().length > 0) {
+            Class mPresenterClass = (Class) ((ParameterizedType) (this.getClass().getGenericSuperclass()))
+                    .getActualTypeArguments()[0];//获取Presenter的class
+            return InstanceUtil.getInstance(mPresenterClass);
+        }
         return null;
     }
 
