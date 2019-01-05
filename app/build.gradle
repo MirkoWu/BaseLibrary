@@ -47,7 +47,7 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
-    
+
     dataBinding {
         enabled = true
     }
@@ -70,5 +70,5 @@ dependencies {
     implementation library.TabLayout
 
     implementation 'com.google.android:flexbox:1.0.0'
-   // implementation 'com.afollestad:aesthetic:1.0.0-beta05'
+    // implementation 'com.afollestad:aesthetic:1.0.0-beta05'
 }

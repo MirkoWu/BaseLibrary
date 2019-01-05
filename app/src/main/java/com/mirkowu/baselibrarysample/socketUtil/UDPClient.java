@@ -7,6 +7,7 @@ import com.softgarden.baselibrary.BaseApplication;
 import com.softgarden.baselibrary.utils.L;
 
 import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
@@ -25,7 +26,7 @@ public class UDPClient implements ISocket {
     private int port;
     private String host;
     private DatagramPacket packet;
-    private MulticastSocket socket;
+    private DatagramSocket socket;
     private InetAddress destAddress;
     private WifiManager wifiManager;
     private WifiManager.MulticastLock multicastLock;
@@ -33,18 +34,20 @@ public class UDPClient implements ISocket {
     public UDPClient(String host, int port) throws Exception {
         this.host = host;
         this.port = port;
-        allowMultiCast();
-        destAddress = InetAddress.getByName(host);
-        if (!destAddress.isMulticastAddress()) {// 检测该地址是否是多播地址
-            return;
-        }
-        socket = new MulticastSocket(null);
 
-        socket.setReuseAddress(true);//复用端口
-        socket.setBroadcast(true);
-        // socket.setTimeToLive(TTL);
-        socket.bind(new InetSocketAddress(port));
-        socket.joinGroup(destAddress);
+        destAddress = InetAddress.getByName(host);
+        if (destAddress.isMulticastAddress()) {// 检测该地址是否是多播地址
+            allowMultiCast();
+            socket = new MulticastSocket(null);
+            socket.setReuseAddress(true);//复用端口
+            socket.setBroadcast(true);
+            // socket.setTimeToLive(TTL);
+            socket.bind(new InetSocketAddress(port));
+            ((MulticastSocket) socket).joinGroup(destAddress);
+        } else {
+            socket = new DatagramSocket();
+        }
+
     }
 
     private void allowMultiCast() {

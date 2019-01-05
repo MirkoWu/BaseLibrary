@@ -18,7 +18,7 @@
 
         <EditText
             android:id="@+id/edt_ip"
-            android:text="120.79.62.1"
+            android:text="192.168.8.158"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -34,7 +34,7 @@
 
         <EditText
             android:id="@+id/edt_port"
-            android:text="7776"
+            android:text="1004"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>

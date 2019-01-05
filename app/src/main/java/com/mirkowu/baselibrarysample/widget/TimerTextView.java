@@ -39,7 +39,8 @@ public class TimerTextView extends AppCompatTextView {
         downTimer = new CountDownTimer(COUNT_DOWN_TIME * 1000, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                setText(String.format("获取验证码(%d)", millisUntilFinished / 1000));
+                //四舍五入 优化系统误差
+                setText(String.format("获取验证码(%d)", Math.round((double) millisUntilFinished / 1000)));
             }
 
             @Override

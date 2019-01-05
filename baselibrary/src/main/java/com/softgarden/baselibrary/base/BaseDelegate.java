@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDelegate;
 import android.text.TextUtils;
@@ -13,9 +15,12 @@ import android.text.TextUtils;
 import com.softgarden.baselibrary.BuildConfig;
 import com.softgarden.baselibrary.dialog.LoadingDialog;
 import com.softgarden.baselibrary.utils.BaseSPManager;
+import com.softgarden.baselibrary.utils.L;
 import com.softgarden.baselibrary.utils.LanguageUtil;
 import com.softgarden.baselibrary.utils.ToastUtil;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Locale;
 
 /**
@@ -158,11 +163,50 @@ public class BaseDelegate {
      * 检查是否为竖屏
      */
     public void checkScreenOrientation() {
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.O && isTranslucentOrFloating()) {
+            L.e("avoid calling setRequestedOrientation when Oreo.");
+            return;
+        }
+
         if (mOrientationPortrait && mActivity.getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             //调用此方法会重新创建Activity导致onCreate()执行二次,
             // 最好在manifest中配置 android:screenOrientation="portrait"
             mActivity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+    }
+
+    /**
+     * 是否是透明的Activity
+     *
+     * @return
+     */
+    private boolean isTranslucentOrFloating() {
+        boolean isTranslucentOrFloating = false;
+        try {
+            int[] styleableRes = (int[]) Class.forName("com.android.internal.R$styleable").getField("Window").get(null);
+            final TypedArray ta = mActivity.obtainStyledAttributes(styleableRes);
+            Method m = ActivityInfo.class.getMethod("isTranslucentOrFloating", TypedArray.class);
+            m.setAccessible(true);
+            isTranslucentOrFloating = (boolean) m.invoke(null, ta);
+            m.setAccessible(false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isTranslucentOrFloating;
+    }
+
+    private boolean fixOrientation() {
+        try {
+            Field field = Activity.class.getDeclaredField("mActivityInfo");
+            field.setAccessible(true);
+            ActivityInfo o = (ActivityInfo) field.get(this);
+            o.screenOrientation = -1;
+            field.setAccessible(false);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     /**

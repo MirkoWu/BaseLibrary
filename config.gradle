@@ -9,7 +9,7 @@ ext {
             versionName          : "1.0",
 
             //SDK And Tools
-            minSdkVersion        : 16,
+            minSdkVersion        : 19,
             targetSdkVersion     : 27,
             compileSdkVersion    : 27,
 

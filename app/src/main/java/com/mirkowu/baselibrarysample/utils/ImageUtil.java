@@ -52,7 +52,7 @@ public class ImageUtil {
      * @return
      */
     public static String getImageUrl(String url) {
-        return"自己定义要添加的路径"+ url;
+        return "自己定义要添加的路径" + url;
     }
 
 
@@ -112,6 +112,20 @@ public class ImageUtil {
     }
 
     /**
+     * 加载drawable资源
+     *
+     * @param imageView
+     * @param resId
+     */
+    public static void loadSrc(ImageView imageView, int resId) {
+        Glide.with(imageView.getContext())
+                .load(resId)
+                .apply(RequestOptions.noAnimation()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL))
+                .into(imageView);
+    }
+
+    /**
      * 加载本地视频 自动获取缩略图
      *
      * @param imageView
@@ -126,6 +140,7 @@ public class ImageUtil {
                         .diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(imageView);
     }
+
     /**
      * 加载本地图片 最好override一下宽高，不然滑动会卡顿
      *
@@ -143,6 +158,7 @@ public class ImageUtil {
                         .diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(imageView);
     }
+
     /**
      * 加载头像
      *
@@ -175,7 +191,6 @@ public class ImageUtil {
                         .diskCacheStrategy(DiskCacheStrategy.ALL))
                 .into(imageView);
     }
-
 
 
     /**
@@ -443,5 +458,6 @@ public class ImageUtil {
             throw new RuntimeException("the file is not exists or it is not directory !");
         }
     }
+
 
 }

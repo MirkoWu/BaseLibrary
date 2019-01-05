@@ -1,5 +1,7 @@
 package com.mirkowu.baselibrarysample.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -14,6 +16,7 @@ import com.mirkowu.baselibrarysample.socketUtil.SocketType;
 import com.mirkowu.baselibrarysample.utils.DateUtil;
 import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.utils.L;
+import com.softgarden.baselibrary.utils.StringUtil;
 import com.softgarden.baselibrary.utils.ToastUtil;
 
 import org.json.JSONException;
@@ -26,6 +29,11 @@ import butterknife.OnClick;
 
 public class SocketTestActivity extends ToolbarActivity {
 
+    public static void start(Context context) {
+        Intent starter = new Intent(context, SocketTestActivity.class);
+//    starter.putExtra();
+        context.startActivity(starter);
+    }
 
     @BindView(R.id.edt_ip)
     EditText edtIp;
@@ -84,7 +92,8 @@ public class SocketTestActivity extends ToolbarActivity {
                     jsonObject.put("DevId", "e29d0e5d05771d2c");
                     jsonObject.put("Token", "23333");
 
-                    sendData(jsonObject.toString());
+                    String data = "5A5A00300000000100000000101000075A3238302D525331380001009feb22970100010000000000020100010001B00D";
+                    sendData(StringUtil.hex2Bytes(data));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -94,6 +103,7 @@ public class SocketTestActivity extends ToolbarActivity {
                 break;
         }
     }
+
 
     private void sendData(String data) {
         try {
@@ -108,6 +118,11 @@ public class SocketTestActivity extends ToolbarActivity {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendData(byte[] data) {
+        RxSocketManager.getInstance().send(data, false);
+
     }
 
     private void connect() {
@@ -125,7 +140,7 @@ public class SocketTestActivity extends ToolbarActivity {
                     public void onSucceed(byte[] data) {
                         try {
                             String rec = new String(data, "UTF-8");
-                            L.d("onSucceed  " + rec);
+                            L.d("onSucceed  " + StringUtil.byte2Hexstr(data));
 
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
@@ -140,23 +155,24 @@ public class SocketTestActivity extends ToolbarActivity {
                 .setSocketStatusListener(new RxSocketManager.OnSocketStatusListener() {
                     @Override
                     public void onConnectSucceed() {
+
                         getActivity().runOnUiThread(() -> {
                             L.d("------------onConnectSucceed");
                             ToastUtil.s("已连接");
-                            try {
-                                JSONObject jsonObject = new JSONObject();
-                                jsonObject.put("UserName", "18565699138");
-                                jsonObject.put("LoginTime", DateUtil.getDataStr(System.currentTimeMillis(), DateUtil.FORMAT_YMDHMS));
-                                jsonObject.put("DevId", "e29d0e5d05771d2c");
-                                jsonObject.put("Token", "23333");
-
-                                sendData(jsonObject.toString());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                            isConnected = true;
-                            if (!getActivity().isFinishing()) btnConnect.setText("断开");
+//                            try {
+//                                JSONObject jsonObject = new JSONObject();
+//                                jsonObject.put("UserName", "18565699138");
+//                                jsonObject.put("LoginTime", DateUtil.getDataStr(System.currentTimeMillis(), DateUtil.FORMAT_YMDHMS));
+//                                jsonObject.put("DevId", "e29d0e5d05771d2c");
+//                                jsonObject.put("Token", "23333");
+//
+//                                sendData(jsonObject.toString());
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                            }
+//
+//                            isConnected = true;
+//                            if (!getActivity().isFinishing()) btnConnect.setText("断开");
                         });
                     }
 

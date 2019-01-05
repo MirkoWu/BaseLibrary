@@ -48,6 +48,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="DataBinding模板" />
+ <Button
+            android:id="@+id/mBtnSocketTest"
+            style="@style/StyleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Socket测试" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
