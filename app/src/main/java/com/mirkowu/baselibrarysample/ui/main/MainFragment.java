@@ -12,6 +12,7 @@ import com.mirkowu.baselibrarysample.ui.SocketTestActivity;
 import com.mirkowu.baselibrarysample.ui.TestToolbarActivity;
 import com.mirkowu.baselibrarysample.ui.testMvp.TestMvpActivity;
 import com.mirkowu.baselibrarysample.ui.testRefresh.TestRefreshActivity;
+import com.mirkowu.baselibrarysample.ui.webView.WebViewActivity;
 import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.L;
@@ -65,7 +66,7 @@ public class MainFragment extends ToolbarFragment {
     }
 
     @OnClick({R.id.mBtnChangeDayNightMode, R.id.mBtnChangeLanguage, R.id.mBtnMvpTemp,
-            R.id.mBtnRefreshTemp, R.id.mBtnToolbarTemp, R.id.mBtnDataBindingTemp, R.id.mBtnSocketTest})
+            R.id.mBtnRefreshTemp, R.id.mBtnToolbarTemp, R.id.mBtnDataBindingTemp, R.id.mBtnSocketTest, R.id.mBtnWebView})
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
@@ -93,6 +94,9 @@ public class MainFragment extends ToolbarFragment {
                 break;
             case R.id.mBtnSocketTest://Socket
                 SocketTestActivity.start(getActivity());
+                break;
+            case R.id.mBtnWebView://WebView
+                WebViewActivity.start(getActivity(), "这是标题", "http://www.baidu.com/");
                 break;
 
         }

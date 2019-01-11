@@ -46,6 +46,7 @@
         <activity android:name=".ui.SocketTestActivity" />
         <!-- android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" -->
         <activity android:name=".ui.ScreenAdapterActivity" />
+        <activity android:name=".ui.webView.WebViewActivity" />
 
     </application>
 

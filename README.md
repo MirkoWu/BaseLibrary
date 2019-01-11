@@ -94,6 +94,12 @@ Base 大致功能如下：
 
 
 ## Log更新日志 ##
+    *2019-1-11
+        增加了闪屏页，引导页
+        增加了WebView通用demo页面
+        修改了demo的包名，避免重命名项目时将baselibrary也修改了
+        优化了Socket工具，是的udp能自动判断是单播还是组播
+        修复了MD5Util工具类中 ToMD5NOKey() 方法导致的bug。
     *2018-12-9
         根据实际情况简化MVP模式，剔除繁琐的Contact。
         更新适配方案 AndroidAutoSize

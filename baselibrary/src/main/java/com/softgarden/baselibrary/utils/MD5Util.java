@@ -48,7 +48,7 @@ public class MD5Util {
      * @return
      */
     public static String ToMD5NOKey(String pstr) {
-        return ToMD5(null, pstr);
+        return ToMD5("", pstr);
     }
 
 }
