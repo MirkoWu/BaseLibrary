@@ -22,8 +22,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 import static android.app.Activity.RESULT_OK;
-import static com.softgarden.baselibrary.base.BaseActivity.KEY_LOGIN_EVENT;
-import static com.softgarden.baselibrary.base.BaseActivity.REQUEST_LOGIN;
 
 /**
  * Fragment 基类  已实现以下功能
@@ -35,9 +33,15 @@ import static com.softgarden.baselibrary.base.BaseActivity.REQUEST_LOGIN;
  * 需要时 可重写createPresenter() {@link BaseActivity#createPresenter()}  并且使用泛型 <P extends BasePresenter> 为当前Presenter实例
  */
 public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment implements IBaseDisplay {
+    /*** 通用的 用于传递数据的Key  */
+    public static final String KEY_DATA = BaseActivity.KEY_DATA;
+    public static final String KEY_TITLE = BaseActivity.KEY_TITLE;
+    public static final String KEY_TYPE = BaseActivity.KEY_TYPE;
+    public static final String KEY_LOGIN_EVENT = BaseActivity.KEY_LOGIN_EVENT;
+    public static final int REQUEST_LOGIN = BaseActivity.REQUEST_LOGIN;
+    public static final int REQUEST_CODE = BaseActivity.REQUEST_CODE;
 
     protected Unbinder unbinder;
-
     protected AppCompatActivity mActivity;
     protected Context mContext;
 
@@ -146,7 +150,6 @@ public abstract class BaseFragment<P extends IBasePresenter> extends RxFragment 
         if (getActivity() instanceof BaseActivity)
             ((BaseActivity) getActivity()).onApiException(e);
     }
-
 
 
     @Override

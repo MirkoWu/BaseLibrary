@@ -53,7 +53,6 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     public static final String KEY_TITLE = "title";
     public static final String KEY_TYPE = "type";
     public static final String KEY_LOGIN_EVENT = "login_event";
-
     public static final int REQUEST_LOGIN = 0x00001234;
     public static final int REQUEST_CODE = 0x00005678;
 

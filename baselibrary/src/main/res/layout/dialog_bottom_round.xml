@@ -4,13 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <LinearLayout
         android:id="@+id/llContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff"
+        android:background="@drawable/shape_radius_white_10dp"
         android:divider="@drawable/shape_line_hor"
         android:orientation="vertical"
         android:showDividers="middle">
@@ -34,23 +35,16 @@
             app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
     </LinearLayout>
 
-    <FrameLayout
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/tvCancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="#ffffff">
-
-        <android.support.v7.widget.AppCompatTextView
-            android:id="@+id/tvCancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:gravity="center"
-            android:padding="12dp"
-            android:text="@string/base_cancel"
-            android:textAllCaps="false"
-            android:textColor="#333333"
-            android:textSize="16dp" />
-    </FrameLayout>
-
+        android:background="@drawable/selector_item_press"
+        android:gravity="center"
+        android:padding="12dp"
+        android:text="@string/base_cancel"
+        android:textAllCaps="false"
+        android:textColor="#333333"
+        android:textSize="15dp" />
 </LinearLayout>

@@ -20,7 +20,6 @@ import com.softgarden.baselibrary.base.BaseDialogFragment;
 import com.softgarden.baselibrary.base.BaseRVAdapter;
 import com.softgarden.baselibrary.base.BaseRVHolder;
 import com.softgarden.baselibrary.base.IBasePresenter;
-import com.softgarden.baselibrary.utils.ContextUtil;
 import com.softgarden.baselibrary.widget.ColorDividerDecoration;
 
 import java.util.List;
@@ -33,15 +32,17 @@ public class BottomListDialog extends BaseDialogFragment<IBasePresenter> {
 
     BaseRVAdapter<String> bottomListAdapter;
     boolean hideCancelBtn = false;//默认不显示
+    boolean useRoundBackground = false;// 是否使用圆角背景
     private String title;
     List<String> data;
 
     private RecyclerView mRecyclerView;
     private TextView tvTitle;
+    private TextView tvCancel;
 
     @Override
     public int getLayoutId() {
-        return R.layout.dialog_bottom;
+        return useRoundBackground ? R.layout.dialog_bottom_round : R.layout.dialog_bottom;
     }
 
     @Override
@@ -74,21 +75,22 @@ public class BottomListDialog extends BaseDialogFragment<IBasePresenter> {
     @Override
     public void initialize() {
         tvTitle = $(R.id.tvTitle);
+        tvCancel = $(R.id.tvCancel);
+        mRecyclerView = $(R.id.mRecyclerView);
+
         tvTitle.setText(title);
         tvTitle.setVisibility(TextUtils.isEmpty(title) ? View.GONE : View.VISIBLE);
-        $(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
+        tvCancel.setVisibility(hideCancelBtn ? View.GONE : View.VISIBLE);
+        tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 BottomListDialog.this.dismiss();
             }
         });
-        $(R.id.btnCancel).setVisibility(hideCancelBtn ? View.GONE : View.VISIBLE);
-        mRecyclerView = $(R.id.mRecyclerView);
-        mRecyclerView.addItemDecoration(new ColorDividerDecoration(  LinearLayoutManager.VERTICAL,
+        mRecyclerView.addItemDecoration(new ColorDividerDecoration(LinearLayoutManager.VERTICAL,
                 Color.parseColor("#CCCCCC"), 1, ColorDividerDecoration.MIDDLE));
 
         bottomListAdapter = new BaseRVAdapter<String>(R.layout.item_bottom) {
-
             @Override
             public void onBindVH(BaseRVHolder holder, String data, int position) {
                 holder.setText(R.id.tvContent, data);
@@ -107,7 +109,6 @@ public class BottomListDialog extends BaseDialogFragment<IBasePresenter> {
         mRecyclerView.setAdapter(bottomListAdapter);
     }
 
-
     public BottomListDialog setTitle(String title) {
         this.title = title;
         return this;
@@ -124,6 +125,11 @@ public class BottomListDialog extends BaseDialogFragment<IBasePresenter> {
 
     public BottomListDialog hideCancelBtn() {
         this.hideCancelBtn = true;
+        return this;
+    }
+
+    public BottomListDialog useRoundBackground() {
+        this.useRoundBackground = true;
         return this;
     }
 
