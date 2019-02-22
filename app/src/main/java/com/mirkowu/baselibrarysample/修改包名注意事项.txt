@@ -1,0 +1,14 @@
+修改包名前需要了解几个知识点。
+1.build.gradle 中的applicationId ：这个才是我们现在说的包名，也是唯一设置包名的地方，这里改了，包名才算修改。
+2.AndroidManifest.xml 中的package：Eclipse 中时 它是代表包名，而在Android Studio 中只代表了R资源文件的路径。
+3.文件夹目录结构XXX.XXX.XXX：是文件存放的路径，用于各文件的关联查找与属性，每个文件的第一行都有 package XXX.XXX.XXX....。
+它代表的是路径，跟我们将的包名并不是必须要一致的，即：applicationId 中的包名 和文件的路径不一定要一致，只是人们为了便于规范，
+将二者保持一致。
+
+了解完这些就应该知道怎么修改包名了：
+1.修改build.gradle 中的applicationId包名，此时如果没有特殊需求或者强迫症其实已经可以正常运行了，
+想要保持文件夹目录结构 和AndroidManifest.xml 一致的往下看。
+2.最外层包名可直接修改，想修改内层包名，可先将包名拆开（不合并包名结构），选择重命名，
+此时会有二个选项选择，Rename current  和Rename all ，建议选前者（原因后面讲），改完之后会发现包名路径已经修改，
+但是  AndroidManifest.xml  中的包名还未改。
+3.此时只剩下资源R文件的路径未修改，可删除 build，直接全局修改 R文件路径，然后reBuild即可。

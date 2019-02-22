@@ -1,5 +1,6 @@
 package com.mirkowu.baselibrarysample.ui.testMvp;
 
+import com.mirkowu.baselibrarysample.api.HostUrl;
 import com.mirkowu.baselibrarysample.api.RetrofitClient;
 import com.mirkowu.baselibrarysample.bean.GoodsBean;
 import com.softgarden.baselibrary.base.BasePresenter;
@@ -19,7 +20,7 @@ public class TestMvpPresenter extends BasePresenter {
 
     public Observable<List<GoodsBean>> getIndexData() {
         return RetrofitClient.getTestService()
-                .getData()
+                .getData(HostUrl.HOST_URL_TEST)
                 .compose(new NetworkTransformer<>(this));
 //                .subscribe(new RxCallback<List<GoodsBean>>() {
 //                    @Override

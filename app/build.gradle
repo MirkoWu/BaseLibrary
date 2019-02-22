@@ -2,7 +2,9 @@ apply plugin: 'com.android.application'
 
 def config = rootProject.ext.ver
 def library = rootProject.ext.library
-
+def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getDefault())
+}
 android {
     compileSdkVersion config.compileSdkVersion
 
@@ -14,6 +16,13 @@ android {
         versionName config.versionName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    // AS3.0 自定义APK安装包名
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "BaseLibrary-v${variant.versionName}-${releaseTime()}-${variant.buildType.name}.apk"
+        }
     }
 
     signingConfigs {

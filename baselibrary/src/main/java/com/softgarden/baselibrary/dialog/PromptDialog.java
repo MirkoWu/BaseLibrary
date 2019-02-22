@@ -23,6 +23,7 @@ import static android.view.View.VISIBLE;
 
 /**
  * 提示窗  继承自Dialog
+ *
  * @author by DELL
  * @date on 2018/1/5
  * @describe
@@ -39,6 +40,7 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
     private int icon;
     private String title;
     private String content;
+    private boolean cancelable;
     private String positiveLabel;
     private String negativeLabel;
     private int positiveTextColor;
@@ -97,6 +99,8 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
             tvPositive.setTextColor(ContextUtil.getColor(positiveTextColor));
         if (negativeTextColor != 0)
             tvNegative.setTextColor(ContextUtil.getColor(negativeTextColor));
+
+        setCancelable(cancelable);
     }
 
     @Override
@@ -139,10 +143,10 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
         return this;
     }
 
-//    public PromptDialog setContent(@StringRes int id) {
-//        return setContent(ContextUtil.getString(id));
-//    }
-
+    public PromptDialog setDialogCancelable(boolean cancelable) {
+        this.cancelable = cancelable;
+        return this;
+    }
 
     /**
      * 左边的 （默认取消）
@@ -150,44 +154,28 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
      * @param negativeLabel
      * @return
      */
-//    public PromptDialog setNegativeButton(@StringRes int negativeLabel, @ColorRes int textColorInt) {
-//        return setNegativeButton(ContextUtil.getString(negativeLabel), textColorInt);
-//    }
-
     public PromptDialog setNegativeButton(String negativeLabel, @ColorRes int textColorInt) {
         this.negativeLabel = negativeLabel;
         this.negativeTextColor = textColorInt;
         return this;
     }
 
-
-//    public PromptDialog setNegativeButton(@StringRes int negativeLabel) {
-//        return setNegativeButton(ContextUtil.getString(negativeLabel));
-//    }
-
     public PromptDialog setNegativeButton(String negativeLabel) {
         this.negativeLabel = negativeLabel;
         return this;
     }
+
 
     /**
      * 右边的 （默认确定）
      *
      * @return
      */
-//    public PromptDialog setPositiveButton(@StringRes int positiveLabel, @ColorRes int textColorInt) {
-//        return setPositiveButton(ContextUtil.getString(positiveLabel), textColorInt);
-//    }
-
     public PromptDialog setPositiveButton(String positiveLabel, @ColorRes int textColorInt) {
         this.positiveLabel = positiveLabel;
         this.positiveTextColor = textColorInt;
         return this;
     }
-
-//    public PromptDialog setPositiveButton(@StringRes int positiveLabel) {
-//        return setPositiveButton(ContextUtil.getString(positiveLabel));
-//    }
 
     public PromptDialog setPositiveButton(String positiveLabel) {
         this.positiveLabel = positiveLabel;
@@ -210,6 +198,7 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
 
         /**
          * 当窗口按钮被点击
+         *
          * @param dialog
          * @param isPositiveClick true :PositiveButton点击, false :NegativeButton点击
          */

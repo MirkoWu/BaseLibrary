@@ -78,9 +78,11 @@ ext {
             ShortcutBadger               : 'me.leolin:ShortcutBadger:1.1.19@aar',//角标
             BaseToolbar                  : 'com.mirkowu:BaseToolbar:0.1.0',//导航栏
             StatusBarUtil                : 'com.mirkowu:StatusBarUtil:0.0.6',//状态栏
-            PickerView                   : 'com.contrarywind:Android-PickerView:3.2.5',//滚轮挑选器
+            PickerView                   : 'com.contrarywind:Android-PickerView:4.1.6',//滚轮挑选器
             BasePopup                    : 'com.github.razerdp:BasePopup:2.1.4',//PopupWindow
-
+            Banner                       : 'com.youth.banner:banner:1.4.10',//banner
+            NewbieGuide                  : 'com.github.huburt-Hu:NewbieGuide:v2.4.0',//蒙层引导
+            pageindicatorview            : 'com.romandanylyk:pageindicatorview:1.0.3',//圆点指示器
             //高德地图
             amap                         : 'com.amap.api:location:latest.integration',
             ezviz                        : "com.hikvision.ezviz:ezviz-sdk:4.7.1",
@@ -89,7 +91,7 @@ ext {
     ]
 
     //keystore
-    keystorePath = rootDir.toString() + '\\keystore.jks'
+    keystorePath = rootDir.toString() + '\\baselirary.jks'
 //    keystorePassword = properties.getProperty("keystorePassword")
 //    alias = properties.getProperty("alias")
 //    aliasPassword = properties.getProperty("aliasPassword")

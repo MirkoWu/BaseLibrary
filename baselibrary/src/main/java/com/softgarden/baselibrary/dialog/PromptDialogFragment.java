@@ -2,7 +2,6 @@ package com.softgarden.baselibrary.dialog;
 
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -39,6 +38,7 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
     private int icon;
     private String title;
     private String content;
+    private boolean cancelable;
     private String positiveLabel;
     private String negativeLabel;
     private int positiveTextColor;
@@ -83,6 +83,8 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
             tvPositive.setTextColor(ContextUtil.getColor(positiveTextColor));
         if (negativeTextColor != 0)
             tvNegative.setTextColor(ContextUtil.getColor(negativeTextColor));
+
+        setCancelable(cancelable);
     }
 
     @Override
@@ -108,17 +110,14 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
         return this;
     }
 
-    public PromptDialogFragment setTitle(@StringRes int id) {
-        return setTitle(getContext().getString(id));
-    }
-
     public PromptDialogFragment setContent(String content) {
         this.content = content;
         return this;
     }
 
-    public PromptDialogFragment setContent(@StringRes int id) {
-        return setContent(getContext().getString(id));
+    public PromptDialogFragment setDialogCancelable(boolean cancelable) {
+        this.cancelable = cancelable;
+        return this;
     }
 
 
@@ -128,20 +127,12 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
      * @param negativeLabel
      * @return
      */
-    public PromptDialogFragment setNegativeButton(@StringRes int negativeLabel, @ColorRes int textColorInt) {
-        return setNegativeButton(getContext().getString(negativeLabel), textColorInt);
-    }
-
     public PromptDialogFragment setNegativeButton(String negativeLabel, @ColorRes int textColorInt) {
         this.negativeLabel = negativeLabel;
         this.negativeTextColor = textColorInt;
         return this;
     }
 
-
-    public PromptDialogFragment setNegativeButton(@StringRes int negativeLabel) {
-        return setNegativeButton(getContext().getString(negativeLabel));
-    }
 
     public PromptDialogFragment setNegativeButton(String negativeLabel) {
         this.negativeLabel = negativeLabel;
@@ -153,19 +144,12 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
      *
      * @return
      */
-    public PromptDialogFragment setPositiveButton(@StringRes int positiveLabel, @ColorRes int textColorInt) {
-        return setPositiveButton(getContext().getString(positiveLabel), textColorInt);
-    }
-
     public PromptDialogFragment setPositiveButton(String positiveLabel, @ColorRes int textColorInt) {
         this.positiveLabel = positiveLabel;
         this.positiveTextColor = textColorInt;
         return this;
     }
 
-    public PromptDialogFragment setPositiveButton(@StringRes int positiveLabel) {
-        return setPositiveButton(getContext().getString(positiveLabel));
-    }
 
     public PromptDialogFragment setPositiveButton(String positiveLabel) {
         this.positiveLabel = positiveLabel;
@@ -190,6 +174,7 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
 
         /**
          * 当窗口按钮被点击
+         *
          * @param dialog
          * @param isPositiveClick true :PositiveButton点击, false :NegativeButton点击
          */

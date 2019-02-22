@@ -8,6 +8,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.POST;
+import retrofit2.http.Url;
 
 
 public interface TestService {
@@ -23,5 +24,8 @@ public interface TestService {
     // @FormUrlEncoded
     @POST(HostUrl.HOST_GOODSLIST)
     Observable<BaseBean<List<GoodsBean>>> getData(/*@Field("is_new") int is_new*/);
+
+    @POST
+    Observable<BaseBean<List<GoodsBean>>> getData(@Url String url/*@Field("is_new") int is_new*/);
 
 }
