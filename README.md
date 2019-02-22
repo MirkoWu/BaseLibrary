@@ -2,6 +2,7 @@
 
   本库旨在开发项目时能快速搭建框架，提供较为常用的开发工具。建议下载作为依赖库，
   便于修改。部分功能会仅在demo中有体现，请详细看完demo。
+  github:[https://github.com/MirkoWu/BaseLibrary](https://github.com/MirkoWu/BaseLibrary)
 -----------------------------------------------------
   下面介绍本库的主要内容
 ### 1. MVP模式(变种) ###
