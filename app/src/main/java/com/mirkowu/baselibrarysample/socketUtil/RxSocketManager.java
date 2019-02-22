@@ -39,8 +39,10 @@ public class RxSocketManager {
 
     private static RxSocketManager rxSocketManager;
     private static ISocket socket;
+    private static boolean isConnected;//是否已连接
 
     private RxSocketManager() {
+        //callback = new ArrayList<>();//callback 可以是列表
     }
 
     /**
@@ -101,6 +103,7 @@ public class RxSocketManager {
      */
     public RxSocketManager setResultCallback(ResultCallback callback) {
         this.callback = callback;
+        L.d("setResultCallback"+(this.callback==null));
         return this;
     }
 
@@ -158,17 +161,21 @@ public class RxSocketManager {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aBoolean -> {
                     if (monitorTask == null || monitorTask.isDisposed()) {
-                        monitorTask = createMonitorTask(callback);
+                        monitorTask = createMonitorTask();
                     }
-                    if (socket != null && onSocketStatusListener != null) {
-                        onSocketStatusListener.onConnectSucceed();
+                    if (socket != null) {
+                        isConnected = true;
+                        if (onSocketStatusListener != null) {
+                            onSocketStatusListener.onConnectSucceed();
+                        }
                     }
 
                 }, throwable -> {
                     //创建连接失败重试
                     if (tryCreateCount == 0) {
-                        throwable.printStackTrace();
+                        isConnected = false;
                         tryCreateCount = tryCount;
+                        throwable.printStackTrace();
                         if (onSocketStatusListener != null) {
                             onSocketStatusListener.onConnectFailed();
                         }
@@ -179,6 +186,9 @@ public class RxSocketManager {
                 });
     }
 
+    public synchronized Disposable send(byte[] data) {
+        return send(data, false);
+    }
 
     /**
      * 发送数据
@@ -188,6 +198,12 @@ public class RxSocketManager {
      * @return
      */
     public synchronized Disposable send(byte[] data, boolean isTimeout) {
+
+        // TODO: 2019/2/21 发送前是否需要判断当前连接状态
+//        if (!RxSocketManager.getInstance().isConnected()) {
+//            EventBus.getDefault().post("", EventBusTag.TAG_RECONNECT_SOCKET);
+//        }
+
         return Observable.create((ObservableOnSubscribe<Boolean>) e -> {
             if (socket != null) {
                 if (socketType == SocketType.TCP) {
@@ -214,6 +230,7 @@ public class RxSocketManager {
                             } else {
                                 L.d(TAG, "Send Failed...");
 
+                                //dispatchFailed(new Throwable("Send Failed"));
                                 if (callback != null) {
                                     callback.onFailed(new Throwable("Send Failed"));
                                 }
@@ -221,6 +238,7 @@ public class RxSocketManager {
                         },
                         throwable -> {
                             L.d(TAG, "Send Failed...");
+                            //dispatchFailed(throwable);
                             if (callback != null) {
                                 callback.onFailed(throwable);
                             }
@@ -258,10 +276,9 @@ public class RxSocketManager {
     /**
      * 接收数据
      *
-     * @param callback
      * @return
      */
-    private Disposable createMonitorTask(ResultCallback callback) {
+    private Disposable createMonitorTask() {
         return Observable.create((ObservableOnSubscribe<byte[]>) e -> {
             L.d(TAG, "createMonitorTask");
 
@@ -275,18 +292,21 @@ public class RxSocketManager {
                     e.onNext(rec);
                 }
             } catch (SocketTimeoutException e1) {
+                isConnected = false;
                 if (onSocketStatusListener != null) {
                     onSocketStatusListener.onConnectFailed();
                 }
                 // close();//异常时关闭socket 释放资源 可在回调中自行处理
                 e1.printStackTrace();
             } catch (SocketException e2) {
+                isConnected = false;
                 if (onSocketStatusListener != null) {
                     onSocketStatusListener.onDisConnected();
                 }
                 //  close();//异常时关闭socket 释放资源 可在回调中自行处理
                 e2.printStackTrace();
             } catch (Exception e3) {
+                isConnected = false;
                 if (onSocketStatusListener != null) {
                     onSocketStatusListener.onDisConnected();
                 }
@@ -295,22 +315,45 @@ public class RxSocketManager {
             }
 
         })
-                .subscribeOn(Schedulers.computation())
+                .subscribeOn(Schedulers.computation())//有界的线程池
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bytes -> {
                     L.d("Socket rec== ", new String(bytes));
+                    disposeTimeOut();//
+                    //dispatchSucceed(bytes);
                     if (callback != null) {
-                        disposeTimeOut();
                         callback.onSucceed(bytes);
-
                     }
                 }, throwable -> {
+                    //dispatchFailed(throwable);
                     if (callback != null) {
                         callback.onFailed(throwable);
                     }
                 });
     }
 
+    /**
+     * callback 如果是列表 可以纷发结果
+     *
+     */
+//    private void dispatchSucceed(byte[] bytes) {
+//        for (int i = 0; i < callback.size(); i++) {
+//            callback.get(i).onSucceed(bytes);
+//        }
+//    }
+//
+//    private void dispatchFailed(Throwable throwable) {
+//        for (int i = 0; i < callback.size(); i++) {
+//            callback.get(i).onFailed(throwable);
+//        }
+//    }
+    public ISocket getSocket() {
+        return socket;
+    }
+
+    public SocketType getSocketType() {
+        return socketType;
+    }
 
     /**
      * 关闭socket 释放资源
@@ -327,6 +370,7 @@ public class RxSocketManager {
                 monitorTask.dispose();
                 monitorTask = null;
             }
+            isConnected = false;
 
             rxSocketManager = null;
 
@@ -341,9 +385,10 @@ public class RxSocketManager {
      * @return
      */
     public boolean isConnected() {
-        if (socket != null && !socket.isClosed() && socket.isConnected()) {
-            return true;
-        } else return false;
+        return isConnected;
+//        if (socket != null && !socket.isClosed() && socket.isConnected()) {
+//            return true;
+//        } else return false;
     }
 
 

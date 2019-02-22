@@ -66,7 +66,7 @@ public class UDPClient implements ISocket {
 
     @Override
     public byte[] receive() throws Exception {
-        DatagramPacket packet = getReceivePacket();
+        createReceivePacket();
 
         socket.receive(packet);
         byte[] rec = sublist(packet.getData(), packet.getOffset(), packet.getLength());
@@ -79,11 +79,15 @@ public class UDPClient implements ISocket {
         socket.close();
     }
 
-    private DatagramPacket getReceivePacket() {
+    private DatagramPacket createReceivePacket() {
         if (packet == null) {
             byte data[] = new byte[2048];
             packet = new DatagramPacket(data, data.length);
         }
+        return packet;
+    }
+
+    public DatagramPacket getReceivePacket() {
         return packet;
     }
 

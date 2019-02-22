@@ -66,7 +66,7 @@ Base 大致功能如下：
 
 ### 8. 蓝牙开发（待更新） ###
 
-### 9. 屏幕适配方案 ###
+### 9. 屏幕适配方案（已在base库中集成） ###
 原理同[今日头条适配法](https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA)
 使用库[AndroidAutoSize](https://github.com/JessYanCoding/AndroidAutoSize)
     使用方法:
@@ -96,6 +96,7 @@ Base 大致功能如下：
 ## Log更新日志 ##
     *2019-2-22
         增加了android P http明文传输被限制的视频
+        优化Socket工具类
         修复了导致PromptDialog 异常的相关API
         增加了包名修改注意事项文档
     *2019-1-11
