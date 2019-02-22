@@ -2,6 +2,7 @@ package com.softgarden.baselibrary.dialog;
 
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.base.BaseDialogFragment;
 import com.softgarden.baselibrary.base.IBasePresenter;
-import com.softgarden.baselibrary.utils.ContextUtil;
 import com.softgarden.baselibrary.utils.ScreenUtil;
 
 import static android.view.View.GONE;
@@ -80,9 +80,9 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
         tvNegative.setVisibility(TextUtils.isEmpty(negativeLabel) ? GONE : VISIBLE);
 
         if (positiveTextColor != 0)
-            tvPositive.setTextColor(ContextUtil.getColor(positiveTextColor));
+            tvPositive.setTextColor(ContextCompat.getColor(getContext(),positiveTextColor));
         if (negativeTextColor != 0)
-            tvNegative.setTextColor(ContextUtil.getColor(negativeTextColor));
+            tvNegative.setTextColor(ContextCompat.getColor(getContext(),negativeTextColor));
 
         setCancelable(cancelable);
     }

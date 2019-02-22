@@ -96,6 +96,7 @@ Base 大致功能如下：
 
 ## Log更新日志 ##
     *2019-2-22
+        删除了ContextUtil工具类，该类导致在日夜模式获取颜色时，不生效
         增加了android P http明文传输被限制的视频
         优化Socket工具类
         修复了导致PromptDialog 异常的相关API

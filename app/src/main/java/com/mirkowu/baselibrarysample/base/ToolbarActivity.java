@@ -3,6 +3,7 @@ package com.mirkowu.baselibrarysample.base;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -12,7 +13,6 @@ import com.mirkowu.statusbarutil.StatusBarUtil;
 import com.softgarden.baselibrary.base.BaseActivity;
 import com.softgarden.baselibrary.base.IBasePresenter;
 import com.softgarden.baselibrary.utils.BaseSPManager;
-import com.softgarden.baselibrary.utils.ContextUtil;
 
 import butterknife.ButterKnife;
 
@@ -30,7 +30,7 @@ public abstract class ToolbarActivity<P extends IBasePresenter> extends BaseActi
                 = new BaseToolbar.Builder(getContext())
                 .setBackButton(R.mipmap.back)//统一设置返回键
                 //    .setStatusBarColor(ContextUtil.getColor(R.color.colorPrimary))//统一设置颜色
-                .setBackgroundColor(ContextUtil.getColor(R.color.colorPrimary))
+                .setBackgroundColor(ContextCompat.getColor(getContext(),R.color.colorPrimary))
                 .setSubTextColor(Color.WHITE)
                 .setTitleTextColor(Color.WHITE);
 
@@ -58,7 +58,7 @@ public abstract class ToolbarActivity<P extends IBasePresenter> extends BaseActi
 
         //设置沉浸式透明状态栏
         //StatusBarUtil.setTransparent(this);
-        StatusBarUtil.setStatusBarColor(getActivity(), ContextUtil.getColor(R.color.colorPrimary));
+        StatusBarUtil.setStatusBarColor(getActivity(), ContextCompat.getColor(getContext(),R.color.colorPrimary));
 
         //ButterKnife
         unbinder = ButterKnife.bind(this);
