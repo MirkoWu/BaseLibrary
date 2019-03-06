@@ -86,28 +86,27 @@ public class BLEManagerActivity extends RefreshActivity implements BaseQuickAdap
         BluetoothDevice device = mAdapter.getItem(position);
 
         bleManager.connect(device.getAddress(), true);
-        // bleManager.startMonitor(getContext(), bleReceiver, BLEClient.makeGattUpdateIntentFilter());
-        registerReceiver(bleReceiver, BLEClient.makeGattUpdateIntentFilter());
+      //  registerReceiver(bleReceiver, BLEClient.makeGattUpdateIntentFilter());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(bleReceiver, BLEClient.makeGattUpdateIntentFilter());
-
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(bleReceiver);
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-       // bleManager.close();
+        // bleManager.close();
+        //todo 记得在合适的时机调用close方法来关闭蓝牙服务
+        //一般在退出APP、切换蓝牙、手动断开蓝牙、退出登录 等节点
     }
 
     private void startLeScan() {

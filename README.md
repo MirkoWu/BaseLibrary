@@ -66,9 +66,16 @@ Base 大致功能如下：
 
 
 ### 8. 蓝牙开发 ###
-    BLEService 蓝牙服务
-    BLEClient 蓝牙工具
-    BLESearchActivity 搜索并连接蓝牙Demo
+    提供二种管理方式
+    1.跨界面或者全局管理蓝牙业务的BLE连接：
+      BLEManager
+      BLEManagerActivity 搜索并连接蓝牙Demo
+      (记得在合适的时机调用close方法来关闭蓝牙服务)
+    
+    2.和Activity绑定业务的BLE连接：
+      BLEService 蓝牙服务
+      BLEClient 蓝牙工具
+      BLESearchActivity 搜索并连接蓝牙Demo
 
 ### 9. 屏幕适配方案（已在base库中集成） ###
     原理同[今日头条适配法](https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA)
