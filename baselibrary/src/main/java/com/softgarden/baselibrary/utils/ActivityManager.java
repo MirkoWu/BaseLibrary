@@ -196,6 +196,7 @@ public class ActivityManager {
 
     public void exitApp() {
         finishAll();
+        instance = null;
         System.exit(0);
         android.os.Process.killProcess(android.os.Process.myPid());
     }

@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mirkowu.baselibrarysample">
 
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -18,37 +21,38 @@
         android:sharedUserId="android.uid.system"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.bluetooth.BLEManagerActivity"></activity>
 
-        <!-- android:windowSoftInputMode="adjustPan|stateHidden" -->
+        <service android:name=".ble.BLEService" />
+
+        <activity android:name=".ui.bluetooth.BLESearchActivity" /> <!-- android:windowSoftInputMode="adjustPan|stateHidden" -->
         <activity
             android:name=".ui.start.SplashActivity"
             android:theme="@style/SplashTheme">
-            <!--华为等部分机型 刘海屏处理-->
+
+            <!-- 华为等部分机型 刘海屏处理 -->
             <meta-data
                 android:name="android.notch_support"
                 android:value="true" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.start.GuideActivity"></activity>
+        <activity android:name=".ui.start.GuideActivity" />
         <activity
             android:name=".ui.main.MainActivity"
-            android:configChanges="locale|layoutDirection|keyboard|orientation|screenSize">
-
-        </activity>
+            android:configChanges="locale|layoutDirection|keyboard|orientation|screenSize" />
         <activity
             android:name=".ui.TestToolbarActivity"
             android:configChanges="locale|layoutDirection" />
         <activity android:name=".ui.testMvp.TestMvpActivity" />
         <activity android:name=".ui.testRefresh.TestRefreshActivity" />
-        <activity android:name=".ui.SocketTestActivity" />
-        <!-- android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" -->
+        <activity android:name=".ui.SocketTestActivity" /> <!-- android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" -->
         <activity android:name=".ui.ScreenAdapterActivity" />
         <activity android:name=".ui.webView.WebViewActivity" />
-
     </application>
 
 </manifest>

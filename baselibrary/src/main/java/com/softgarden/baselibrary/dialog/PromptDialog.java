@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -45,11 +44,9 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
     private String negativeLabel;
     private int positiveTextColor;
     private int negativeTextColor;
+    private boolean useDefaultButton;
     private OnButtonClickListener listener;
-
-    public <T extends View> T $(@IdRes int id) {
-        return findViewById(id);
-    }
+    private float dimAmount = 0.3f;
 
     public PromptDialog(Context context) {
         super(context, R.style.CustomDialog);
@@ -68,6 +65,7 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.width = (int) (ScreenUtil.getScreenWidth(getContext()) * 0.75);//设定宽度为屏幕宽度的0.75
         params.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        params.dimAmount = dimAmount;//遮罩透明度
         getWindow().setAttributes(params);
 
         initView();
@@ -75,11 +73,11 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
 
 
     private void initView() {
-        ivIcon = $(R.id.ivIcon);
-        tvTitle = $(R.id.tvTitle);
-        tvContent = $(R.id.tvContent);
-        tvPositive = $(R.id.tvPositive);
-        tvNegative = $(R.id.tvNegative);
+        ivIcon = findViewById(R.id.ivIcon);
+        tvTitle = findViewById(R.id.tvTitle);
+        tvContent = findViewById(R.id.tvContent);
+        tvPositive = findViewById(R.id.tvPositive);
+        tvNegative = findViewById(R.id.tvNegative);
         tvPositive.setOnClickListener(this);
         tvNegative.setOnClickListener(this);
 
@@ -90,15 +88,17 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
         tvTitle.setVisibility(TextUtils.isEmpty(title) ? GONE : VISIBLE);
         tvContent.setVisibility(TextUtils.isEmpty(content) ? GONE : VISIBLE);
 
-        tvPositive.setText(positiveLabel);
-        tvNegative.setText(negativeLabel);
-        tvPositive.setVisibility(TextUtils.isEmpty(positiveLabel) ? GONE : VISIBLE);
-        tvNegative.setVisibility(TextUtils.isEmpty(negativeLabel) ? GONE : VISIBLE);
+        if (!useDefaultButton) {
+            tvPositive.setText(positiveLabel);
+            tvNegative.setText(negativeLabel);
+            tvPositive.setVisibility(TextUtils.isEmpty(positiveLabel) ? GONE : VISIBLE);
+            tvNegative.setVisibility(TextUtils.isEmpty(negativeLabel) ? GONE : VISIBLE);
 
-        if (positiveTextColor != 0)
-            tvPositive.setTextColor(ContextCompat.getColor(getContext(),positiveTextColor));
-        if (negativeTextColor != 0)
-            tvNegative.setTextColor(ContextCompat.getColor(getContext(),negativeTextColor));
+            if (positiveTextColor != 0)
+                tvPositive.setTextColor(ContextCompat.getColor(getContext(), positiveTextColor));
+            if (negativeTextColor != 0)
+                tvNegative.setTextColor(ContextCompat.getColor(getContext(), negativeTextColor));
+        }
 
         setCancelable(cancelable);
     }
@@ -116,11 +116,23 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
         dismiss();
     }
 
+    /**
+     * 设置图标
+     *
+     * @param icon
+     * @return
+     */
     public PromptDialog setIcon(@DrawableRes int icon) {
         this.icon = icon;
         return this;
     }
 
+    /**
+     * 设置标题
+     *
+     * @param title
+     * @return
+     */
     public PromptDialog setTitle(String title) {
         this.title = title;
         return this;
@@ -138,13 +150,46 @@ public class PromptDialog extends Dialog implements View.OnClickListener {
     }
 
 
+    /**
+     * 设置内容
+     *
+     * @param content
+     * @return
+     */
     public PromptDialog setContent(String content) {
         this.content = content;
         return this;
     }
 
+    /**
+     * Dialog是否 可以取消
+     *
+     * @param cancelable
+     * @return
+     */
     public PromptDialog setDialogCancelable(boolean cancelable) {
         this.cancelable = cancelable;
+        return this;
+    }
+
+    /**
+     * 是否使用默认的 按钮
+     *
+     * @return
+     */
+    public PromptDialog useDefButton() {
+        useDefaultButton = true;
+        return this;
+    }
+
+    /**
+     * 设置透明度
+     *
+     * @param dimAmount 0-1f 透明 - 不透明
+     * @return
+     */
+    public PromptDialog setDimAmount(float dimAmount) {
+        this.dimAmount = dimAmount;
         return this;
     }
 

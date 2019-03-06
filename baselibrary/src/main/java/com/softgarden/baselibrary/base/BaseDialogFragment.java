@@ -30,7 +30,7 @@ public abstract class BaseDialogFragment<P extends IBasePresenter> extends RxApp
 
     private Unbinder unbinder;
 
-    public <T extends View> T $(@IdRes int id) {
+    public <T extends View> T findViewById(@IdRes int id) {
         return getView().findViewById(id);
     }
 

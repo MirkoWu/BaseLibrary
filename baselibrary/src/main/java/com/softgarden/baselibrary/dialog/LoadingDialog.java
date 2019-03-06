@@ -24,12 +24,7 @@ public class LoadingDialog extends ProgressDialog {
      * @param context
      */
     public LoadingDialog(Context context) {
-        super(context, R.style.LoadingDialogStyle);//
-        mView = View.inflate(context, R.layout.dialog_loading, null);
-        mLoadingTextView = (TextView) mView.findViewById(R.id.mLoadingTextView);
-
-        this.setCanceledOnTouchOutside(false);
-        this.setCancelable(true);
+        this(context, "");
     }
 
     public LoadingDialog(Context context, CharSequence msg) {

@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.Button;
 
 import com.mirkowu.baselibrarysample.R;
 import com.mirkowu.baselibrarysample.base.ToolbarFragment;
+import com.mirkowu.baselibrarysample.ble.BLEManager;
 import com.mirkowu.baselibrarysample.ui.ScreenAdapterActivity;
 import com.mirkowu.baselibrarysample.ui.SocketTestActivity;
 import com.mirkowu.baselibrarysample.ui.TestToolbarActivity;
+import com.mirkowu.baselibrarysample.ui.bluetooth.BLEManagerActivity;
 import com.mirkowu.baselibrarysample.ui.testMvp.TestMvpActivity;
 import com.mirkowu.baselibrarysample.ui.testRefresh.TestRefreshActivity;
 import com.mirkowu.baselibrarysample.ui.webView.WebViewActivity;
@@ -19,6 +22,7 @@ import com.softgarden.baselibrary.utils.L;
 
 import java.util.Locale;
 
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -38,6 +42,8 @@ public class MainFragment extends ToolbarFragment {
         return fragment;
     }
 
+    @BindView(R.id.mBtnBLETest)
+    Button mBtnBLETest;
 
     @Override
     protected int getLayoutId() {
@@ -57,6 +63,12 @@ public class MainFragment extends ToolbarFragment {
     @Override
     protected void initEventAndData() {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mBtnBLETest.setText(String.format("蓝牙测试%s", BLEManager.getInstance().isConnected() ? "已连接" : "未连接"));
 
     }
 
@@ -66,7 +78,8 @@ public class MainFragment extends ToolbarFragment {
     }
 
     @OnClick({R.id.mBtnChangeDayNightMode, R.id.mBtnChangeLanguage, R.id.mBtnMvpTemp,
-            R.id.mBtnRefreshTemp, R.id.mBtnToolbarTemp, R.id.mBtnDataBindingTemp, R.id.mBtnSocketTest, R.id.mBtnWebView})
+            R.id.mBtnRefreshTemp, R.id.mBtnToolbarTemp, R.id.mBtnDataBindingTemp,
+            R.id.mBtnSocketTest, R.id.mBtnBLETest, R.id.mBtnWebView})
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
@@ -94,6 +107,13 @@ public class MainFragment extends ToolbarFragment {
                 break;
             case R.id.mBtnSocketTest://Socket
                 SocketTestActivity.start(getActivity());
+                break;
+            case R.id.mBtnBLETest://ble
+                //需要和Activity绑定业务的BLE连接
+                // BLESearchActivity.start(getActivity());
+                //需要跨界面或者全局 业务的BLE连接
+                BLEManagerActivity.start(getActivity());
+
                 break;
             case R.id.mBtnWebView://WebView
                 WebViewActivity.start(getActivity(), "这是标题", "http://www.baidu.com/");

@@ -37,7 +37,7 @@ public class RxSocketManager {
     private ResultCallback callback;
     private OnSocketStatusListener onSocketStatusListener;
 
-    private static RxSocketManager rxSocketManager;
+    private static volatile RxSocketManager rxSocketManager;
     private static ISocket socket;
     private static boolean isConnected;//是否已连接
 
@@ -51,7 +51,14 @@ public class RxSocketManager {
      * @return
      */
     public static RxSocketManager getInstance() {
-        if (rxSocketManager == null) rxSocketManager = new RxSocketManager();
+        if (rxSocketManager == null) {
+            synchronized (RxSocketManager.class) {
+                if (rxSocketManager == null) {
+                    rxSocketManager = new RxSocketManager();
+                }
+            }
+        }
+
         return rxSocketManager;
     }
 
@@ -103,7 +110,7 @@ public class RxSocketManager {
      */
     public RxSocketManager setResultCallback(ResultCallback callback) {
         this.callback = callback;
-        L.d("setResultCallback"+(this.callback==null));
+        L.d("setResultCallback" + (this.callback == null));
         return this;
     }
 
@@ -334,7 +341,6 @@ public class RxSocketManager {
 
     /**
      * callback 如果是列表 可以纷发结果
-     *
      */
 //    private void dispatchSucceed(byte[] bytes) {
 //        for (int i = 0; i < callback.size(); i++) {

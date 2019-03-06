@@ -2,9 +2,11 @@ apply plugin: 'com.android.application'
 
 def config = rootProject.ext.ver
 def library = rootProject.ext.library
+
 def releaseTime() {
     return new Date().format("yyyyMMdd", TimeZone.getDefault())
 }
+
 android {
     compileSdkVersion config.compileSdkVersion
 

@@ -2,6 +2,7 @@ package com.softgarden.baselibrary.dialog;
 
 import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -12,7 +13,6 @@ import android.widget.TextView;
 
 import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.base.BaseDialogFragment;
-import com.softgarden.baselibrary.base.IBasePresenter;
 import com.softgarden.baselibrary.utils.ScreenUtil;
 
 import static android.view.View.GONE;
@@ -27,7 +27,7 @@ import static android.view.View.VISIBLE;
  * @describe
  */
 
-public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> implements View.OnClickListener {
+public class PromptDialogFragment extends BaseDialogFragment implements View.OnClickListener {
 
     ImageView ivIcon;
     TextView tvTitle;
@@ -43,6 +43,7 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
     private String negativeLabel;
     private int positiveTextColor;
     private int negativeTextColor;
+    private boolean useDefaultButton;
     private OnButtonClickListener listener;
 
     @Override
@@ -59,11 +60,11 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
 
     @Override
     public void initialize() {
-        ivIcon = $(R.id.ivIcon);
-        tvTitle = $(R.id.tvTitle);
-        tvContent = $(R.id.tvContent);
-        tvPositive = $(R.id.tvPositive);
-        tvNegative = $(R.id.tvNegative);
+        ivIcon = (ImageView) findViewById(R.id.ivIcon);
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvContent = (TextView) findViewById(R.id.tvContent);
+        tvPositive = (TextView) findViewById(R.id.tvPositive);
+        tvNegative = (TextView) findViewById(R.id.tvNegative);
         tvPositive.setOnClickListener(this);
         tvNegative.setOnClickListener(this);
 
@@ -74,15 +75,17 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
         tvTitle.setVisibility(TextUtils.isEmpty(title) ? GONE : VISIBLE);
         tvContent.setVisibility(TextUtils.isEmpty(content) ? GONE : VISIBLE);
 
-        tvPositive.setText(positiveLabel);
-        tvNegative.setText(negativeLabel);
-        tvPositive.setVisibility(TextUtils.isEmpty(positiveLabel) ? GONE : VISIBLE);
-        tvNegative.setVisibility(TextUtils.isEmpty(negativeLabel) ? GONE : VISIBLE);
+        if (!useDefaultButton) {
+            tvPositive.setText(positiveLabel);
+            tvNegative.setText(negativeLabel);
+            tvPositive.setVisibility(TextUtils.isEmpty(positiveLabel) ? GONE : VISIBLE);
+            tvNegative.setVisibility(TextUtils.isEmpty(negativeLabel) ? GONE : VISIBLE);
 
-        if (positiveTextColor != 0)
-            tvPositive.setTextColor(ContextCompat.getColor(getContext(),positiveTextColor));
-        if (negativeTextColor != 0)
-            tvNegative.setTextColor(ContextCompat.getColor(getContext(),negativeTextColor));
+            if (positiveTextColor != 0)
+                tvPositive.setTextColor(ContextCompat.getColor(getContext(), positiveTextColor));
+            if (negativeTextColor != 0)
+                tvNegative.setTextColor(ContextCompat.getColor(getContext(), negativeTextColor));
+        }
 
         setCancelable(cancelable);
     }
@@ -120,6 +123,10 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
         return this;
     }
 
+    public PromptDialogFragment useDefButton() {
+        useDefaultButton = true;
+        return this;
+    }
 
     /**
      * 左边的 （默认取消）
@@ -169,6 +176,10 @@ public class PromptDialogFragment extends BaseDialogFragment<IBasePresenter> imp
         this.show(activity.getSupportFragmentManager(), "");
     }
 
+    @Override
+    public void show(FragmentManager manager) {
+        super.show(manager);
+    }
 
     public interface OnButtonClickListener {
 

@@ -6,11 +6,11 @@
 -----------------------------------------------------
   下面介绍本库的主要内容
 ### 1. MVP模式(变种) ###
-  Model ：使用 Retrofit + OkHttp + RxJava 框架
+    Model ：使用 Retrofit + OkHttp + RxJava 框架
 
-  View ：Activity/Fragment
+    View ：Activity/Fragment
 
-  Presenter ：执行代理
+    Presenter ：执行代理
 
  使用方法:
 
@@ -28,9 +28,9 @@ Base 大致功能如下：
     7.MVP模式
 
 ### 2. Refresh + RecyclerView + Adapter ###
- 刷新推荐使用: [SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)
- Adapter推荐使用: [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper),
- 可直接继承本项目的BaseRVAdapter,更方便 。用到选择逻辑时可继承 SelectedAdapter 。
+    刷新推荐使用: [SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)
+    Adapter推荐使用: [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper),
+    可直接继承本项目的BaseRVAdapter,更方便 。用到选择逻辑时可继承 SelectedAdapter 。
 ### 3. 各基础常用的Dialog ###
     BottomListDialog 类似BottomSheetDialog,从底部弹窗的选择框
     LoadingDialog 加载框
@@ -65,14 +65,17 @@ Base 大致功能如下：
      等...
 
 
-### 8. 蓝牙开发（待更新） ###
+### 8. 蓝牙开发 ###
+    BLEService 蓝牙服务
+    BLEClient 蓝牙工具
+    BLESearchActivity 搜索并连接蓝牙Demo
 
 ### 9. 屏幕适配方案（已在base库中集成） ###
-原理同[今日头条适配法](https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA)
-使用库[AndroidAutoSize](https://github.com/JessYanCoding/AndroidAutoSize)
+    原理同[今日头条适配法](https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA)
+    使用库[AndroidAutoSize](https://github.com/JessYanCoding/AndroidAutoSize)
     使用方法:
-   ```
-   <manifest>
+  ```
+    <manifest>
        <application>
            <meta-data
                android:name="design_width_in_dp"
@@ -81,8 +84,8 @@ Base 大致功能如下：
                android:name="design_height_in_dp"
                android:value="640"/>
         </application>
-   </manifest>
-   ```
+    </manifest>
+  ```
    优点：无入侵，随用随关。只要布局按照设计稿的大小来写（dp模式,用的单位是dp,sp ）即可。
 
 ##  Demo下载 ##
@@ -95,6 +98,8 @@ Base 大致功能如下：
 
 
 ## Log更新日志 ##
+    *2019-3-5
+        增加蓝牙BLE通信
     *2019-2-22
         删除了ContextUtil工具类，该类导致在日夜模式获取颜色时，不生效
         增加了android P http明文传输被限制的视频

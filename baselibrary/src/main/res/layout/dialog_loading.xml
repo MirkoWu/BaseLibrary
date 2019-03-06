@@ -12,6 +12,7 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="36dp"
         android:layout_height="36dp"
+        android:indeterminate="false"
         android:indeterminateDrawable="@drawable/shape_progressbar" />
 
     <android.support.v7.widget.AppCompatTextView

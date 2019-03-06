@@ -90,17 +90,23 @@ public class AppUtil {
     /**
      * 打开指定包名的App应用信息界面
      *
-     * @param context     上下文
-     * @param packageName 包名
+     * @param context 上下文
      */
-    public static void openAppSetting(Context context, String packageName) {
+    public static void openAppSetting(Context context) {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        intent.setData(Uri.parse("package:" + packageName));
+        intent.setData(Uri.parse("package:" + context.getPackageName()));
         context.startActivity(intent);
     }
 
-    public static void openAppSetting(Context context) {
-        openAppSetting(context, context.getPackageName());
+    /**
+     * 打开定位信息、GPS
+     *
+     * @param context
+     */
+    public static void openLocationSetting(Context context) {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        context.startActivity(intent);
     }
 
     /**

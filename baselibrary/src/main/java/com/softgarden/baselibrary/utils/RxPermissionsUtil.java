@@ -2,12 +2,11 @@ package com.softgarden.baselibrary.utils;
 
 import android.Manifest.permission;
 import android.app.Activity;
+import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
+import android.location.LocationManager;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 
 import com.softgarden.baselibrary.R;
@@ -42,6 +41,16 @@ public class RxPermissionsUtil {
     public static final String[] CAMERA_STORAGE = new String[]
             {permission.CAMERA, permission.WRITE_EXTERNAL_STORAGE, permission.READ_EXTERNAL_STORAGE};
 
+    /**
+     * 检测 GPS/位置服务是否开启
+     *
+     * @param context
+     * @return
+     */
+    public static boolean checkGPSEnable(Context context) {
+        LocationManager lm = (LocationManager) context.getSystemService(Service.LOCATION_SERVICE);
+        return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
 
     public static Observable<Boolean> request(Activity activity, String... permissions) {
         return new RxPermissions(activity).request(permissions);

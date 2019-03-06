@@ -2,7 +2,6 @@ package com.softgarden.baselibrary.dialog;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +18,6 @@ import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.base.BaseDialogFragment;
 import com.softgarden.baselibrary.base.BaseRVAdapter;
 import com.softgarden.baselibrary.base.BaseRVHolder;
-import com.softgarden.baselibrary.base.IBasePresenter;
 import com.softgarden.baselibrary.widget.ColorDividerDecoration;
 
 import java.util.List;
@@ -28,7 +26,7 @@ import java.util.List;
  * Created by MirkoWu on 2017/3/29 0029.
  */
 
-public class BottomListDialog extends BaseDialogFragment<IBasePresenter> {
+public class BottomListDialog extends BaseDialogFragment  {
 
     BaseRVAdapter<String> bottomListAdapter;
     boolean hideCancelBtn = false;//默认不显示
@@ -74,9 +72,9 @@ public class BottomListDialog extends BaseDialogFragment<IBasePresenter> {
 
     @Override
     public void initialize() {
-        tvTitle = $(R.id.tvTitle);
-        tvCancel = $(R.id.tvCancel);
-        mRecyclerView = $(R.id.mRecyclerView);
+        tvTitle = (TextView) findViewById(R.id.tvTitle);
+        tvCancel = (TextView) findViewById(R.id.tvCancel);
+        mRecyclerView = (RecyclerView) findViewById(R.id.mRecyclerView);
 
         tvTitle.setText(title);
         tvTitle.setVisibility(TextUtils.isEmpty(title) ? View.GONE : View.VISIBLE);
@@ -112,10 +110,6 @@ public class BottomListDialog extends BaseDialogFragment<IBasePresenter> {
     public BottomListDialog setTitle(String title) {
         this.title = title;
         return this;
-    }
-
-    public BottomListDialog setTitle(@StringRes int id) {
-        return setTitle(getContext().getString(id));
     }
 
     public BottomListDialog setData(List<String> data) {

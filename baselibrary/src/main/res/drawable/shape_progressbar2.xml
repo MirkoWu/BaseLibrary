@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><!-- 进度提示（转圈圈） -->
+<rotate xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/loading2"
+    android:fromDegrees="0"
+    android:pivotX="50%"
+    android:pivotY="50%"
+    android:toDegrees="1440">
+    <!--toDegrees 角度越大转的越快-->
+</rotate>
