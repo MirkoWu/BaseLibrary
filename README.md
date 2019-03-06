@@ -5,12 +5,12 @@
   github:[https://github.com/MirkoWu/BaseLibrary](https://github.com/MirkoWu/BaseLibrary)
 -----------------------------------------------------
   下面介绍本库的主要内容
-### 1. MVP模式(变种) ###
+### 1. MVP/MVVM模式 ###
     Model ：使用 Retrofit + OkHttp + RxJava 框架
 
     View ：Activity/Fragment
 
-    Presenter ：执行代理
+    Presenter/ViewModel  ：执行代理 
 
  使用方法:
 
@@ -25,7 +25,7 @@ Base 大致功能如下：
     4.显示/隐藏Loading弹框
     5.ButterKnife 绑定数据
     6.控制RxJava生命周期，防止内存泄漏
-    7.MVP模式
+    7.MVP/MVVM模式
 
 ### 2. Refresh + RecyclerView + Adapter ###
     刷新推荐使用: [SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)
