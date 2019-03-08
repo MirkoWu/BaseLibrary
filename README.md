@@ -100,9 +100,9 @@ Adapter推荐使用: [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/
 
 ##  关于模板 ##
     项目 localTemplates 目录下的二个模板请Copy到 AndroidStudio安装目录下的模板路径:
-    某盘:\\AndroidStudio安装路径\\plugins\\android\\lib\\templates\\activities 。
-    例：我的studio安装路径在C:\\AndroidStudio, 找到该目录下的
-    \\plugins\\android\\lib\\templates\\activities ,copy进去 重启sudio 即可生效
+    某盘:\AndroidStudio安装路径\plugins\android\lib\templates\activities 。
+    例：我的studio安装路径在C:\AndroidStudio, 找到该目录下的
+    \plugins\android\lib\templates\activities ,copy进去 重启sudio 即可生效
 
 
 ## Log更新日志 ##
