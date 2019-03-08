@@ -58,7 +58,6 @@ public class RxSocketManager {
                 }
             }
         }
-
         return rxSocketManager;
     }
 
@@ -110,7 +109,31 @@ public class RxSocketManager {
      */
     public RxSocketManager setResultCallback(ResultCallback callback) {
         this.callback = callback;
-        L.d("setResultCallback" + (this.callback == null));
+
+        if (!isConnected()) {
+            // TODO: 2019/3/8  可以用于重连
+//            setClient(SocketType.TCP, HostUrl.IP_TCP, HostUrl.IP_TCP_PORT)
+//                    .setSocketStatusListener(new RxSocketManager.OnSocketStatusListener() {
+//                        @Override
+//                        public void onConnectSucceed() {
+//                            L.d("------------onConnectSucceed");
+//                            ToastUtil.s("已连接");
+//                        }
+//
+//                        @Override
+//                        public void onConnectFailed() {
+//                            L.d("------------onConnectFailed");
+//                            ToastUtil.s("连接失败");
+//                        }
+//
+//                        @Override
+//                        public void onDisConnected() {
+//                            L.d("------------onDisConnected");
+//                            ToastUtil.s("已断开连接");
+//                        }
+//                    }).build();
+        }
+
         return this;
     }
 
@@ -289,38 +312,17 @@ public class RxSocketManager {
         return Observable.create((ObservableOnSubscribe<byte[]>) e -> {
             L.d(TAG, "createMonitorTask");
 
-            try {
-                while (socket != null) {
+            while (socket != null) {
+                try {
                     byte[] rec = socket.receive();
-                    if (rec == null || rec.length == 0) {
-                        Thread.sleep(10);//适当的暂停，避免死循环造成内存消耗
-                        continue;
+                    if (rec != null) {
+                        e.onNext(rec);
                     }
-                    e.onNext(rec);
+                } catch (Throwable t) {
+                    close();
+                    e.onError(t);
                 }
-            } catch (SocketTimeoutException e1) {
-                isConnected = false;
-                if (onSocketStatusListener != null) {
-                    onSocketStatusListener.onConnectFailed();
-                }
-                // close();//异常时关闭socket 释放资源 可在回调中自行处理
-                e1.printStackTrace();
-            } catch (SocketException e2) {
-                isConnected = false;
-                if (onSocketStatusListener != null) {
-                    onSocketStatusListener.onDisConnected();
-                }
-                //  close();//异常时关闭socket 释放资源 可在回调中自行处理
-                e2.printStackTrace();
-            } catch (Exception e3) {
-                isConnected = false;
-                if (onSocketStatusListener != null) {
-                    onSocketStatusListener.onDisConnected();
-                }
-                //  close();//异常时关闭socket 释放资源 可在回调中自行处理
-                e3.printStackTrace();
             }
-
         })
                 .subscribeOn(Schedulers.computation())//有界的线程池
                 .observeOn(AndroidSchedulers.mainThread())
@@ -328,14 +330,32 @@ public class RxSocketManager {
                     L.d("Socket rec== ", new String(bytes));
                     disposeTimeOut();//
                     //dispatchSucceed(bytes);
+                    //  L.d("callback != null  == " + (callback != null) + "当前 RxSocket " + toString());
+
                     if (callback != null) {
                         callback.onSucceed(bytes);
                     }
                 }, throwable -> {
-                    //dispatchFailed(throwable);
-                    if (callback != null) {
-                        callback.onFailed(throwable);
-                    }
+                    disposeTask();
+                    //throwable.printStackTrace();
+                    L.d("Socket 断开连接  :" + throwable.getMessage());
+                    if (throwable instanceof SocketTimeoutException) {
+                        if (onSocketStatusListener != null) {
+                            onSocketStatusListener.onConnectFailed();
+                        }
+                    } else if (throwable instanceof SocketException) {
+                        if (onSocketStatusListener != null) {
+                            onSocketStatusListener.onDisConnected();
+                        }
+                    } else {
+                        if (onSocketStatusListener != null) {
+                            onSocketStatusListener.onDisConnected();
+                        }
+                    }/* else {
+                        if (callback != null) {
+                            callback.onFailed(throwable);
+                        }
+                    }*/
                 });
     }
 
@@ -371,17 +391,17 @@ public class RxSocketManager {
                 socket.close();
                 socket = null;
             }
-
-            if (monitorTask != null && !monitorTask.isDisposed()) {
-                monitorTask.dispose();
-                monitorTask = null;
-            }
             isConnected = false;
-
             rxSocketManager = null;
-
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void disposeTask() {
+        if (monitorTask != null && !monitorTask.isDisposed()) {
+            monitorTask.dispose();
+            monitorTask = null;
         }
     }
 

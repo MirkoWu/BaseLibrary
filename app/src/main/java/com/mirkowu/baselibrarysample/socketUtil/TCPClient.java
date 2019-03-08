@@ -1,6 +1,7 @@
 package com.mirkowu.baselibrarysample.socketUtil;
 
 import com.softgarden.baselibrary.utils.L;
+import com.softgarden.baselibrary.utils.StringUtil;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,13 +19,13 @@ public class TCPClient implements ISocket {
 
     public static final int TIME_OUT = 3000;//连接时间
 
+    private int length = 0;
     private int port;
     private String host;
     private Socket socket;
     private OutputStream outputStream;
     private InputStream inputStream;
-
-    private byte[] recBuffer = new byte[512];//读取的buffer
+    private byte[] recBuffer = new byte[1024];//读取的buffer
 
     public TCPClient(String host, int port) throws Exception {
         this.host = host;
@@ -32,49 +33,51 @@ public class TCPClient implements ISocket {
         socket = new Socket();
         socket.setReuseAddress(true);//复用端口
         socket.setKeepAlive(true);
-        socket.setSoTimeout(TIME_OUT);
+        //    socket.setSoTimeout(TIME_OUT);//读写超时
         SocketAddress socketAddress = new InetSocketAddress(host, port);
         socket.connect(socketAddress, TIME_OUT);//连接socket
 
         outputStream = socket.getOutputStream();
         inputStream = socket.getInputStream();
+
     }
 
 
     @Override
     public void send(byte[] data) throws Exception {
-        L.d(new String(data));
+        L.d("发送：" + new String(data) + "\n16进制：" + StringUtil.byte2Hexstr(data));
         outputStream.write(data);
         outputStream.flush();
     }
 
     @Override
     public byte[] receive() throws Exception {
-        if (inputStream.available() <= 0) return null;
+        if ((length = inputStream.read(recBuffer)) != -1) {
+            byte[] rec = sublist(recBuffer, 0, length);
+            L.e("接收：" + new String(rec) + "\n16进制：" + StringUtil.byte2Hexstr(rec));
+            return rec;
+        }
+        return null;
 
-        byte[] rec = new byte[inputStream.available()];
-        inputStream.read(rec);
-        L.d(new String(rec));
+
+//        if (inputStream.available() <= 0) return null;
+//        byte[] rec = new byte[inputStream.available()];
+//        inputStream.read(rec);
 
 
-        /**
-         * 有些数据流长度太长 导致一直读取 无法返回数据
-         */
-//        ByteArrayOutputStream outSteam = new ByteArrayOutputStream();
-//        int length = 0;
-//        while ((length = inputStream.read(recBuffer)) != -1) {
-//            outSteam.write(recBuffer, 0, length);
-//            L.d(new String(recBuffer));
-//        }
-//        byte[] rec = outSteam.toByteArray();
-        L.d(new String(rec));
-        return rec;
+    }
+
+    public static byte[] sublist(byte[] data, int start, int end) {
+        if (data == null || data.length < start) return null;
+        byte[] bytes = new byte[Math.min(data.length, end) - start];
+        System.arraycopy(data, start, bytes, 0, bytes.length);
+        return bytes;
     }
 
     @Override
     public void close() throws Exception {
-        //  socket.shutdownInput();
-        // socket.shutdownOutput();
+//        socket.shutdownInput();
+//        socket.shutdownOutput();
         // inputStream.close();
         outputStream.close();
         socket.close();

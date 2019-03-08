@@ -52,7 +52,7 @@ public class UDPClient implements ISocket {
 
     private void allowMultiCast() {
         wifiManager = (WifiManager) BaseApplication.getInstance().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        multicastLock = wifiManager.createMulticastLock("findDevices");
+        multicastLock = wifiManager.createMulticastLock("udp");
         multicastLock.acquire();
 
     }
@@ -70,7 +70,7 @@ public class UDPClient implements ISocket {
 
         socket.receive(packet);
         byte[] rec = sublist(packet.getData(), packet.getOffset(), packet.getLength());
-        L.d(new String(rec));
+        L.e(new String(rec));
         return rec;
     }
 
@@ -81,7 +81,7 @@ public class UDPClient implements ISocket {
 
     private DatagramPacket createReceivePacket() {
         if (packet == null) {
-            byte data[] = new byte[2048];
+            byte data[] = new byte[1024];
             packet = new DatagramPacket(data, data.length);
         }
         return packet;
