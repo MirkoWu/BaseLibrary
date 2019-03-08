@@ -6,13 +6,13 @@
 -----------------------------------------------------
   下面介绍本库的主要内容
 ### 1. MVP/MVVM模式 ###
-    Model ：使用 Retrofit + OkHttp + RxJava 框架
+Model ：使用 Retrofit + OkHttp + RxJava 框架
 
-    View ：Activity/Fragment
+View ：Activity/Fragment
 
-    Presenter/ViewModel  ：执行代理 
+Presenter/ViewModel  ：执行代理 
 
- 使用方法:
+使用方法:
 
     1.继承BaseActivity/BaseFragment/BaseDialogFragment
     2.创建Presenter（可选）
@@ -28,9 +28,9 @@ Base 大致功能如下：
     7.MVP/MVVM模式
 
 ### 2. Refresh + RecyclerView + Adapter ###
-    刷新推荐使用: [SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)
-    Adapter推荐使用: [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper),
-    可直接继承本项目的BaseRVAdapter,更方便 。用到选择逻辑时可继承 SelectedAdapter 。
+刷新推荐使用：[SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)  
+Adapter推荐使用: [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper),
+可直接继承本项目的BaseRVAdapter,更方便 。用到选择逻辑时可继承 SelectedAdapter 。
 ### 3. 各基础常用的Dialog ###
     BottomListDialog 类似BottomSheetDialog,从底部弹窗的选择框
     LoadingDialog 加载框
@@ -48,7 +48,8 @@ Base 大致功能如下：
     RxJava生命周期绑定,拦截器加密,数据泛型解析。
 
 ### 6. Socket通信工具 ###
-    可创建TCP/UDP连接
+    RxSocketManager 可创建TCP/UDP连接
+    
 
 
 ### 7. 其他工具（详情见utils包下文件） ###
@@ -78,10 +79,10 @@ Base 大致功能如下：
       BLESearchActivity 搜索并连接蓝牙Demo
 
 ### 9. 屏幕适配方案（已在base库中集成） ###
-    原理同[今日头条适配法](https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA)
-    使用库[AndroidAutoSize](https://github.com/JessYanCoding/AndroidAutoSize)
-    使用方法:
-  ```
+原理同[今日头条适配法](https://mp.weixin.qq.com/s/d9QCoBP6kV9VSWvVldVVwA)
+使用库[AndroidAutoSize](https://github.com/JessYanCoding/AndroidAutoSize)  
+使用方法:
+```
     <manifest>
        <application>
            <meta-data
@@ -92,19 +93,21 @@ Base 大致功能如下：
                android:value="640"/>
         </application>
     </manifest>
-  ```
+```
    优点：无入侵，随用随关。只要布局按照设计稿的大小来写（dp模式,用的单位是dp,sp ）即可。
 
 ##  Demo下载 ##
 
 ##  关于模板 ##
     项目 localTemplates 目录下的二个模板请Copy到 AndroidStudio安装目录下的模板路径:
-    某盘:\AndroidStudio安装路径\plugins\android\lib\templates\activities 。
-    例：我的studio安装路径在C:\AndroidStudio, 找到该目录下的
-    \plugins\android\lib\templates\activities ,copy进去 重启sudio 即可生效
+    某盘:\\AndroidStudio安装路径\\plugins\\android\\lib\\templates\\activities 。
+    例：我的studio安装路径在C:\\AndroidStudio, 找到该目录下的
+    \\plugins\\android\\lib\\templates\\activities ,copy进去 重启sudio 即可生效
 
 
 ## Log更新日志 ##
+    *2019-3-8
+        优化RxSocketManager
     *2019-3-5
         增加蓝牙BLE通信
     *2019-2-22
