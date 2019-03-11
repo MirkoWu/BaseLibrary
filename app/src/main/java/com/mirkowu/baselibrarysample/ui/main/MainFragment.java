@@ -122,6 +122,11 @@ public class MainFragment extends ToolbarFragment {
         }
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        BLEManager.getInstance().close();
+    }
 
     @Override
     public void onRefresh() {

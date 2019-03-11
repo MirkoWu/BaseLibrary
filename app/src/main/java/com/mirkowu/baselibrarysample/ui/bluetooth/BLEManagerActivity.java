@@ -43,7 +43,7 @@ public class BLEManagerActivity extends RefreshActivity implements BaseQuickAdap
                 L.e(TAG, "action_gatt_disconnected");
             } else if (BLEService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) { //发现蓝牙服务，可以进行通信了
                 L.e(TAG, "In what we need 发现蓝牙服务，可以进行通信了");
-
+                ToastUtil.s("连接成功");
                 // TODO: 2019/3/5
             } else if (BLEService.ACTION_DATA_AVAILABLE.equals(action)) { //收到数据
                 L.e(TAG, "RECV DATA");
@@ -67,6 +67,7 @@ public class BLEManagerActivity extends RefreshActivity implements BaseQuickAdap
     protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
         return builder.setTitle("搜索蓝牙").addRightText("搜索", v -> {
 
+            startLeScan();
         });
     }
 
@@ -86,7 +87,7 @@ public class BLEManagerActivity extends RefreshActivity implements BaseQuickAdap
         BluetoothDevice device = mAdapter.getItem(position);
 
         bleManager.connect(device.getAddress(), true);
-      //  registerReceiver(bleReceiver, BLEClient.makeGattUpdateIntentFilter());
+        //  registerReceiver(bleReceiver, BLEClient.makeGattUpdateIntentFilter());
     }
 
     @Override
@@ -111,6 +112,11 @@ public class BLEManagerActivity extends RefreshActivity implements BaseQuickAdap
 
     private void startLeScan() {
         bleManager = BLEManager.getInstance();
+
+        if (bleManager.isConnected()) {
+            bleManager.disconnect();
+        }
+
         if (bleManager.isSupportBLE(getContext())) {
             if (RxPermissionsUtil.checkGPSEnable(getContext())) {
                 RxPermissionsUtil.check(this, RxPermissionsUtil.LOCATION, "",

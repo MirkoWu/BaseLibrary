@@ -148,11 +148,13 @@ public class WebViewActivity extends ToolbarActivity {
         mWebView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                if (newProgress >= 99) {
-                    mProgressBar.setVisibility(View.GONE);
-                } else {
-                    mProgressBar.setVisibility(View.VISIBLE);
-                    mProgressBar.setProgress(newProgress);
+                if (mProgressBar != null) {
+                    if (newProgress >= 99) {
+                        mProgressBar.setVisibility(View.GONE);
+                    } else {
+                        mProgressBar.setVisibility(View.VISIBLE);
+                        mProgressBar.setProgress(newProgress);
+                    }
                 }
             }
         });
@@ -160,7 +162,9 @@ public class WebViewActivity extends ToolbarActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                mProgressBar.setVisibility(View.GONE);
+                if (mProgressBar != null) {
+                    mProgressBar.setVisibility(View.GONE);
+                }
             }
         });
     }
