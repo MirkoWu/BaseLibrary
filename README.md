@@ -114,7 +114,7 @@ Adapter推荐使用: [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/
         增加蓝牙BLE通信
     *2019-2-22
         删除了ContextUtil工具类，该类导致在日夜模式获取颜色时，不生效
-        增加了android P http明文传输被限制的视频
+        增加了android P http明文传输被限制的配置文件
         优化Socket工具类
         修复了导致PromptDialog 异常的相关API
         增加了包名修改注意事项文档

@@ -105,6 +105,7 @@ public class BLEManagerActivity extends RefreshActivity implements BaseQuickAdap
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        bleManager.stopLeScan();
         // bleManager.close();
         //todo 记得在合适的时机调用close方法来关闭蓝牙服务
         //一般在退出APP、切换蓝牙、手动断开蓝牙、退出登录 等节点

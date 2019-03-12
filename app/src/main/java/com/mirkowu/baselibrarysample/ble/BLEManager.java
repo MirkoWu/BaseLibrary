@@ -114,8 +114,8 @@ public class BLEManager {
         if (isConnected()) {
             mNotifyCharacteristic.setValue(data);
             mBluetoothGatt.writeCharacteristic(mNotifyCharacteristic);
-        }else {
-            Log.e(TAG, " writeValue: failed , UnConnected" );
+        } else {
+            Log.e(TAG, " writeValue: failed , UnConnected");
         }
     }
 
@@ -615,9 +615,11 @@ public class BLEManager {
     };
 
     public void stopLeScan() {
-        if (mScanning && mBluetoothAdapter != null && mLeScanCallback != null) {
+        if (mScanning) {
             mScanning = false;
-            mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            if (isEnable() && mBluetoothAdapter != null && mLeScanCallback != null) {
+                mBluetoothAdapter.stopLeScan(mLeScanCallback);
+            }
         }
     }
 

@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.mirkowu.baselibrarysample.R;
 import com.mirkowu.baselibrarysample.base.ToolbarActivity;
-import com.mirkowu.baselibrarysample.bean.GoodsBean;
+import com.mirkowu.baselibrarysample.bean.ImageBean;
 import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.network.RxCallback;
 import com.softgarden.baselibrary.utils.ToastUtil;
@@ -43,9 +43,9 @@ public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> {
         /**
          * 2.调用 多种方式任选
          */
-        getPresenter().getIndexData().subscribe(new RxCallback<List<GoodsBean>>() {
+        getPresenter().getIndexData().subscribe(new RxCallback<List<ImageBean>>() {
             @Override
-            public void onSuccess(@Nullable List<GoodsBean> data) {
+            public void onSuccess(@Nullable List<ImageBean> data) {
 
             }
         });

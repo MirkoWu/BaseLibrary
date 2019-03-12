@@ -12,6 +12,7 @@ import com.softgarden.baselibrary.BaseApplication;
 
 public class App extends BaseApplication{
 
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -21,5 +22,9 @@ public class App extends BaseApplication{
     @Override
     public void onCreate() {
         super.onCreate();
+
     }
+
+
+
 }

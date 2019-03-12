@@ -17,6 +17,8 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.softgarden.baselibrary.utils.ActivityManager;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 
 /**
@@ -33,7 +35,7 @@ public class BaseApplication extends Application {
         SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
             @Override
             public RefreshHeader createRefreshHeader(Context context, RefreshLayout layout) {
-                layout.setPrimaryColorsId(android.R.color.transparent);//全局设置主题颜色
+                //layout.setPrimaryColorsId(android.R.color.transparent);//全局设置主题颜色
                 return new ClassicsHeader(context).setSpinnerStyle(SpinnerStyle.Translate);//指定为经典Header，默认是 贝塞尔雷达Header
             }
         });
@@ -51,15 +53,30 @@ public class BaseApplication extends Application {
         return instance;
     }
 
+    private RefWatcher mRefWatcher;
+
     @Override
     public void onCreate() {
         super.onCreate();
         instance = this;
 
+        //内存泄漏检测
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        // mRefWatcher = BuildConfig.DEBUG ? LeakCanary.install(this) : RefWatcher.DISABLED;
+        mRefWatcher = RefWatcher.DISABLED;
+
         //屏幕适配
         //AutoSizeConfig.getInstance().setDesignWidthInDp(360).setDesignHeightInDp(640);
         Logger.addLogAdapter(new AndroidLogAdapter());//logger
         registerActivityLifecycle();
+    }
+
+    public RefWatcher getRefWatcher() {
+        return mRefWatcher;
     }
 
     /**

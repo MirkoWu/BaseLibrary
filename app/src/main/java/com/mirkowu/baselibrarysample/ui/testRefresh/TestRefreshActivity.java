@@ -7,21 +7,17 @@ import android.support.annotation.Nullable;
 
 import com.mirkowu.baselibrarysample.R;
 import com.mirkowu.baselibrarysample.base.RefreshActivity;
-import com.mirkowu.baselibrarysample.bean.GoodsBean;
+import com.mirkowu.baselibrarysample.bean.ImageBean;
+import com.mirkowu.baselibrarysample.utils.ImageUtil;
 import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.base.BaseRVHolder;
 import com.softgarden.baselibrary.base.SelectedAdapter;
 import com.softgarden.baselibrary.network.RxCallback;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 
 public class TestRefreshActivity extends RefreshActivity<TestRefreshPresenter> {
-    private SelectedAdapter<String> mAdapter;
+    private SelectedAdapter<ImageBean> mAdapter;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, TestRefreshActivity.class);
@@ -38,11 +34,10 @@ public class TestRefreshActivity extends RefreshActivity<TestRefreshPresenter> {
     protected void initialize() {
         initRefreshLayout();
         initRecyclerView();
-        setPageCount(10);
-        mAdapter = new SelectedAdapter<String>(R.layout.item_flexbox) {
+        mAdapter = new SelectedAdapter<ImageBean>(R.layout.item_images) {
             @Override
-            public void onBindVH(BaseRVHolder holder, String data, int position) {
-                holder.setText(R.id.tvContent, "" + data);
+            public void onBindVH(BaseRVHolder holder, ImageBean data, int position) {
+                ImageUtil.load(holder.getView(R.id.ivImage),data.getUrl());
             }
         };
         mAdapter.setSelectMode(true);
@@ -57,43 +52,14 @@ public class TestRefreshActivity extends RefreshActivity<TestRefreshPresenter> {
     }
 
     public void loadData() {
-        String[] tabs = new String[]{"标签", "标签标签标签"};
-        Observable.timer(1, TimeUnit.SECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> showProgressDialog())
-                .doFinally(() -> hideProgressDialog())
-                .compose(bindToLifecycle())
-                .subscribe(aLong -> {
-                    List<String> data = new ArrayList<>();
-                    int count;
-                    if (mPage == 5) {
-                        count = 3;
-                    } else {
-                        count = PAGE_COUNT;
-                    }
-                    for (int i = 0; i < count; i++) {
-                        data.add(mPage + tabs[i % 2] + i);
-                    }
-
-                    if (mPage == 0) {
-                        mAdapter.setNewData(null);
-                    }
-                    setLoadMore(mAdapter, data);
-                });
-
-    }
-
-    private void loadData2() {
-
-        getPresenter().getData2().subscribe(new RxCallback<List<GoodsBean>>() {
+        getPresenter().getData2(mPage, PAGE_COUNT).subscribe(new RxCallback<List<ImageBean>>() {
             @Override
-            public void onSuccess(@Nullable List<GoodsBean> data) {
-
+            public void onSuccess(@Nullable List<ImageBean> data) {
+                setLoadMore(mAdapter, data);
             }
         });
-        getPresenter().getData2().subscribe(goodsBeans -> {
 
-        }, throwable -> showError(throwable));
     }
+
 
 }

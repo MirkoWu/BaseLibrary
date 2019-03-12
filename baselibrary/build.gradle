@@ -67,4 +67,8 @@ dependencies {
 
     api library.butterknife
     //annotationProcessor library.butterknife_compiler
+
+    //内存泄漏检测
+    debugApi 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseApi 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
 }

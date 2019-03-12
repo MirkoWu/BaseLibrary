@@ -2,7 +2,7 @@ package com.mirkowu.baselibrarysample.ui.testMvp;
 
 import com.mirkowu.baselibrarysample.api.HostUrl;
 import com.mirkowu.baselibrarysample.api.RetrofitClient;
-import com.mirkowu.baselibrarysample.bean.GoodsBean;
+import com.mirkowu.baselibrarysample.bean.ImageBean;
 import com.softgarden.baselibrary.base.BasePresenter;
 import com.softgarden.baselibrary.network.NetworkTransformer;
 
@@ -18,13 +18,13 @@ import io.reactivex.Observable;
 public class TestMvpPresenter extends BasePresenter {
 
 
-    public Observable<List<GoodsBean>> getIndexData() {
+    public Observable<List<ImageBean>> getIndexData() {
         return RetrofitClient.getTestService()
                 .getData(HostUrl.HOST_URL_TEST)
                 .compose(new NetworkTransformer<>(this));
-//                .subscribe(new RxCallback<List<GoodsBean>>() {
+//                .subscribe(new RxCallback<List<ImageBean>>() {
 //                    @Override
-//                    public void onSuccess(@Nullable List<GoodsBean> data) {
+//                    public void onSuccess(@Nullable List<ImageBean> data) {
 //                        mView.getIndexData(data);
 //                    }
 //

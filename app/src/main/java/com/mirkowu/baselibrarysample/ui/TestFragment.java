@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.mirkowu.baselibrarysample.R;
-import com.mirkowu.baselibrarysample.bean.GoodsBean;
+import com.mirkowu.baselibrarysample.bean.ImageBean;
 import com.softgarden.baselibrary.network.NetworkTransformer;
 import com.mirkowu.baselibrarysample.api.RetrofitClient;
 import com.softgarden.baselibrary.network.RxCallback;
@@ -49,9 +49,9 @@ public class TestFragment extends BaseLazyFragment {
         RetrofitClient.getTestService()
                 .getData()
                 .compose(new NetworkTransformer<>(this))
-                .subscribe(new RxCallback<List<GoodsBean>>() {
+                .subscribe(new RxCallback<List<ImageBean>>() {
                     @Override
-                    public void onSuccess(@Nullable List<GoodsBean> data) {
+                    public void onSuccess(@Nullable List<ImageBean> data) {
 
                     }
                 });

@@ -6,10 +6,12 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.mirkowu.baselibrarysample.R;
@@ -29,10 +31,13 @@ public class WebViewActivity extends ToolbarActivity {
         context.startActivity(starter);
     }
 
-    @BindView(R.id.mWebView)
-    WebView mWebView;
+    @BindView(R.id.mFrameLayout)
+    FrameLayout mFrameLayout;
     @BindView(R.id.mProgressBar)
     ProgressBar mProgressBar;
+
+    WebView mWebView;
+
 
     @Override
     protected int getLayoutId() {
@@ -50,6 +55,11 @@ public class WebViewActivity extends ToolbarActivity {
         String title = getIntent().getStringExtra(KEY_TITLE);
         String url = getIntent().getStringExtra(KEY_DATA);
         getToolbar().setTitle(title);
+
+        //使用添加的方式，防止内测泄漏
+        mWebView = new WebView(getContext());
+        mFrameLayout.addView(mWebView, 0, new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         initWebView();
         loadUrl(url);
@@ -201,8 +211,15 @@ public class WebViewActivity extends ToolbarActivity {
 
     @Override
     public void onDestroy() {
+        if (mProgressBar != null) {
+            mProgressBar = null;
+        }
         if (mWebView != null) {
-            mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+            mFrameLayout.removeView(mWebView);
+            mWebView.stopLoading();
+            mWebView.destroyDrawingCache();
+            mWebView.removeAllViews();
+            //mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
             mWebView.clearHistory();
             mWebView.destroy();
             mWebView = null;

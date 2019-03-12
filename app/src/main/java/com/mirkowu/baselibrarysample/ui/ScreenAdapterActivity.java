@@ -2,22 +2,17 @@ package com.mirkowu.baselibrarysample.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.mirkowu.baselibrarysample.R;
 import com.mirkowu.baselibrarysample.dataBinding.BaseBindActivity;
-import com.mirkowu.baselibrarysample.bean.GoodsBean;
 import com.mirkowu.baselibrarysample.databinding.ActivityScreenAdapterBinding;
 import com.mirkowu.baselibrarysample.ui.testRefresh.TestRefreshPresenter;
-import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.utils.FileUtil;
 import com.softgarden.baselibrary.utils.L;
 import com.softgarden.baselibrary.utils.ScreenUtil;
-
-import java.util.List;
 
 public class ScreenAdapterActivity extends BaseBindActivity<TestRefreshPresenter, ActivityScreenAdapterBinding>   {
 
@@ -35,9 +30,7 @@ public class ScreenAdapterActivity extends BaseBindActivity<TestRefreshPresenter
     @Override
     protected void initialize() {
 
-
         binder.mToolbar.setTitle("这是DataBinding示例");
-
 
 
         L.d("getAppRootDir=" + FileUtil.getAppRootDir().getAbsolutePath());
@@ -59,13 +52,5 @@ public class ScreenAdapterActivity extends BaseBindActivity<TestRefreshPresenter
         });
     }
 
-    protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
-        //  return builder.setTitle("测试屏幕适配");
-        return null;
-    }
 
-
-    public void getData(List<GoodsBean> bean) {
-
-    }
 }

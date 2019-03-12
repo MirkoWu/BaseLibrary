@@ -7,14 +7,18 @@ package com.mirkowu.baselibrarysample.api;
  */
 
 public interface HostUrl {
+    String HOST_URL_TEST = "http://119.23.53.252:12002";
+
     /**
      * app接口Host
      */
-    String HOST_URL = "http://guocaitest.test2.ruanjiekeji.com/";
-    String HOST_URL_TEST = "http://119.23.53.252:12002";
-
+    String HOST_URL = "https://gank.io/";
     /*** 模块 */
-    String HOST_GOODSLIST = "App/Goods/goodsList";//商品列表
+    String HOST_Gank_Image = "api/data/福利/{pageSize}/{page}";
+
+
+
+
 
 
 

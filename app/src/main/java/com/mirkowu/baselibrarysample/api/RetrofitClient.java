@@ -37,7 +37,8 @@ public class RetrofitClient {
                 .writeTimeout(20, TimeUnit.SECONDS)
                 //错误重连
                 .retryOnConnectionFailure(true)
-                .addInterceptor(new ParameterInterceptor())// 拦截器
+                //需要对请求参数进行处理的时候添加
+             //   .addInterceptor(new ParameterInterceptor())// 拦截器
                 .addInterceptor(loggingInterceptor);
 
         return builder.build();
