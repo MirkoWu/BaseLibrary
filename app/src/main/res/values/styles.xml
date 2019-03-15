@@ -6,18 +6,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-       <!-- <item name="android:windowBackground">@android:color/transparent</item>-->
     </style>
 
     <!-- 防止应用启动黑白屏幕，在android:windowBackground属性设置启动页背景 -->
     <style name="SplashTheme" parent="AppTheme">
-        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
-        <!--<item name="android:windowBackground">@drawable/start</item>-->
         <item name="android:windowBackground">@drawable/shape_splash</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowFullscreen">true</item>
+        <!--   不要再加其他的属性了-->
     </style>
 
     <style name="StyleButton">

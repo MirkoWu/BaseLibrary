@@ -106,6 +106,8 @@ Adapter推荐使用: [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/
 
 
 ## Log更新日志 ##
+    *2019-3-15
+        修复 SplashTheme 冷启动秒开效果 。
     *2019-3-11
         修复WebView在界面销毁后，因为延迟回调导致的bug。
     *2019-3-8
