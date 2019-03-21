@@ -52,8 +52,12 @@ public class BaseDelegate {
 
     public void onCreate(Bundle savedInstanceState) {
         //语言切换 要在setContentView()前
+
         mLanguage = BaseSPManager.getLanguage();
-        changeLanguage(mLanguage);
+        L.d("SP 语言=" + mLanguage.getLanguage() + "  " + mLanguage.getCountry());
+
+        changeLanguage(mLanguage, false);
+
 
         //日夜模式
         isNightMode = BaseSPManager.isNightMode();
@@ -244,10 +248,15 @@ public class BaseDelegate {
      *
      * @param language
      */
-    public void changeLanguage(Locale language) {
+    public void changeLanguage(Locale language, boolean fromUser) {
         LanguageUtil.switchLanguage(mActivity, language);
         BaseSPManager.setLanguage(language);
+        //改了之后就不会
+        if (fromUser) {
+            BaseSPManager.setFollowSystemLanguage(false);
+        }
     }
+
 
     /**
      * 检查语言
@@ -256,6 +265,7 @@ public class BaseDelegate {
         Locale language = BaseSPManager.getLanguage();
         if (!isEqualsLanguage(mLanguage, language)) {
             mLanguage = language;
+
             reload();
         }
     }

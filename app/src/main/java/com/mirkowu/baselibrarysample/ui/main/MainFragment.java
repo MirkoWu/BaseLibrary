@@ -9,6 +9,7 @@ import android.widget.Button;
 import com.mirkowu.baselibrarysample.R;
 import com.mirkowu.baselibrarysample.base.ToolbarFragment;
 import com.mirkowu.baselibrarysample.ble.BLEManager;
+import com.mirkowu.baselibrarysample.ui.LanguageActivity;
 import com.mirkowu.baselibrarysample.ui.ScreenAdapterActivity;
 import com.mirkowu.baselibrarysample.ui.SocketTestActivity;
 import com.mirkowu.baselibrarysample.ui.TestToolbarActivity;
@@ -75,6 +76,10 @@ public class MainFragment extends ToolbarFragment {
     @Override
     protected void lazyLoad() {
 
+        L.d("系统语言=" + Locale.getDefault().getLanguage() + "  " + Locale.getDefault().getCountry());
+        L.d("语言=" + BaseSPManager.getLanguage().getLanguage() + "  " + BaseSPManager.getLanguage().getCountry());
+
+
     }
 
     @OnClick({R.id.mBtnChangeDayNightMode, R.id.mBtnChangeLanguage, R.id.mBtnMvpTemp,
@@ -88,10 +93,7 @@ public class MainFragment extends ToolbarFragment {
                 getBaseActivity().reload();
                 break;
             case R.id.mBtnChangeLanguage://切换语言
-                L.d("语言=" + BaseSPManager.getLanguage().getLanguage() + "  " + BaseSPManager.getLanguage().getCountry());
-                Locale locale = isEqualsLanguage(BaseSPManager.getLanguage(), Locale.SIMPLIFIED_CHINESE) ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE;
-                BaseSPManager.setLanguage(locale);
-                getBaseActivity().reload();//要重新启动Activity
+                LanguageActivity.start(getContext());
                 break;
             case R.id.mBtnMvpTemp://MVP模板
                 TestMvpActivity.start(getActivity());

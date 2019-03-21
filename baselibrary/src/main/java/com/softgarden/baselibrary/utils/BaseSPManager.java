@@ -11,18 +11,32 @@ import java.util.Locale;
  */
 
 public class BaseSPManager {
+    public static final String FOLLOW_SYSTEM_LANGUAGE = "follow_system_language";//语言
     public static final String LANGUAGE = "language";//语言
     public static final String LANGUAGE_COUNTRY = "language_country";//语言_国家地区
     public static final String DAY_NIGHT_MODE = "day_night_mode";//日夜模式
     public static final String IS_FIRST_LAUNCH = "is_first_launch";//是否第一次启动
     public static final String VERSION_CODE = "version_code";//版本号
 
+
+    /*** 是否跟随系统 */
+    public static boolean isFollowSystemLanguage() {
+        return (boolean) SPUtil.get(FOLLOW_SYSTEM_LANGUAGE, true);
+    }
+
+    public static void setFollowSystemLanguage(boolean isFollow) {
+        SPUtil.put(FOLLOW_SYSTEM_LANGUAGE, isFollow);
+    }
+
     /***  语言 默认系统语言*/
     public static Locale getLanguage() {
+        boolean isSystem = isFollowSystemLanguage();
+        if (isSystem) return Locale.getDefault();
         String language = (String) SPUtil.get(LANGUAGE, Locale.getDefault().getLanguage());//默认简体中文
         String country = (String) SPUtil.get(LANGUAGE_COUNTRY, Locale.getDefault().getCountry());//默认简体中文
         return new Locale(language, country);
     }
+
 
     public static void setLanguage(Locale language) {
         SPUtil.put(LANGUAGE, language.getLanguage());

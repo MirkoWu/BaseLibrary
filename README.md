@@ -106,6 +106,8 @@ Adapter推荐使用: [BaseRecyclerViewAdapterHelper](https://github.com/CymChad/
 
 
 ## Log更新日志 ##
+    *2019-3-21
+        更新 多语言 跟随系统 切换时的问题。
     *2019-3-15
         修复 SplashTheme 冷启动秒开效果 。
     *2019-3-11

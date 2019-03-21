@@ -21,7 +21,8 @@
         android:sharedUserId="android.uid.system"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.bluetooth.BLEManagerActivity"></activity>
+        <activity android:name=".ui.LanguageActivity"></activity>
+        <activity android:name=".ui.bluetooth.BLEManagerActivity" />
 
         <service android:name=".ble.BLEService" />
 

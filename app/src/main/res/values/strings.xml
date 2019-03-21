@@ -6,4 +6,6 @@
     <string name="MVPSample">MVP页面模板</string>
     <string name="refresh_sample">刷新页面模板</string>
     <string name="toolbar_sample">Toolbar页面模板</string>
+    <string name="follow_system">跟随系统</string>
+    <string name="english">英文</string>
 </resources>

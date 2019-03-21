@@ -10,16 +10,16 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 
 import com.mirkowu.baselibrarysample.R;
+import com.mirkowu.baselibrarysample.api.RetrofitClient;
 import com.mirkowu.baselibrarysample.base.ToolbarActivity;
 import com.mirkowu.baselibrarysample.bean.ImageBean;
 import com.mirkowu.baselibrarysample.bean.UserBean;
-import com.softgarden.baselibrary.network.NetworkTransformer;
-import com.mirkowu.baselibrarysample.api.RetrofitClient;
-import com.softgarden.baselibrary.network.RxCallback;
 import com.mirkowu.baselibrarysample.ui.testMvp.TestMvpActivity;
 import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.base.FragmentBasePagerAdapter;
 import com.softgarden.baselibrary.dialog.PromptDialog;
+import com.softgarden.baselibrary.network.NetworkTransformer;
+import com.softgarden.baselibrary.network.RxCallback;
 import com.softgarden.baselibrary.utils.BaseSPManager;
 import com.softgarden.baselibrary.utils.DisplayUtil;
 import com.softgarden.baselibrary.utils.L;
@@ -27,7 +27,6 @@ import com.softgarden.baselibrary.utils.SPUtil;
 import com.softgarden.baselibrary.utils.ToastUtil;
 
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
 
@@ -49,11 +48,11 @@ public class TestToolbarActivity extends ToolbarActivity {
     protected BaseToolbar.Builder setToolbar(@NonNull BaseToolbar.Builder builder) {
         return builder
                 // .setStatusBarColor(Color.GRAY)
-                .addLeftText("语言切换", v -> {
-                    Locale locale = isEqualsLanguage(BaseSPManager.getLanguage(), Locale.SIMPLIFIED_CHINESE) ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE;
-                    changeLanguage(locale);
-                    reload();//要重新启动Activity
-                })
+//                .addLeftText("语言切换", v -> {
+//                    Locale locale = isEqualsLanguage(BaseSPManager.getLanguage(), Locale.SIMPLIFIED_CHINESE) ? Locale.ENGLISH : Locale.SIMPLIFIED_CHINESE;
+//                    changeLanguage(locale);
+//                    reload();//要重新启动Activity
+//                })
                 .addRightText("日夜切换", v -> {
                     changeDayNightMode(!BaseSPManager.isNightMode());
                     reload();

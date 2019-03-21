@@ -38,6 +38,18 @@ public class LanguageUtil {
         resources.updateConfiguration(config, dm);
     }
 
+    public static Locale getLanguage(Context context) {
+        //应用内配置语言
+        Resources resources = context.getResources();//获得res资源对象
+        Configuration config = resources.getConfiguration();//获得设置对象
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return config.getLocales().get(0);
+        } else {
+            return config.locale;
+        }
+
+    }
+
     /**
      * 获取对应的context
      *

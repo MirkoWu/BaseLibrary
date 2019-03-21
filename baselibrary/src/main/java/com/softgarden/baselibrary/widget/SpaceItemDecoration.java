@@ -2,6 +2,7 @@ package com.softgarden.baselibrary.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.support.v4.view.ViewCompat;
@@ -23,14 +24,15 @@ public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
 
     public SpaceItemDecoration(Context context) {
         mDisplayMetrics = context.getResources().getDisplayMetrics();
+        mDividerPaint.setColor(Color.TRANSPARENT);
     }
 
-    public SpaceItemDecoration setSpace(int space) {
+    public SpaceItemDecoration setSpace(float space) {
         mSpace = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, space, mDisplayMetrics) + 0.5f);
         return this;
     }
 
-    public SpaceItemDecoration setEdgeSpace(int edgeSpace) {
+    public SpaceItemDecoration setEdgeSpace(float edgeSpace) {
         mEdgeSpace = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, edgeSpace, mDisplayMetrics) + 0.5f);
         return this;
     }

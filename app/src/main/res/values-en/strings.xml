@@ -6,4 +6,6 @@
     <string name="MVPSample">MVPSample</string>
     <string name="refresh_sample">RefreshSample</string>
     <string name="toolbar_sample">ToolbarSample</string>
+    <string name="follow_system">Follow System</string>
+    <string name="english">English</string>
 </resources>

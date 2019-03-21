@@ -72,6 +72,8 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        onBaseCreate(savedInstanceState);
+
         final BaseDelegate delegate = getBaseDelegate();
         delegate.onCreate(savedInstanceState);
 
@@ -81,6 +83,13 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
 
         //显示当前的Activity路径
         if (BuildConfig.DEBUG) L.e("当前打开的Activity:  " + getClass().getName());
+    }
+
+    /**
+     *
+     * @param savedInstanceState
+     */
+    private void onBaseCreate(Bundle savedInstanceState) {
     }
 
 //    /**
@@ -138,7 +147,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
      * @param language
      */
     public void changeLanguage(Locale language) {
-        getBaseDelegate().changeLanguage(language);
+        getBaseDelegate().changeLanguage(language,true);
     }
 
 

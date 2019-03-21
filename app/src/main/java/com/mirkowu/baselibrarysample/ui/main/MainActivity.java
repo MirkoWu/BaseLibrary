@@ -31,7 +31,7 @@ import me.jessyan.autosize.AutoSizeConfig;
 public class MainActivity extends ToolbarActivity {
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
-//        starter.putExtra();
+     // starter.putExtra(F);
         context.startActivity(starter);
     }
 
