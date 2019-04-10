@@ -118,6 +118,7 @@ public class BaseApplication extends Application {
             @Override
             public void onActivityDestroyed(Activity activity) {
                 ActivityManager.getInstance().remove(activity);//移除管理栈
+                mRefWatcher.watch(this);
             }
         });
     }

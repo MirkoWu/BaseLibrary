@@ -1,9 +1,38 @@
 package com.softgarden.baselibrary.utils;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/9/6 0006.
  */
 public class StringUtil {
+
+
+    /**
+     * 将字符串列表 用逗号隔开 组合成新的字符串
+     *
+     * @param list
+     * @return
+     */
+    public static String insertDot(List<String> list) {
+        return insert(list, ",");
+    }
+
+    /**
+     * 将字符串列表 用逗号或别的符号隔开 组合成新的字符串
+     *
+     * @param list 字符串列表
+     * @param reg  要隔开的符号
+     * @return
+     */
+    public static String insert(List<String> list, String reg) {
+        if (EmptyUtil.isEmpty(list)) return "";
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(reg + list.get(i));
+        }
+        return subPrefix(sb.toString(), reg);
+    }
 
     /**
      * 截取前缀 第一个 ，逗号
@@ -11,7 +40,10 @@ public class StringUtil {
      * @return
      */
     public static String subPrefix(String str) {
-        String reg = ",";
+        return subPrefix(str, ",");
+    }
+
+    public static String subPrefix(String str, String reg) {
         if (EmptyUtil.isNotEmpty(str) && str.startsWith(reg)) {
             str = str.substring(reg.length());
         }
@@ -25,7 +57,10 @@ public class StringUtil {
      * @return
      */
     public static String subSuffix(String str) {
-        String reg = ",";
+        return subSuffix(str, ",");
+    }
+
+    public static String subSuffix(String str, String reg) {
         if (EmptyUtil.isNotEmpty(str) && str.endsWith(reg)) {
             str = str.substring(0, str.length() - reg.length());
         }

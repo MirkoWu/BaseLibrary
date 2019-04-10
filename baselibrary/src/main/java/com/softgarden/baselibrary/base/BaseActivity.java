@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 
 import com.google.gson.JsonParseException;
 import com.mirkowu.statusbarutil.StatusBarUtil;
-import com.softgarden.baselibrary.BaseApplication;
 import com.softgarden.baselibrary.BuildConfig;
 import com.softgarden.baselibrary.R;
 import com.softgarden.baselibrary.network.ApiException;
@@ -348,10 +347,10 @@ public abstract class BaseActivity<P extends IBasePresenter> extends RxAppCompat
     protected void onDestroy() {
         super.onDestroy();
         if (unbinder != null) unbinder.unbind();
-        if (mPresenter != null) mPresenter.detachView();
-
-        BaseApplication.getInstance().getRefWatcher().watch(this);
-
+        if (mPresenter != null){
+            mPresenter.detachView();
+            mPresenter=null;
+        }
     }
 
     private P mPresenter;

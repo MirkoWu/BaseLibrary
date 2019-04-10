@@ -55,6 +55,7 @@ public class LanguageActivity extends ToolbarActivity {
                 SPManager.setFollowSystemLanguage(true);
                 //设置 跟随系统 true 就行了
                 //千万不要调用 changeLanguage() 因为内部肯已经设置 false;
+                //
                 break;
             case R.id.tvChinese:
                 changeLanguage(Locale.SIMPLIFIED_CHINESE);
