@@ -6,9 +6,10 @@
     android:layout_height="match_parent"
     tools:context=".ui.testMvp.TestMvpActivity">
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onClick"
+        android:clickable="true"
         android:text="测试吐司" />
 </android.support.constraint.ConstraintLayout>

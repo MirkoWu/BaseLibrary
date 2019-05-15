@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.Toast;
 
 import com.mirkowu.baselibrarysample.R;
 import com.mirkowu.baselibrarysample.base.ToolbarActivity;
 import com.mirkowu.baselibrarysample.bean.ImageBean;
 import com.mirkowu.basetoolbar.BaseToolbar;
+import com.softgarden.baselibrary.BaseApplication;
 import com.softgarden.baselibrary.network.RxCallback;
 import com.softgarden.baselibrary.utils.ToastUtil;
 
@@ -59,6 +62,10 @@ public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> {
 
 
     public void onClick(View view) {
-        ToastUtil.s(getString(R.string.app_name));
+       // ToastUtil.show(this,getString(R.string.app_name), Toast.LENGTH_SHORT);
+     Toast toast=   Toast.makeText(this,getString(R.string.app_name), Toast.LENGTH_SHORT);
+    toast.setGravity(Gravity.CENTER,0,0);
+     toast.show();
+
     }
 }
