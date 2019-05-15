@@ -62,10 +62,6 @@ public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> {
 
 
     public void onClick(View view) {
-       // ToastUtil.show(this,getString(R.string.app_name), Toast.LENGTH_SHORT);
-     Toast toast=   Toast.makeText(this,getString(R.string.app_name), Toast.LENGTH_SHORT);
-    toast.setGravity(Gravity.CENTER,0,0);
-     toast.show();
-
+        ToastUtil.s(getString(R.string.app_name));
     }
 }
