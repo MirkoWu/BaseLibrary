@@ -17,6 +17,7 @@ import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.softgarden.baselibrary.utils.ActivityManager;
+import com.softgarden.baselibrary.utils.L;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -66,8 +67,8 @@ public class BaseApplication extends Application {
             // You should not init your app in this process.
             return;
         }
-        // mRefWatcher = BuildConfig.DEBUG ? LeakCanary.install(this) : RefWatcher.DISABLED;
-        mRefWatcher = RefWatcher.DISABLED;
+        mRefWatcher = BuildConfig.DEBUG ? LeakCanary.install(this) : RefWatcher.DISABLED;
+        // mRefWatcher = RefWatcher.DISABLED;
 
         //屏幕适配
         //AutoSizeConfig.getInstance().setDesignWidthInDp(360).setDesignHeightInDp(640);
@@ -118,7 +119,7 @@ public class BaseApplication extends Application {
             @Override
             public void onActivityDestroyed(Activity activity) {
                 ActivityManager.getInstance().remove(activity);//移除管理栈
-                mRefWatcher.watch(this);
+                mRefWatcher.watch(activity);
             }
         });
     }

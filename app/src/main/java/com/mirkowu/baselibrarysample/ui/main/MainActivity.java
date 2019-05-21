@@ -19,6 +19,7 @@ import com.mirkowu.baselibrarysample.bean.TabEntityBean;
 import com.mirkowu.basetoolbar.BaseToolbar;
 import com.mirkowu.statusbarutil.StatusBarUtil;
 import com.softgarden.baselibrary.base.FragmentBasePagerAdapter;
+import com.softgarden.baselibrary.utils.ActivityManager;
 import com.softgarden.baselibrary.utils.L;
 import com.softgarden.baselibrary.utils.ToastUtil;
 import com.softgarden.baselibrary.widget.NoScrollViewPager;
@@ -31,7 +32,7 @@ import me.jessyan.autosize.AutoSizeConfig;
 public class MainActivity extends ToolbarActivity {
     public static void start(Context context) {
         Intent starter = new Intent(context, MainActivity.class);
-     // starter.putExtra(F);
+        // starter.putExtra(F);
         context.startActivity(starter);
     }
 
@@ -90,15 +91,19 @@ public class MainActivity extends ToolbarActivity {
         mTabLayout.showDot(2);
         mTabLayout.showMsg(3, 10);
         mTabLayout.setMsgMargin(3, -3, 5);
-         setOrientationPortrait(false);
+        setOrientationPortrait(false);
+
+
+
     }
+
     /**
      * 检查是否为竖屏
      */
     public void checkScreenOrientation() {
-        if  ( getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
             AutoSizeConfig.getInstance().setDesignWidthInDp(360).setDesignHeightInDp(640);
-        }else {
+        } else {
             AutoSizeConfig.getInstance().setDesignWidthInDp(640).setDesignHeightInDp(360);
 
         }

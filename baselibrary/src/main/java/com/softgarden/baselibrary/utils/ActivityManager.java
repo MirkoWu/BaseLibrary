@@ -3,6 +3,7 @@ package com.softgarden.baselibrary.utils;
 import android.app.Activity;
 import android.app.Application;
 
+import java.lang.ref.WeakReference;
 import java.util.Stack;
 
 /**
@@ -12,31 +13,39 @@ import java.util.Stack;
  * (此方法比在BaseActivity中处理要好)
  */
 public class ActivityManager {
-    private static Stack<Activity> mActStack = new Stack<>();
-    private volatile static ActivityManager instance;
+    private static Stack<WeakReference<Activity>> mActStack = new Stack<>();
+
+    private static class Singleton {
+        private static final ActivityManager INSTANCE = new ActivityManager();
+    }
 
     public static ActivityManager getInstance() {
-        if (instance == null) {
-            synchronized (ActivityManager.class) {
-                if (instance == null) {
-                    instance = new ActivityManager();
-                }
-            }
-        }
-        return instance;
+        return Singleton.INSTANCE;
+    }
+
+    private ActivityManager() {
     }
 
     /***  添加 建议在Application中统一处理 */
     public void add(Activity activity) {
-        mActStack.add(activity);
+        mActStack.add(new WeakReference<>(activity));
     }
 
     /***  移除 建议在Application中统一处理 */
     public void remove(Activity activity) {
-        if (mActStack.contains(activity))
-            mActStack.remove(activity);
+        for (WeakReference<Activity> temp : mActStack) {
+            if (isEqualsActivity(temp, activity)) {
+                mActStack.remove(temp);
+                break;
+            }
+        }
     }
 
+    /**
+     * 获取当前Activity数量
+     *
+     * @return
+     */
     public int getCount() {
         return mActStack.size();
     }
@@ -48,8 +57,8 @@ public class ActivityManager {
      * @return
      */
     public boolean isContains(Class<?> cls) {
-        for (Activity act : mActStack) {
-            if (act.getClass().equals(cls)) {
+        for (WeakReference<Activity> temp : mActStack) {
+            if (isEqualsActivity(temp, cls)) {
                 return true;
             }
         }
@@ -74,13 +83,12 @@ public class ActivityManager {
      * @return
      */
     public <T extends Activity> T findFirst(Class cls) {
-        if (mActStack.isEmpty()) return null;
-
-        for (int i = 0; i < mActStack.size(); i++) {
-            Activity act = mActStack.get(i);
-            if (act.getClass().equals(cls))
-                return (T) act;
+        for (WeakReference<Activity> temp : mActStack) {
+            if (isEqualsActivity(temp, cls)) {
+                return (T) temp.get();
+            }
         }
+
         return null;
     }
 
@@ -91,12 +99,11 @@ public class ActivityManager {
      * @return
      */
     public <T extends Activity> T findLast(Class cls) {
-        if (mActStack.isEmpty()) return null;
-
         for (int i = mActStack.size() - 1; i >= 0; i--) {
-            Activity act = mActStack.get(i);
-            if (act.getClass().equals(cls))
-                return (T) act;
+            WeakReference<Activity> temp = mActStack.get(i);
+            if (isEqualsActivity(temp, cls)) {
+                return (T) temp.get();
+            }
         }
 
         return null;
@@ -108,9 +115,24 @@ public class ActivityManager {
      * @return
      */
     public <T extends Activity> T getCurrent() {
-        if (mActStack.isEmpty()) return null;
+        if (mActStack.lastElement() != null) {
+            return (T) mActStack.lastElement().get();
+        }
+        return null;
+    }
 
-        return (T) mActStack.lastElement();
+    private boolean isEqualsActivity(WeakReference<Activity> temp, Class cls) {
+        if (temp != null && temp.get() != null && temp.get().getClass().equals(cls)) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isEqualsActivity(WeakReference<Activity> temp, Activity activity) {
+        if (temp != null && temp.get() != null && temp.get() == activity) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -132,11 +154,9 @@ public class ActivityManager {
      * @param cls
      */
     public void finish(Class cls) {
-        if (mActStack.isEmpty()) return;
-
-        for (Activity act : mActStack) {
-            if (act.getClass().equals(cls)) {
-                finish(act);
+        for (WeakReference<Activity> temp : mActStack) {
+            if (isEqualsActivity(temp, cls)) {
+                finish(temp.get());
             }
         }
     }
@@ -148,21 +168,20 @@ public class ActivityManager {
      * 1  * 4-5
      * * 4-5
      *
-     * @param activity
+     * @param cls
      */
-    public void finishBefore(Activity activity) {
-        if (mActStack.contains(activity)) {
-            int index = mActStack.indexOf(activity);
-            if (index != -1) {
-                for (int i = index - 1; i >= 0; i--) {
-                    finish(mActStack.get(i));
+    public void finishBefore(Class cls) {
+        boolean isFound = false;
+        for (int i = mActStack.size() - 1; i >= 0; i--) {
+            WeakReference<Activity> temp = mActStack.get(i);
+            if (isFound) {
+                if (temp != null && temp.get() != null) {
+                    finish(temp.get());
                 }
+            } else if (isEqualsActivity(temp, cls)) {
+                isFound = true;
             }
         }
-    }
-
-    public void finishBefore(Class cls) {
-        finishBefore(findFirst(cls));
     }
 
     /**
@@ -171,33 +190,34 @@ public class ActivityManager {
      * 1-2-3 * 5
      * 1-2-3 *
      *
-     * @param activity
+     * @param cls
      */
-    public void finishAfter(Activity activity) {
-        if (mActStack.contains(activity)) {
-            int index = mActStack.indexOf(activity);
-            if (index != -1) {
-                for (int i = index + 1; i < mActStack.size(); i++) {
-                    finish(mActStack.get(i));
+    public void finishAfter(Class cls) {
+        boolean isFound = false;
+        for (WeakReference<Activity> temp : mActStack) {
+            if (isFound) {
+                if (temp != null && temp.get() != null) {
+                    finish(temp.get());
                 }
+            } else if (isEqualsActivity(temp, cls)) {
+                isFound = true;
             }
         }
     }
 
-    public void finishAfter(Class cls) {
-        finishAfter(findFirst(cls));
-    }
 
     public void finishAll() {
-        for (Activity act : mActStack) {
-            finish(act);
+        for (WeakReference<Activity> temp : mActStack) {
+            if (temp != null && temp.get() != null) {
+                finish(temp.get());
+            }
         }
     }
 
     public void exitApp() {
         finishAll();
-        instance = null;
         System.exit(0);
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 }
+

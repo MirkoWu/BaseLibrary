@@ -11,10 +11,14 @@ import android.widget.Toast;
 import com.mirkowu.baselibrarysample.R;
 import com.mirkowu.baselibrarysample.base.ToolbarActivity;
 import com.mirkowu.baselibrarysample.bean.ImageBean;
+import com.mirkowu.baselibrarysample.ui.TestToolbarActivity;
+import com.mirkowu.baselibrarysample.ui.main.MainActivity;
 import com.mirkowu.basetoolbar.BaseToolbar;
 import com.softgarden.baselibrary.BaseApplication;
 import com.softgarden.baselibrary.network.RxCallback;
+import com.softgarden.baselibrary.utils.ActivityManager;
 import com.softgarden.baselibrary.utils.ToastUtil;
+import com.squareup.haha.perflib.Main;
 
 import java.util.List;
 
@@ -63,5 +67,6 @@ public class TestMvpActivity extends ToolbarActivity<TestMvpPresenter> {
 
     public void onClick(View view) {
         ToastUtil.s(getString(R.string.app_name));
+      //  ActivityManager.getInstance().finishAfter(MainActivity.class);
     }
 }
