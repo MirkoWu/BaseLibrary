@@ -25,6 +25,24 @@
 
 
 #混淆规则参考 https://www.jianshu.com/p/f3455ecaa56e
+
+# 每个Moudle 配置自己的混淆规则，混淆不会继承
+
+#libraryjars  声明lib jar文件
+#dontwarn 不提示警告 dontwarn是一个和keep可以说是形影不离,尤其是处理引入的library时.
+#引入的library可能存在一些无法找到的引用和其他问题,在build时可能会发出警告,
+#如果我们不进行处理,通常会导致build中止.
+#因此为了保证build继续,我们需要使用dontwarn处理这些我们无法解决的library的警告.
+
+#keep 保留类和类中的成员，防止被混淆或移除
+#keepnames 保留类和类中的成员，防止被混淆，成员没有被引用会被移除
+#keepclassmembers 只保留类中的成员，防止被混淆或移除
+#keepclassmembernames 只保留类中的成员，防止被混淆，成员没有引用会被移除
+#keepclasseswithmembers 保留类和类中的成员，防止被混淆或移除，保留指明的成员
+#keepclasseswithmembernames 保留类和类中的成员，防止被混淆，保留指明的成员，成员没有引用会被移除
+
+
+
 # >>>>>>>>>>>>>>>----------基本不用动区域---------->>>>>>>>>>>>>>>
 
 #----------------------基本指令区-----------------
@@ -147,8 +165,9 @@
 
 
 # >>>>>>>>>>>>>>>----------1.实体类---------->>>>>>>>>>>>>>>
--dontwarn com.mirkowu.baselibrary.bean.**
 -dontwarn com.softgarden.baselibrary.network.BaseBean
+-keep class com.softgarden.baselibrary.network.BaseBean
+
 # <<<<<<<<<<<<<<<----------1.实体类----------<<<<<<<<<<<<<<<
 
 

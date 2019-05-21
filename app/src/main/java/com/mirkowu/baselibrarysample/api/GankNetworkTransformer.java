@@ -1,7 +1,7 @@
 package com.mirkowu.baselibrarysample.api;
 
 
-import com.mirkowu.baselibrarysample.base.GankBaseBean;
+import com.mirkowu.baselibrarysample.bean.GankBaseBean;
 import com.softgarden.baselibrary.base.IBaseDisplay;
 import com.softgarden.baselibrary.network.ApiException;
 import com.softgarden.baselibrary.network.RxJava2NullException;
@@ -74,7 +74,7 @@ public class GankNetworkTransformer<T> implements ObservableTransformer<GankBase
      */
     public Function<? super GankBaseBean<T>, GankBaseBean<T>> filterData() {
         return (Function<GankBaseBean<T>, GankBaseBean<T>>) baseBean -> {
-            if (!baseBean.error  ) {
+            if (!baseBean.error) {
                 return baseBean;
             } else {
 //                if (baseBean.status == -1) {

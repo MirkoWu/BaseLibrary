@@ -1,7 +1,7 @@
 package com.mirkowu.baselibrarysample.api;
 
 
-import com.mirkowu.baselibrarysample.base.GankBaseBean;
+import com.mirkowu.baselibrarysample.bean.GankBaseBean;
 import com.mirkowu.baselibrarysample.bean.ImageBean;
 import com.softgarden.baselibrary.network.BaseBean;
 
