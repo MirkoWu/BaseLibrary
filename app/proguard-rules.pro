@@ -162,11 +162,21 @@
 #避免混淆内部类
 -keepattributes InnerClasses
 
+#（可选）避免Log打印输出
+-assumenosideeffects class android.util.Log {
+        public static *** v(...);
+        public static *** d(...);
+        public static *** i(...);
+        public static *** w(...);
+}
 # <<<<<<<<<<<<<<<----------基本不用动区域----------<<<<<<<<<<<<<<<
 
 
 # >>>>>>>>>>>>>>>----------1.实体类---------->>>>>>>>>>>>>>>
+-keep class com.softgarden.baselibrary.network.**{*;}
+
 -dontwarn com.mirkowu.baselibrarysample.bean.**
+#-dontwarn com.mirkowu.baselibrarysample.bean.GankBaseBean
 -keep class com.mirkowu.baselibrarysample.bean.**{*;}
 
 # <<<<<<<<<<<<<<<----------1.实体类----------<<<<<<<<<<<<<<<

@@ -13,11 +13,16 @@ android {
         versionName config.versionName
 
     }
-
     buildTypes {
+        debug {
+            buildConfigField("boolean", "isDebug", "true")
+            minifyEnabled true
+            consumerProguardFiles 'proguard-rules.pro'
+        }
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("boolean", "isDebug", "false")
+            minifyEnabled true
+            consumerProguardFiles 'proguard-rules.pro'
         }
     }
 
