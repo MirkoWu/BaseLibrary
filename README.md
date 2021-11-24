@@ -1,3 +1,6 @@
+# 本库已暂停维护，新版组件库请使用mvm，功能更全，解耦
+github:[https://github.com/MirkoWu/MVM](https://github.com/MirkoWu/MVM)
+
 ## BaseLibrary ##
 
   本库旨在开发项目时能快速搭建框架，提供较为常用的开发工具。建议下载作为依赖库，
