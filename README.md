@@ -1,4 +1,4 @@
-# 本库已暂停维护，新版组件库请使用mvm，功能更全，解耦
+# 本库已暂停维护，新版组件库请使用[MVM](https://github.com/MirkoWu/MVM)，功能更全，组件解耦
 github:[https://github.com/MirkoWu/MVM](https://github.com/MirkoWu/MVM)
 
 ## BaseLibrary ##
